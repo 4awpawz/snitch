@@ -1,12 +1,8 @@
-import fs from "fs-extra"
+function getArgs() {
+    return process.argv.slice(2)
+}
 
-// async function readFileAndConvertToJSON(path) {
-//     const raw = await fs.readFile(path)
-//     return JSON.parse(raw)
-// }
-//
 async function getPipedIn() {
-    console.log("here!!!!!!!!!!!!!!!!!!!!")
     let data = ""
     for await (const chunk of process.stdin) {
         data += chunk
@@ -14,21 +10,29 @@ async function getPipedIn() {
     return data
 }
 
-export async function ghif() {
-    // let filePath
-    // filePath = process.argv[2]
-    //
-    // console.log("inputFile", filePath)
-    //
-    // const json = await readFileAndConvertToJSON(filePath)
+function argsHaveMarkdownUnOrderedList(args) {
+    return args.some(arg => arg === "--markdown-unordered-list")
+}
 
+function argsHaveMarkdownOrderedList(args) {
+    return args.some(arg => arg === "--markdown-ordered-list")
+}
+
+function argsHaveBlankLineBetweenIssues(args) {
+    return args.some(arg => arg === "--blank-line-between-issues")
+}
+
+export async function ghif() {
+    const args = getArgs()
+    const markdown = (argsHaveMarkdownUnOrderedList(args) && "- ") || (argsHaveMarkdownOrderedList(args) && "0. ") || ""
+    const blankLineBetweenIssues = argsHaveBlankLineBetweenIssues(args)
     const json = JSON.parse(await getPipedIn())
     let issues = ""
-    json.forEach(obj => {
+    json.forEach((obj, index) => {
         const title = obj.title
         const number = obj.number
         const labels = obj.labels.map(label => label.name)
-        issues += `#${number}: ${title} [${labels.join(", ")}]\n`
+        issues += `${markdown}#${number}: ${title} [${labels.join(", ")}]\n${(blankLineBetweenIssues && index < json.length - 1) && "\n" || ""}`
     })
 
     process.stdout.write(issues)
