@@ -1,8 +1,11 @@
 {
-  "name": "issues-formatter",
+  "name": "ghif",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "ghif.mjs",
+  "bin": {
+    "ghif": "cli.mjs"
+  },
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
