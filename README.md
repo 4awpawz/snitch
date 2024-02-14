@@ -1,22 +1,29 @@
 # ghif, an issues formatter for Github's gh CLI issues 
 
-Maintaining a project's changelog shouldn't be a chore yet it often ends up being one of having to repetitively cut and paste from our Github issues into our project's changelog and then having to format everything in a consistent manner.
+Maintaining a project's changelog shouldn't be a chore yet it often ends up being one. Having to repetitively cut and paste from our Github issues into our project's changelog and then having to format everything in a consistent manner can be a significant task in its own right.
+That's where ghif steps in to radically reduce the effort of changelog maintenance.
 
-ghif is a simple command line utility that can dramatically reduce the chore of manually maintaining your project's changelog. ghif requires a single terminal command that retrieves a list of issues from your project's Github repository using Github's CLI `gh issue list` command and pipes the output from that into ghif, which formats the issues according to the options that you provide and then sends the formatted output to stdout.
+ghif is a simple command line utility that takes the issues output from Github's `gh issue list` command, formats them according to the options that you provide, and then sends the formatted output to stdout.
 
-ghif gives you the option to format its output in either plain text
+ghif gives you the option to format its output as plain text
 
 ```shell
 ghif
 ```
 
-or to markdown
+or as an unordered list in markdown
 
 ```shell
 ghif --markdown-unordered-list
 ```
 
-which should suffice most use cases.
+or as an ordered list in markdown
+
+```shell
+ghif --markdown-ordered-list
+```
+
+which should suffice for most use cases.
 
 ## Installation
 

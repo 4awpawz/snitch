@@ -22,16 +22,22 @@ function argsHaveBlankLineBetweenIssues(args) {
     return args.some(arg => arg === "--blank-line-between-issues")
 }
 
+function argsHaveColoredLabels(args) {
+    return args.some(arg => arg === "--colored-labels")
+}
+
 export async function ghif() {
     const args = getArgs()
     const markdown = (argsHaveMarkdownUnOrderedList(args) && "- ") || (argsHaveMarkdownOrderedList(args) && "1. ") || ""
     const blankLineBetweenIssues = argsHaveBlankLineBetweenIssues(args)
+    const coloredLabels = argsHaveColoredLabels(args);
     const json = JSON.parse(await getPipedIn())
     let issues = ""
     json.forEach((obj, index) => {
         const title = obj.title
         const number = obj.number
-        let labels = obj.labels.map(label => `<span style="color: #${label.color};">${label.name}</span>`)
+        let labels = coloredLabels ? obj.labels.map(label => `<span style="color: #${label.color};">${label.name}</span>`)
+            : obj.labels.map(label => label.name)
         issues += `${markdown}#${number}: ${title} [${labels.join(", ")}]\n${(blankLineBetweenIssues && index < json.length - 1) && "\n" || ""}`
     })
 
