@@ -31,7 +31,7 @@ export async function ghif() {
     json.forEach((obj, index) => {
         const title = obj.title
         const number = obj.number
-        const labels = obj.labels.map(label => label.name)
+        let labels = obj.labels.map(label => `<span style="color: #${label.color};">${label.name}</span>`)
         issues += `${markdown}#${number}: ${title} [${labels.join(", ")}]\n${(blankLineBetweenIssues && index < json.length - 1) && "\n" || ""}`
     })
 
