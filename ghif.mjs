@@ -24,7 +24,7 @@ function argsHaveBlankLineBetweenIssues(args) {
 
 export async function ghif() {
     const args = getArgs()
-    const markdown = (argsHaveMarkdownUnOrderedList(args) && "- ") || (argsHaveMarkdownOrderedList(args) && "0. ") || ""
+    const markdown = (argsHaveMarkdownUnOrderedList(args) && "- ") || (argsHaveMarkdownOrderedList(args) && "1. ") || ""
     const blankLineBetweenIssues = argsHaveBlankLineBetweenIssues(args)
     const json = JSON.parse(await getPipedIn())
     let issues = ""
