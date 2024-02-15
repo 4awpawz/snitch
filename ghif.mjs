@@ -1,15 +1,19 @@
 import chalk from "chalk"
 
-function getArgs() {
-    return process.argv.slice(2)
-}
-
 async function getPipedIn() {
     let data = ""
     for await (const chunk of process.stdin) {
         data += chunk
     }
     return data
+}
+
+function argsHaveText(args) {
+    return args.some(arg => arg === "--text")
+}
+
+function argsHaveMarkdownList(args) {
+    return args.some(arg => arg === "--markdown-list")
 }
 
 function argsHaveMarkdownUnOrderedList(args) {
@@ -28,25 +32,32 @@ function argsHaveColoredLabels(args) {
     return args.some(arg => arg === "--colored-labels")
 }
 
-export async function ghif() {
-    const args = getArgs()
-    const markdown = (argsHaveMarkdownUnOrderedList(args) && "- ") || (argsHaveMarkdownOrderedList(args) && "1. ") || ""
-    const blankLineBetweenIssues = argsHaveBlankLineBetweenIssues(args)
+function exitWithMessage(message) {
+    console.error(chalk.red(message))
+    process.exit(1)
+}
+
+export async function ghif(args) {
+    console.log("args", args)
+    const prefix = (argsHaveMarkdownUnOrderedList(args) && "- ") || (argsHaveMarkdownOrderedList(args) && "1. ") || ""
+    const blankLineBetweenIssues = argsHaveBlankLineBetweenIssues(args) || argsHaveMarkdownList(args)
     const coloredLabels = argsHaveColoredLabels(args)
+    const isMarkdown = argsHaveMarkdownList(args) || argsHaveMarkdownOrderedList(args) || argsHaveMarkdownUnOrderedList(args)
+    const isText = argsHaveText(args)
+    if (!isMarkdown && !isText) exitWithMessage("error: expected to find format option of --text, --markdown-list, --markdown-ordered-list, or --markdown-unordered-list but found none")
     let json
     try {
         json = JSON.parse(await getPipedIn())
     } catch (error) {
-        console.error(chalk.red("ghif requires gh issue to include the --json \"number,title,labels\"  options"))
-        process.exit(1)
+        exitWithMessage("error: ghif requires gh issue to include the --json \"number,title,labels\"  options")
     }
     let issues = ""
     json.forEach((obj, index) => {
         const title = obj.title
         const number = obj.number
-        let labels = coloredLabels ? obj.labels.map(label => `<span style="color: #${label.color};">${label.name}</span>`)
+        let labels = coloredLabels && isMarkdown ? obj.labels.map(label => `<span style="color: #${label.color};">${label.name}</span>`)
             : obj.labels.map(label => label.name)
-        issues += `${markdown}#${number}: ${title} [${labels.join(", ")}]\n${(blankLineBetweenIssues && index < json.length - 1) && "\n" || ""}`
+        issues += `${prefix}#${number}: ${title} [${labels.join(", ")}]\n${(blankLineBetweenIssues && index < json.length - 1) && "\n" || ""}`
     })
 
     process.stdout.write(issues)
