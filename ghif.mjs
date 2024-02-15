@@ -38,7 +38,6 @@ function exitWithMessage(message) {
 }
 
 export async function ghif(args) {
-    console.log("args", args)
     const prefix = (argsHaveMarkdownUnOrderedList(args) && "- ") || (argsHaveMarkdownOrderedList(args) && "1. ") || ""
     const blankLineBetweenIssues = argsHaveBlankLineBetweenIssues(args) || argsHaveMarkdownList(args)
     const coloredLabels = argsHaveColoredLabels(args)

@@ -1,5 +1,7 @@
 # ghif, an issues formatter for Github's gh CLI issues 
 
+<img style="border-radius: 5px;" src="./readme-assets/changelog.png" alt="changelog image">
+
 Maintaining a project's changelog shouldn't be a chore yet it often ends up being one. Having to repetitively cut and paste from our Github issues into our project's changelog and then having to format everything in a consistent manner can be a significant task in its own right.
 That's where __ghif__ steps in to radically reduce the effort of changelog maintenance.
 
@@ -107,6 +109,9 @@ _Pipe markdown output to a markdown file_
 - `--markdown-unordered-list`: output an unordered list of issues in markdown
 - `--markdown-ordered-list`: output an ordered list of issues in markdown
 ## Show some love ❤️
+<a href="https://www.buymeacoffee.com/4awpawz"><img src="./readme-assets/buymeacoffee.png" alt="image"></a>
+
 If using ghif provides you value then please click on the repository's _Star_ button.
 
 If you would like to be notified when there are changes then please click on the repository's _Watch_ button.
+
