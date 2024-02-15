@@ -1,3 +1,5 @@
+import chalk from "chalk"
+
 function getArgs() {
     return process.argv.slice(2)
 }
@@ -30,8 +32,14 @@ export async function ghif() {
     const args = getArgs()
     const markdown = (argsHaveMarkdownUnOrderedList(args) && "- ") || (argsHaveMarkdownOrderedList(args) && "1. ") || ""
     const blankLineBetweenIssues = argsHaveBlankLineBetweenIssues(args)
-    const coloredLabels = argsHaveColoredLabels(args);
-    const json = JSON.parse(await getPipedIn())
+    const coloredLabels = argsHaveColoredLabels(args)
+    let json
+    try {
+        json = JSON.parse(await getPipedIn())
+    } catch (error) {
+        console.error(chalk.red("ghif requires gh issue to include the --json \"number,title,labels\"  options"))
+        process.exit(1);
+    }
     let issues = ""
     json.forEach((obj, index) => {
         const title = obj.title
