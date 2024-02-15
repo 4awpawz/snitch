@@ -1,6 +1,6 @@
 # ghif, an issues formatter for Github's gh CLI issues 
 
-<img style="border-radius: 5px;" src="./readme-assets/changelog.png" alt="changelog image">
+<img style="border-radius: 3px; border: 1px solid #ffffff; margin: 24px 0; box-shadow: 6px 6px 10px 6px #888" src="./readme-assets/changelog.png" alt="changelog image">
 
 Maintaining a project's changelog shouldn't be a chore yet it often ends up being one. Having to repetitively cut and paste from our Github issues into our project's changelog and then having to format everything in a consistent manner can be a significant task in its own right.
 That's where __ghif__ steps in to radically reduce the effort of changelog maintenance.
@@ -22,10 +22,12 @@ You can, of course, include any of the _gh issue filters_ that support your proj
 ## Supported output formats and examples
 ### Plain text
 ```shell
-> gh issue list --json "number,title,labels" | ghif --text
+> gh issue list --json "number,title,labels" | ghif --text --header="v1.3.0"
 ```
-Example: _a list of issues_
+Example: _a list of issues with a heading_
 ```text
+v1.3.0
+
 #98: Unresolved token reporting drops the last closing brace for include tokens. [bug, revision]
 #97: Log warning to the console if user project does not have a 404.html document. [feature, revision]
 #96: Though template front matter is documented as a requirement, this is not enforced in the codebase. [wontfix, revision]
@@ -38,10 +40,12 @@ Example: _a list of issues_
 ### Markdown
 As a list:
 ```shell
-> gh issue list --json "number,title,labels" | ghif --markdown-list
+> gh issue list --json "number,title,labels" | ghif --markdown-list --header="## v1.3.0"
 ```
-Example: _a list of issues_
+Example: _a list of issues with a h2 header_
 ```text
+## v1.3.0
+
 #98: Unresolved token reporting drops the last closing brace for include tokens. [bug, revision]
 
 #97: Log warning to the console if user project does not have a 404.html document. [feature, revision]
@@ -108,6 +112,7 @@ _Pipe markdown output to a markdown file_
 - `--markdown-list`: output a list of issues in markdown
 - `--markdown-unordered-list`: output an unordered list of issues in markdown
 - `--markdown-ordered-list`: output an ordered list of issues in markdown
+- `--header`: prepend a header (e.g. V1.0.3) to the output, supports markdown headers and plain text headings
 ## Show some love ❤️
 <a href="https://www.buymeacoffee.com/4awpawz"><img src="./readme-assets/buymeacoffee.png" alt="image"></a>
 

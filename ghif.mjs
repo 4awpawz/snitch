@@ -32,6 +32,14 @@ function argsHaveColoredLabels(args) {
     return args.some(arg => arg === "--colored-labels")
 }
 
+function argsHaveAHeader(args) {
+    return args.some(arg => arg.startsWith("--header="))
+}
+
+function getHeader(args) {
+    return args.filter(arg => arg.startsWith("--header="))[0].split("=")[1] + "\n\n"
+}
+
 function exitWithMessage(message) {
     console.error(chalk.red(message))
     process.exit(1)
@@ -43,6 +51,7 @@ export async function ghif(args) {
     const coloredLabels = argsHaveColoredLabels(args)
     const isMarkdown = argsHaveMarkdownList(args) || argsHaveMarkdownOrderedList(args) || argsHaveMarkdownUnOrderedList(args)
     const isText = argsHaveText(args)
+    const header = argsHaveAHeader(args) && getHeader(args)
     if (!isMarkdown && !isText) exitWithMessage("error: expected to find format option of --text, --markdown-list, --markdown-ordered-list, or --markdown-unordered-list but found none")
     let json
     try {
@@ -51,6 +60,7 @@ export async function ghif(args) {
         exitWithMessage("error: ghif requires gh issue to include the --json \"number,title,labels\"  options")
     }
     let issues = ""
+    issues += header && header
     json.forEach((obj, index) => {
         const title = obj.title
         const number = obj.number
