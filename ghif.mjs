@@ -38,7 +38,7 @@ export async function ghif() {
         json = JSON.parse(await getPipedIn())
     } catch (error) {
         console.error(chalk.red("ghif requires gh issue to include the --json \"number,title,labels\"  options"))
-        process.exit(1);
+        process.exit(1)
     }
     let issues = ""
     json.forEach((obj, index) => {

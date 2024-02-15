@@ -2,4 +2,7 @@
 
 import { ghif } from "./ghif.mjs"
 
-await ghif()
+const args = process.argv.slice(2)
+const wantsHelp = ["help", "h", "-h"].includes(args[0])
+wantsHelp && console.log("For help please see https://github.com/4awpawz/ghif")
+!wantsHelp && await ghif()
