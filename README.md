@@ -1,7 +1,6 @@
 # ghif, an issues formatter for Github's CLI `gh issue list` 
-
 <img style="border-radius: 3px; border: 2px solid #ffffff; margin: 24px 0; box-shadow: 4px 4px 1px 1px #888" src="./readme-assets/demo.gif" alt="changelog image">
-
+<br>
 Maintaining a project's changelog shouldn't be a chore yet it often ends up being one. Having to repetitively cut and paste from our Github issues into our project's changelog and then having to format everything in a consistent manner can be a significant task in its own right.
 That's where __ghif__ steps in to radically reduce the effort of changelog maintenance.
 
