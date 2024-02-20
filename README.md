@@ -1,20 +1,23 @@
-# ghif, an issues formatter for Github's CLI `gh issue list` 
+# _ghif_, an issues formatter for Github's CLI `gh issue list` 
 <img style="border-radius: 3px; border: 2px solid #ffffff; margin: 24px 0; box-shadow: 4px 4px 1px 1px #888" src="./readme-assets/demo.gif" alt="changelog image">
 <br>
+
 Maintaining a project's changelog shouldn't be a chore yet it often ends up being one. Having to repetitively cut and paste from our Github issues into our project's changelog and then having to format everything in a consistent manner can be a significant task in its own right.
-That's where __ghif__ steps in to radically reduce the effort of changelog maintenance.
+That's where _ghif_ steps in to radically reduce the effort of changelog maintenance.
 
-ghif is a simple command line utility that takes the issues output from Github's `gh issue list --json "number,title,labels"` command, formats them according to any additional ghif _formatting options_ that you provide (please see below), and then sends the formatted output to stdout. 
+_ghif_ is a simple command line utility that takes the issues output from Github's `gh issue list --json "number,title,labels"` command, formats them according to any additional _ghif_ _formatting options_ that you provide (please see below), and then sends the formatted output to stdout. 
 
-<span style="color: orange;">* </span>ghif expects _gh issue_ to return JSON and for issue objects to contain the _number, title and labels_ fields and will fail to run otherwise. Therefor the minimum gh issue command required is the following:
+⚠️ ___ghif_ expects _gh issue list_ to return JSON and for issue objects to contain the _number, title and labels_ fields and will fail to run otherwise. Therefor the minimum <em>gh issue list</em> command required is the following:__
+
 ```console
 > gh issue list --json "number,title,labels"
 ```
-You can, of course, include any of the _gh issue filters_ that support your project's use case, such as _status (-s), repository (--repo), milestone (-m), etc_. 
+You can, of course, include any of the _gh issue list filters_ that support your project's use case, such as _status (-s), repository (--repo), milestone (-m), etc_. 
 
 ## Installation
 
-<span style="color: orange;">* </span> Requires [Github CLI](https://cli.github.com/)
+⚠️ ___ghif_ requires the [Github CLI](https://cli.github.com)__
+
 ```shell
 > npm i -g 4awpawz/ghif
 ```
@@ -115,7 +118,7 @@ _Pipe markdown output to a markdown file_
 ## Show some love ❤️
 <a href="https://www.buymeacoffee.com/4awpawz"><img src="./readme-assets/buymeacoffee.png" alt="image"></a>
 
-If using ghif provides you value then please click on the repository's _Star_ button.
+If using _ghif_ provides you value then please click on the repository's _Star_ button.
 
 If you would like to be notified when there are changes then please click on the repository's _Watch_ button.
 
