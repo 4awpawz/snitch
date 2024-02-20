@@ -9,8 +9,13 @@
   "type": "module",
   "scripts": {},
   "keywords": [
+    "github",
     "cli",
-    "issues"
+    "gh",
+    "issues",
+    "list",
+    "format",
+    "markdown"
   ],
   "author": "Jeffrey Schwartz, aka 4awpawz",
   "repository": {
