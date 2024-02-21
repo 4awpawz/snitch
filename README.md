@@ -7,21 +7,49 @@ That's where _ghif_ steps in to radically reduce the effort of changelog mainten
 
 _ghif_ is a simple command line utility that takes the issues output from Github's `gh issue list --json "number,title,labels"` command, formats them according to any additional _ghif_ _formatting options_ that you provide (please see below), and then sends the formatted output to stdout. 
 
-⚠️ ___ghif_ expects _gh issue list_ to return JSON and for issue objects to contain the _number, title and labels_ fields and will fail to run otherwise. Therefor the minimum <em>gh issue list</em> command required is the following:__
+⚠️ ___ghif_ expects _gh issue list_ to return JSON and for issue objects to contain the _number, title, labels and milestone_ fields and will fail to run otherwise. Therefor the minimum <em>gh issue list</em> command required is the following:__
 
 ```console
-> gh issue list --json "number,title,labels"
+> gh issue list --json "number,title,labels,milestone" -R, --repo <[HOST/]OWNER/REPO> 
 ```
-You can, of course, include any of the _gh issue list filters_ that support your project's use case, such as _status (-s), repository (--repo), milestone (-m), etc_. 
+You can, of course, include any of the _gh issue list filters_ that support your project's use case, such as _status (-s), etc_. 
 
 ## Installation
 
-⚠️ ___ghif_ requires the [Github CLI](https://cli.github.com)__
+⚠️ ___ghif_ requires [Github CLI](https://cli.github.com).__
 
 ```shell
 > npm i -g 4awpawz/ghif
 ```
-## Supported output formats and examples
+
+## Report Types
+| Report Tyoe | Report Variant | Options | Description |
+| :---- | :---- | :---- | :---- |
+| list of issues | --report-list | --report-list-txt | --heading=, --blank-line| list of issues as plain text |
+| | --report-list-md | --heading=, --blank-line, --colorized-labels | list of issues as markdown |
+| | --report-list-bulleted-txt | --heading=, --blank-line| list of bulleted issues as plain text |
+| | --report-list-bulleted-md | --heading=, --colorized-labels | list of bulleted issues as markdown |
+| | --report-list-numbered-txt | --heading=, --blank-line| list of numbered issues as plain text |
+| | --report-list-numbered-md | --heading=, --colorized-labels | list of numbered issues as markdown |
+| group issues by milestone | --report-milestone-list-txt | --heading=, blank-line | list of issues grouped by milestone as plain text |
+| | --report-milestone-list-md | --heading=, --blank-line, colorized-labels | list of issues grouped by milestone as markdown |
+| | --report-milestone-bulleted-txt | --heading=, blank-line | list of bulleted issues grouped by milestone as plain text |
+| | --report-milestone-bulleted-md | --heading=, colorized-labels | list of bulleted issues grouped by milestone as markdown |
+| | --report-milestone-numbered-txt | --heading=, blank-line | list of numbered issues grouped by milestone as plain text |
+| | --report-milestone-numbered-md | --heading=, colorized-labels | list of numbered issues grouped by milestone as markdown |
+| group issues by milestone & label | --report-milestone-label-list-txt | --heading=, blank-line | list of issues grouped by milestone and label as plain text |
+| | --report-milestone-label-list-md | --heading=, --blank-line, colorized-labels | list of issues grouped by milestone and label as markdown |
+| | --report-milestone-label-bulleted-txt | --heading=, blank-line | list of bulleted issues grouped by milestone and label as plain text |
+| | --report-milestone-label-bulleted-md | --heading=, --colorized-labels | list of bulleted issues grouped by milestone and label as markdown |
+| | --report-milestone-label-numbered-txt | --heading=, blank-line | list of numbered issues grouped by milestone and label as plain text |
+| | --report-milestone-label-numbered-md | --heading=, --colorized-labels | list of numbered issues grouped by milestone and label as markdown |
+### Report Options
+| Option | Description |
+| :---             | :--- |
+| --heading=       | Adds a heading in plain text or in markdown (e.g., 'Changelog' or '# Changelog', respectively) to the top of the report. |
+| --blank-line     | Adds a blank line between issues |
+| --colorized-labels | Adds color attrubtes to labels, applicable for markdown only |
+## Examples
 ### Plain text
 ```shell
 > gh issue list --json "number,title,labels" | ghif --text --header="v1.3.0"
