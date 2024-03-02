@@ -18,7 +18,7 @@ function sortMilestoneLabels(milestoneLabels) {
 
 function reportAndExit(message, level = "warn") {
     const msgLevel = level === "warn" && chalk.blue || level === "error" && chalk.red
-    console.log(chalk.red(msgLevel(message)))
+    console.log(msgLevel(message))
     process.exit(1)
 }
 
@@ -36,12 +36,13 @@ function listIssues(config, issues) {
     let lineItemNumber = 1
     output += "\n"
     for (const issue of issues) {
-        let labels = config.filetype === "md" && config.colorizedlabels ? issue.labels.map(label => `<span style="color: #${label.color};">${label.name}</span>`) :
-            issue.labels.map(label => label.name)
-        issue.labels.map(label => label.name)
+        let labels = config.filetype === "md" && config.colorizedlabels ? issue.labels.map(label => `<span style="color: #${label.color};">${label.name}</span>`) : issue.labels.map(label => label.name)
         output += prefix(config, lineItemNumber)
         lineItemNumber++
-        output += `#${issue.number}: ${issue.title} [${labels.join(", ")}]\n`
+        output += `#${issue.number}: ${issue.title} [${labels.join(", ")}]`
+        if (issue.milestone?.title) output += ` ${issue.milestone.title}`
+        if (issue.milestone?.dueOn) output += ` (${issue.milestone.dueOn.substring(0, 10)})`
+        output += "\n"
         if (config.filetype === "md" && config.report.includes("list")) output += "\n"
         if (config.blankline) output += "\n"
     }
@@ -157,7 +158,6 @@ function missingMilestone(issues) {
     for (const issue of issues) {
         if (typeof issue.milestone === "undefined" || issue.milestone === null) {
             missing = true
-            // console.log(chalk.red(`issue ${issue.number} is missing milestone`))
             console.log(chalk.red(`issue ${issue.number} is missing milestone`))
         }
     }
