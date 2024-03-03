@@ -2,9 +2,9 @@
   "name": "@4awpawz/ghif",
   "version": "1.1.0",
   "description": "An issues formatter for Github's gh CLI issues",
-  "main": "ghif.mjs",
+  "main": "core/index.mjs",
   "bin": {
-    "ghif": "cli.mjs"
+    "ghif": "core/bin/cli.mjs"
   },
   "type": "module",
   "scripts": {},

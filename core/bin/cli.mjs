@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { ghif } from "./ghif.mjs"
+import { ghif } from "../index.mjs"
 
 const args = process.argv.slice(2)
 const wantsHelp = args.length === 0 || ["help", "h", "-h", "--help"].includes(args[0])
