@@ -11,7 +11,7 @@ export function configure(args) {
     config.heading = config.heading && config.heading.length && config.heading.split("=")[1] || ""
     config.colorizedlabels = config.report.endsWith("-md") && args.includes("--colorized-labels")
     config.filetype = config.report.endsWith("-md") && "md" || "txt"
-    config.blankline = args.includes("--blank-line") && config.filetype === "txt"
+    config.blankline = config.filetype === "txt" && args.includes("--blank-line")
     config.prefix = config.report.includes("bulleted") && "bulleted" || config.report.includes("numbered") && "numbered" || "none"
     return config
 }

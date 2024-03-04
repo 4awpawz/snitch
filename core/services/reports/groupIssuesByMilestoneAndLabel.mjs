@@ -13,7 +13,7 @@ export function groupIssuesByMilestoneAndLabel(config, issues) {
         output += "\n"
         output += (config.filetype === "md" ? `## ${milestone.title}` : `${milestone.title}`)
         if (milestone.dueOn) output += ` (${milestone.dueOn.substring(0, 10)})`
-        output += "\n\n"
+        output += "\n"
         const issuesByMilestone = issues.filter(issue => issue.milestone.title === milestone.title)
         let labelsByMilestone = issuesByMilestone.reduce((accum, currentValue) => {
             currentValue.labels.forEach(label => !accum.includes(label.name) && accum.push(label.name))
@@ -25,20 +25,21 @@ export function groupIssuesByMilestoneAndLabel(config, issues) {
             return 0
         })
         for (const label of labelsByMilestone) {
-            const issuesBylabel = issuesByMilestone.reduce((accum, currentValue) => {
+            output += "\n"
+            const issuesByLabel = issuesByMilestone.reduce((accum, currentValue) => {
                 currentValue.labels.forEach(lbl => lbl.name === label && accum.push(currentValue))
                 return accum
             }, [])
-            output += (config.filetype === "md" ? `### ${label}` : `${label}`) + ` (${issuesBylabel.length})` + "\n\n"
+            output += (config.filetype === "md" ? `### ${label}` : `${label}`) + ` (${issuesByLabel.length})` + "\n\n"
             let lineItemNumber = 1
-            for (const issue of issuesBylabel) {
+            for (let i = 0; i < issuesByLabel.length; i++) {
+                const issue = issuesByLabel[i]
                 output += prefix(config, lineItemNumber)
                 lineItemNumber++
                 output += `#${issue.number}: ${issue.title}\n`
-                if (config.filetype === "md" && config.report.includes("list")) output += "\n"
+                if (config.filetype === "md" && i !== issuesByLabel.length - 1 && config.report === "milestone-label-list-md") output += "\n"
                 if (config.blankline) output += "\n"
             }
-            output += "\n"
         }
     }
     return output

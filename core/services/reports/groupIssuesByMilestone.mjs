@@ -16,7 +16,8 @@ export function groupIssuesByMilestone(config, issues) {
         output += "\n\n"
         const issuesByMilestone = issues.filter(issue => issue.milestone.title === milestone.title)
         let lineItemNumber = 1
-        for (const issue of issuesByMilestone) {
+        for (let i = 0; i < issuesByMilestone.length; i++) {
+            const issue = issuesByMilestone[i]
             let labels = issue.labels.sort((a, b) => {
                 if (a.name > b.name) return 1
                 if (a.name < b.name) return -1
@@ -27,7 +28,7 @@ export function groupIssuesByMilestone(config, issues) {
             output += prefix(config, lineItemNumber)
             lineItemNumber++
             output += `#${issue.number}: ${issue.title} [${labels.join(", ")}]\n`
-            if (config.filetype === "md" && config.report.includes("list")) output += "\n"
+            if (config.filetype === "md" && i !== issuesByMilestone.length - 1 && config.report.includes("-list")) output += "\n"
             if (config.blankline) output += "\n"
         }
     }
