@@ -1,148 +1,70 @@
-# _ghif_, an issues formatter for Github's CLI `gh issue list` 
+# ghif
+
+An easy to use terminal utility based on GitHub's CLI that generates attractive formatted reports that can be used for project status reporting and for maintaining a project's changelog.
+
 <img style="border-radius: 3px; border: 2px solid #ffffff; margin: 24px 0; box-shadow: 4px 4px 1px 1px #888" src="./readme-assets/demo.gif" alt="changelog image">
 <br>
 
-Maintaining a project's changelog shouldn't be a chore yet it often ends up being one. Having to repetitively cut and paste from our Github issues into our project's changelog and then having to format everything in a consistent manner can be a significant task in its own right.
-That's where _ghif_ steps in to radically reduce the effort of changelog maintenance.
+Maintaining a project's changelog can often end up being a project in its own right, involvong having to repetitively cut and paste from our GitHub repo's issues into our project's changelog, and then having to format everything in a consistent manner. That's where _ghif_ steps in to radically reduce the effort of changelog maintenance.
 
-_ghif_ is a simple command line utility that takes the issues output from Github's `gh issue list --json "number,title,labels"` command, formats them according to any additional _ghif_ _formatting options_ that you provide (please see below), and then sends the formatted output to stdout. 
-
-⚠️ ___ghif_ expects _gh issue list_ to return JSON and for issue objects to contain the _number, title, labels and milestone_ fields and will fail to run otherwise. Therefor the minimum <em>gh issue list</em> command required is the following:__
-
-```console
-> gh issue list --json "number,title,labels,milestone" -R, --repo <[HOST/]OWNER/REPO> 
-```
-You can, of course, include any of the _gh issue list filters_ that support your project's use case, such as _status (-s), etc_. 
+ghif reduces the burden of changelog maintenance to a single command, e.g., `ghif --report-list-txt --colorized-labels --heading=CHANGELOG --state=closed --repo=4awpawz/fusion.ssg > CHANGELOG.md`,
 
 ## Installation
 
-⚠️ ___ghif_ requires [Github CLI](https://cli.github.com).__
+### ⚠️ Dependencies
+
+ghif relies on GitHub's cli to generate its list of issues from you project's repo, so please [install gh if you haven't done so](https://cli.github.com) already.
+
+To install ghif, please run the following command in your terminal:
 
 ```shell
 > npm i -g 4awpawz/ghif
 ```
 
-## Report Types
-| Report Tyoe | Report Variant | Options | Description |
-| :---- | :---- | :---- | :---- |
-| list of issues | --report-list | --report-list-txt | --heading=, --blank-line| list of issues as plain text |
-| | --report-list-md | --heading=, --blank-line, --colorized-labels | list of issues as markdown |
-| | --report-list-bulleted-txt | --heading=, --blank-line| list of bulleted issues as plain text |
-| | --report-list-bulleted-md | --heading=, --colorized-labels | list of bulleted issues as markdown |
-| | --report-list-numbered-txt | --heading=, --blank-line| list of numbered issues as plain text |
-| | --report-list-numbered-md | --heading=, --colorized-labels | list of numbered issues as markdown |
-| group issues by milestone | --report-milestone-list-txt | --heading=, blank-line | list of issues grouped by milestone as plain text |
-| | --report-milestone-list-md | --heading=, --blank-line, colorized-labels | list of issues grouped by milestone as markdown |
-| | --report-milestone-bulleted-txt | --heading=, blank-line | list of bulleted issues grouped by milestone as plain text |
-| | --report-milestone-bulleted-md | --heading=, colorized-labels | list of bulleted issues grouped by milestone as markdown |
-| | --report-milestone-numbered-txt | --heading=, blank-line | list of numbered issues grouped by milestone as plain text |
-| | --report-milestone-numbered-md | --heading=, colorized-labels | list of numbered issues grouped by milestone as markdown |
-| group issues by milestone & label | --report-milestone-label-list-txt | --heading=, blank-line | list of issues grouped by milestone and label as plain text |
-| | --report-milestone-label-list-md | --heading=, --blank-line, colorized-labels | list of issues grouped by milestone and label as markdown |
-| | --report-milestone-label-bulleted-txt | --heading=, blank-line | list of bulleted issues grouped by milestone and label as plain text |
-| | --report-milestone-label-bulleted-md | --heading=, --colorized-labels | list of bulleted issues grouped by milestone and label as markdown |
-| | --report-milestone-label-numbered-txt | --heading=, blank-line | list of numbered issues grouped by milestone and label as plain text |
-| | --report-milestone-label-numbered-md | --heading=, --colorized-labels | list of numbered issues grouped by milestone and label as markdown |
+## 3 Report Types And 18 Variants To Chose From
+
+⚠️  Please submit a request for a report type that you would life to see added. We will take every request into consideration and implement it if possible.
+
+## Report Types And Variants
+| Report Type | Report Variant | Description |
+| :-- | :-- | :-- |
+| list of issues | --report-list-txt | list of issues as plain text |
+| | --report-list-md | list of issues as markdown |
+| | --report-list-bulleted-txt | list of bulleted issues as plain text |
+| | --report-list-bulleted-md | list of bulleted issues as markdown |
+| | --report-list-numbered-txt | list of numbered issues as plain text |
+| | --report-list-numbered-md | list of numbered issues as markdown |
+| list of issues grouped by milestone | --report-milestone-list-txt | list of issues grouped by milestone as plain text |
+| | --report-milestone-list-md | list of issues grouped by milestone as markdown |
+| | --report-milestone-bulleted-txt | list of bulleted issues grouped by milestone as plain text |
+| | --report-milestone-bulleted-md | list of bulleted issues grouped by milestone as markdown |
+| | --report-milestone-numbered-txt | list of numbered issues grouped by milestone as plain text |
+| | --report-milestone-numbered-md | list of numbered issues grouped by milestone as markdown |
+| list of issues grouped by milestone and label | --report-milestone-label-list-txt | list of issues grouped by milestone and label as plain text |
+| | --report-milestone-label-list-md | list of issues grouped by milestone and label as markdown |
+| | --report-milestone-label-bulleted-txt | list of bulleted issues grouped by milestone and label as plain text |
+| | --report-milestone-label-bulleted-md | list of bulleted issues grouped by milestone and label as markdown |
+| | --report-milestone-label-numbered-txt | list of numbered issues grouped by milestone and label as plain text |
+| | --report-milestone-label-numbered-md | list of numbered issues grouped by milestone and label as markdown |
 ### Report Options
-| Option | Description |
-| :---             | :--- |
-| --heading=       | Adds a heading in plain text or in markdown (e.g., 'Changelog' or '# Changelog', respectively) to the top of the report. |
-| --blank-line     | Adds a blank line between issues |
-| --colorized-labels | Adds color attrubtes to labels, applicable for markdown only |
-## Examples
-### Plain text
+| Option| Description |
+| :-- | :-- |
+| --repo= | the GitHub repository (as [HOST/]OWNER/REPO) to be reported (e.g., --repo=4awpawz/fusion.ssg), applicable for all report types, optional, if omitted defaults to the repo associated with the current project |
+| --max-issues= | the maximum number  of issues to report (e.g., --max-issues=500), applicable for all report types, optional, if omitted defaults to 300 |
+| --heading=       | adds a heading to the top of the report (e.g., --heading=CHANGELOG), applicable for all report types, optional, if omitted defaults to no heading |
+| --state= | filter issues by their state (i.e., all \| open \| closed) (e.g., --state=all), applicable for all report types, optional, if omitted defaults to 'closed' |
+| --show-state | report issue's state, applicable for all report types, optional, if omitted issue's state is not reported |
+| --show-assignees | report issue's assigness, applicable for all report types, optional, if omitted issue's assignees is not reported |
+| --blank-line     | adds a blank line between issues, applicable for txt report variants only (see Report Variant in the above table), optional, if omitted defaults to no blank line between issues|
+| --colorized-labels | colorizes labels, applicable for md report variants only (see Report Variant in the above table), optional, if omitted defaults to not colorizing labels |
+
+## Usage example
+_Output changelog directly to CHANGELOG.md_
 ```shell
-> gh issue list --json "number,title,labels" | ghif --text --header="v1.3.0"
+> ghif --report-milestone-label-list-md --colorized-labels --heading=CHANGELOG --state=closed --repo=fawpawz/fusion.ssg > CHANGELOG.md
 ```
-Example: _a list of issues with a heading_
-```text
-v1.3.0
+⚠️ Create a pacakge.json script for the changelog report you want to generate and run it as part of your project's release process!
 
-#98: Unresolved token reporting drops the last closing brace for include tokens. [bug, revision]
-#97: Log warning to the console if user project does not have a 404.html document. [feature, revision]
-#96: Though template front matter is documented as a requirement, this is not enforced in the codebase. [wontfix, revision]
-#95: Update to Node v18.18.0 LTS and address all related issues. [revision]
-#94: Include cache bust metric when release is called without the --verbose option and is called with the --cache-bust option. [revision]
-#93: Refactor the cli help to accommodate multiple command options. [feature]
-#92: Provide CLI --verbose logging option. [feature, revision]
-#91: Update Buster dependency to v1.1.0. [revision]
-```
-### Markdown
-As a list:
-```shell
-> gh issue list --json "number,title,labels" | ghif --markdown-list --header="## v1.3.0"
-```
-Example: _a list of issues with a h2 header_
-```text
-## v1.3.0
-
-#98: Unresolved token reporting drops the last closing brace for include tokens. [bug, revision]
-
-#97: Log warning to the console if user project does not have a 404.html document. [feature, revision]
-
-#96: Though template front matter is documented as a requirement, this is not enforced in the codebase. [wontfix, revision]
-
-#95: Update to Node v18.18.0 LTS and address all related issues. [revision]
-
-#94: Include cache bust metric when release is called without the --verbose option and is called with the --cache-bust option. [revision]
-
-#93: Refactor the cli help to accommodate multiple command options. [feature]
-
-#92: Provide CLI --verbose logging option. [feature, revision]
-
-#91: Update Buster dependency to v1.1.0. [revision]
-```
-As an unordered list:
-```shell
-> gh issue list --json "number,title,labels" | ghif --markdown-unordered-list
-```
-Example: _an unordered list of issues_
-```markdown
-- #98: Unresolved token reporting drops the last closing brace for include tokens. [bug, revision]
-- #97: Log warning to the console if user project does not have a 404.html document. [feature, revision]
-- #96: Though template front matter is documented as a requirement, this is not enforced in the codebase. [wontfix, revision]
-- #95: Update to Node v18.18.0 LTS and address all related issues. [revision]
-- #94: Include cache bust metric when release is called without the --verbose option and is called with the --cache-bust option. [revision]
-- #93: Refactor the cli help to accommodate multiple command options. [feature]
-- #92: Provide CLI --verbose logging option. [feature, revision]
-- #91: Update Buster dependency to v1.1.0. [revision]
-```
-As an ordered list:
-```shell
-> gh issue list --json "number,title,labels" | ghif --markdown-ordered-list
-```
-Example: _an ordered list of issues_
-```markdown
-1. #98: Unresolved token reporting drops the last closing brace for include tokens. [bug, revision]
-1. #97: Log warning to the console if user project does not have a 404.html document. [feature, revision]
-1. #96: Though template front matter is documented as a requirement, this is not enforced in the codebase. [wontfix, revision]
-1. #95: Update to Node v18.18.0 LTS and address all related issues. [revision]
-1. #94: Include cache bust metric when release is called without the --verbose option and is called with the --cache-bust option. [revision]
-1. #93: Refactor the cli help to accommodate multiple command options. [feature]
-1. #92: Provide CLI --verbose logging option. [feature, revision]
-1. #91: Update Buster dependency to v1.1.0. [revision]
-```
-## Usage examples
-_Output text to the terminal_
-```shell
-> gh issue list -s closed -m "v1.3.0" --json "number,title,labels" --repo 4awpawz/fusion.ssg | ghif --text
-```
-_Pipe text output to a text file_
-```shell
-> gh issue list -s closed -m "v1.3.0" --json "number,title,labels" --repo 4awpawz/fusion.ssg | ghif --text > issues.txt
-```
-_Pipe markdown output to a markdown file_
-```shell
-> gh issue list -s closed -m "v1.3.0" --json "number,title,labels" --repo 4awpawz/fusion.ssg | ghif --markdown-unordered-list --blank-line-between-issues > issues.md
-```
-### Formatting options
-- `--colored-labels`: colorize labels, ignored if output format is not markdown
-- `--blank-line-between-issues`: output a blank line between issues 
-- `--text`: output a list of issues as plain text
-- `--markdown-list`: output a list of issues in markdown
-- `--markdown-unordered-list`: output an unordered list of issues in markdown
-- `--markdown-ordered-list`: output an ordered list of issues in markdown
-- `--header`: prepend a header (e.g. V1.0.3) to the output, supports markdown headers and plain text headings
 ## Show some love ❤️
 <a href="https://www.buymeacoffee.com/4awpawz"><img src="./readme-assets/buymeacoffee.png" alt="image"></a>
 

@@ -1,9 +1,15 @@
 import util from "node:util"
 import child_process from "node:child_process"
 
-export async function gh(config) {
-    const exec = util.promisify(child_process.exec);
-    const command = `gh issue list -L 100000 --state ${config.state} --json 'number,title,labels,milestone,state' -R ${config.repo}`
+const exec = util.promisify(child_process.exec);
+
+export async function gh(config, args) {
+    let command = `gh issue list -L ${config.maxIssues} --state ${config.state} --json 'number,title,labels,milestone,state,assignees'`
+    command = config.repo ? command + ` -R ${config.repo}` : command
+    if (args.includes("--debug")) {
+        console.log("debug gh command: ", command)
+        return
+    }
     const { stdout } = await exec(command)
     return stdout
 }

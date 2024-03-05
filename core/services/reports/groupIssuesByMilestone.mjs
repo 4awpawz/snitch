@@ -1,4 +1,5 @@
 import { reportAndExit } from "../../lib/reportAndExit.mjs"
+import { showMarks } from "../../lib/showMarks.mjs"
 import { prefix } from "../../lib/prefix.mjs"
 
 export function groupIssuesByMilestone(config, issues) {
@@ -11,11 +12,10 @@ export function groupIssuesByMilestone(config, issues) {
     let output = ""
     for (const milestone of milestones) {
         output += "\n"
-        output += (config.filetype === "md" ? `## ${milestone.title}` : `${milestone.title}`)
+        output += (config.fileType === "md" ? `## ${milestone.title}` : `${milestone.title}`)
         if (milestone.dueOn) output += ` (${milestone.dueOn.substring(0, 10)})`
         output += "\n\n"
         const issuesByMilestone = issues.filter(issue => issue.milestone.title === milestone.title)
-        let lineItemNumber = 1
         for (let i = 0; i < issuesByMilestone.length; i++) {
             const issue = issuesByMilestone[i]
             let labels = issue.labels.sort((a, b) => {
@@ -23,14 +23,17 @@ export function groupIssuesByMilestone(config, issues) {
                 if (a.name < b.name) return -1
                 return 0
             })
-            labels = config.filetype === "md" && config.colorizedlabels ?
+            labels = config.fileType === "md" && config.colorizedLabels ?
                 labels.map(label => `<span style="color: #${label.color};">${label.name}</span>`) :
                 labels.map(label => label.name)
-            output += prefix(config, lineItemNumber)
-            lineItemNumber++
-            output += `#${issue.number}: ${issue.title} [${labels.join(", ")}]\n`
-            if (config.filetype === "md" && i !== issuesByMilestone.length - 1 && config.report.includes("-list")) output += "\n"
-            if (config.blankline) output += "\n"
+            output += prefix(config, i + 1)
+            if (config.showState && config.showMarks) output += `${showMarks(config, issue.state)}`
+            output += `#${issue.number}: ${issue.title} [${labels.join(", ")}]`
+            if (config.showState && !config.showMarks) output += ` ${issue.state}`
+            if (config.showAssignees) output += ` [${issue.assignees.map(assignee => assignee.name).join(", ")}]`
+            output += "\n"
+            if (config.fileType === "md" && i + 1 !== issuesByMilestone.length - 1 && config.report.includes("-list")) output += "\n"
+            if (config.blankLine) output += "\n"
         }
     }
     return output
