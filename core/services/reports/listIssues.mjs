@@ -2,14 +2,14 @@ import { reportAndExit } from "../../lib/reportAndExit.mjs"
 import { prefix } from "../../lib/prefix.mjs"
 
 export function listIssues(config, issues) {
-    console.log(config)
     if (issues.length === 0) reportAndExit("No issues to report")
     let output = ""
     let lineItemNumber = 1
     output += "\n"
     for (let i = 0; i < issues.length; i++) {
         const issue = issues[i]
-        let labels = config.filetype === "md" && config.colorizedlabels ? issue.labels.map(label => `<span style="color: #${label.color};">${label.name}</span>`) : issue.labels.map(label => label.name)
+        let labels = config.filetype === "md" && config.colorizedlabels ?
+            issue.labels.map(label => `<span style="color: #${label.color};">${label.name}</span>`) : issue.labels.map(label => label.name)
         output += prefix(config, lineItemNumber)
         lineItemNumber++
         output += `#${issue.number}: ${issue.title} [${labels.join(", ")}]`

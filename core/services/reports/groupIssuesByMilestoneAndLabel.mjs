@@ -16,21 +16,23 @@ export function groupIssuesByMilestoneAndLabel(config, issues) {
         output += "\n"
         const issuesByMilestone = issues.filter(issue => issue.milestone.title === milestone.title)
         let labelsByMilestone = issuesByMilestone.reduce((accum, currentValue) => {
-            currentValue.labels.forEach(label => !accum.includes(label.name) && accum.push(label.name))
+            currentValue.labels.forEach(label => !accum.some(a => a.name === label.name) && accum.push(label))
             return accum
         }, [])
         labelsByMilestone.sort((a, b) => {
-            if (a > b) return 1
-            if (a < b) return -1
+            if (a.name > b.name) return 1
+            if (a.name < b.name) return -1
             return 0
         })
         for (const label of labelsByMilestone) {
             output += "\n"
             const issuesByLabel = issuesByMilestone.reduce((accum, currentValue) => {
-                currentValue.labels.forEach(lbl => lbl.name === label && accum.push(currentValue))
+                currentValue.labels.forEach(lbl => lbl.name === label.name && accum.push(currentValue))
                 return accum
             }, [])
-            output += (config.filetype === "md" ? `### ${label}` : `${label}`) + ` (${issuesByLabel.length})` + "\n\n"
+            output += (config.filetype === "md" ?
+                `### ${`<span style="color: #${label.color};">${label.name}</span>`}` :
+                `${label.name}`) + ` (${issuesByLabel.length})` + "\n\n"
             let lineItemNumber = 1
             for (let i = 0; i < issuesByLabel.length; i++) {
                 const issue = issuesByLabel[i]

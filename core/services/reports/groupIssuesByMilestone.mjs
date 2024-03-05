@@ -23,8 +23,9 @@ export function groupIssuesByMilestone(config, issues) {
                 if (a.name < b.name) return -1
                 return 0
             })
-            labels = config.filetype === "md" && config.colorizedlabels ? issue.labels.map(label => `<span style="color: #${label.color};">${label.name}</span>`) :
-                issue.labels.map(label => label.name)
+            labels = config.filetype === "md" && config.colorizedlabels ?
+                labels.map(label => `<span style="color: #${label.color};">${label.name}</span>`) :
+                labels.map(label => label.name)
             output += prefix(config, lineItemNumber)
             lineItemNumber++
             output += `#${issue.number}: ${issue.title} [${labels.join(", ")}]\n`
