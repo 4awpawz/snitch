@@ -1,16 +1,9 @@
 import chalk from "chalk"
+import { gh } from "./services/gh.mjs"
 import { configure } from "./services/configure.mjs"
 import { listIssues } from "./services/reports/listIssues.mjs"
 import { groupIssuesByMilestoneAndLabel } from "./services/reports/groupIssuesByMilestoneAndLabel.mjs"
 import { groupIssuesByMilestone } from "./services/reports/groupIssuesByMilestone.mjs"
-
-async function getPipedIn() {
-    let data = ""
-    for await (const chunk of process.stdin) {
-        data += chunk
-    }
-    return data
-}
 
 function missingMilestone(issues) {
     let missing = false
@@ -36,9 +29,15 @@ function missingLabel(issues) {
 
 export async function ghif(args) {
     const config = configure(args)
+    const hasRepo = !!config.repo
+    if (!hasRepo) console.log(chalk.red(`missing arg --repo=, you entered ${args}`))
+    const hasState = !!config.state
+    if (!hasState) console.log(chalk.red(`args missing --state=, you entered ${args}`))
+    if (!hasRepo || !hasState) process.exit(1)
     let issues
     try {
-        issues = JSON.parse(await getPipedIn())
+        const result = await gh(config)
+        issues = JSON.parse(result)
     } catch (error) {
         throw new Error("ghif require gh issue list to include the --json \"number,title,labels,milestone\"  options")
     }
@@ -78,4 +77,5 @@ export async function ghif(args) {
             break
     }
     process.stdout.write(output)
+    process.exit(0)
 } 

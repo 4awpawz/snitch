@@ -3,6 +3,10 @@ import { reportAndExit } from "../lib/reportAndExit.mjs"
 
 export function configure(args) {
     let config = {}
+    config.repo = args.find(arg => arg.startsWith("--repo="))
+    config.repo = config.repo && config.repo.length && config.repo.split("=")[1] || ""
+    config.state = args.find(arg => arg.startsWith("--state="))
+    config.state = config.state && config.state.length && config.state.split("=")[1] || ""
     config.report = args.find(arg => arg.startsWith("--report-"))
     if (!reportTypes.includes(config.report))
         reportAndExit(`missing or invalid report type, you entered ${config.report} `, "error")
