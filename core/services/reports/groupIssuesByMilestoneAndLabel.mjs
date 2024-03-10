@@ -31,7 +31,7 @@ export function groupIssuesByMilestoneAndLabel(config, issues) {
                 currentValue.labels.forEach(lbl => lbl.name === label.name && accum.push(currentValue))
                 return accum
             }, [])
-            output += (config.fileType === "md" ?
+            output += (config.fileType === "md" && config.showColor ?
                 `### ${`<span style="color: #${label.color};">${label.name}</span>`}` :
                 `${label.name}`) + ` (${issuesByLabel.length})` + "\n\n"
             for (let i = 0; i < issuesByLabel.length; i++) {

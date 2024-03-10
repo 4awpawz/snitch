@@ -8,11 +8,13 @@ export function listIssues(config, issues) {
     output += "\n"
     for (let i = 0; i < issues.length; i++) {
         const issue = issues[i]
-        let labels = (config.fileType === "md" && config.colorizedLabels) ?
+        let labels = (config.fileType === "md" && config.showColor) ?
             issue.labels.map(label => `<span style="color: #${label.color};">${label.name}</span>`) : issue.labels.map(label => label.name)
         output += prefix(config, i + 1)
         if (config.showState && config.showMarks) output += `${showMarks(config, issue.state)}`
-        output += `#${issue.number}: ${issue.title} [${labels.join(", ")}]`
+        output += `#${issue.number}: `
+        output += config.showURL && `[${issue.title}](${issue.url})` || `${issue.title}`
+        output += ` [${labels.join(", ")}]`
         if (config.showState && !config.showMarks) output += ` ${issue.state}`
         if (config.showAssignees) output += ` [${issue.assignees.map(assignee => assignee.name).join(", ")}]`
         if (issue.milestone?.title) output += ` ${issue.milestone.title}`
