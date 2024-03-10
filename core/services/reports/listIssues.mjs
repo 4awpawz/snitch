@@ -5,7 +5,6 @@ import { prefix } from "../../lib/prefix.mjs"
 export function listIssues(config, issues) {
     if (issues.length === 0) reportAndExit("No issues to report")
     let output = ""
-    // TODO: maintaining line number isn't necessarry because using for loop with index.
     output += "\n"
     for (let i = 0; i < issues.length; i++) {
         const issue = issues[i]
