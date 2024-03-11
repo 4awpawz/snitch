@@ -22,11 +22,11 @@ export function configure(args) {
     const heading = args.find(arg => arg.startsWith("--heading="))
     config.fileType = config.report.endsWith("md") && "md" || "txt"
     config.heading = heading && heading.length && heading.split("=")[1] || ""
-    config.blankLine = config.fileType === "txt" && args.includes("--blank-line")
+    config.blankLine = args.includes("--blank-line") && config.fileType === "txt"
     config.prefix = config.report.includes("bulleted") && "bulleted" || config.report.includes("numbered") && "numbered" || "none"
     let show = args.find(arg => arg.startsWith("--show"))
     config.showState = show.includes("state")
-    config.showURL = show.includes("url")
+    config.showURL = show.includes("url") && config.fileType === "md"
     config.showAssignees = show.includes("assignees")
     config.showMarks = show.includes("marks")
     config.showColor = show.includes("color")
