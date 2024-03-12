@@ -23,6 +23,7 @@ export function configure(args) {
     config.fileType = config.report.endsWith("md") && "md" || "txt"
     config.heading = heading && heading.length && heading.split("=")[1] || ""
     config.blankLine = args.includes("--blank-line") && config.fileType === "txt"
+    config.breakAfterTitle = args.includes("--break-after-title")
     config.prefix = config.report.includes("bulleted") && "bulleted" || config.report.includes("numbered") && "numbered" || "none"
     let show = args.find(arg => arg.startsWith("--show"))
     config.showState = show.includes("state")

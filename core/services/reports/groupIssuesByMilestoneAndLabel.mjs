@@ -37,10 +37,15 @@ export function groupIssuesByMilestoneAndLabel(config, issues) {
             for (let i = 0; i < issuesByLabel.length; i++) {
                 const issue = issuesByLabel[i]
                 output += prefix(config, i + 1)
-                if (config.showState && config.showMarks) output += `${showMarks(config, issue.state)}`
-                output += `#${issue.number}: ${issue.title}`
-                if (config.showState && !config.showMarks) output += ` ${issue.state}`
-                if (config.showAssignees) output += ` [${issue.assignees.map(assignee => assignee.name).join(", ")}]`
+                // let state = (config.fileType === "md" && config.showState && issue.state === "OPEN" && "OPEN") ||
+                //     (config.fileType === "txt" && config.showState && issue.state === "OPEN" && "OPEN ") ||
+                //     `${issue.state}`
+                output += config.showState && config.showMarks && `${showMarks(config, issue.state)}` || `${issue.state} `
+                // if (config.showState && !config.showMarks) output += ` ${issue.state}`
+                output += `#${issue.number}: `
+                output += issue.title
+                output += config.breakAfterTitle && (config.fileType === "md" && "<br>" || "\n") || " "
+                if (config.showAssignees) output += `[${issue.assignees.map(assignee => assignee.name).join(", ")}]`
                 output += "\n"
                 if (config.fileType === "md" && config.report.includes("list") && i !== issuesByLabel.length - 1) output += "\n"
                 if (config.blankLine) output += "\n"

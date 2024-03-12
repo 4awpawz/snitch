@@ -27,9 +27,10 @@ export function groupIssuesByMilestone(config, issues) {
                 labels.map(label => `<span style="color: #${label.color};">${label.name}</span>`) :
                 labels.map(label => label.name)
             output += prefix(config, i + 1)
-            if (config.showState && config.showMarks) output += `${showMarks(config, issue.state)}`
-            output += `#${issue.number}: ${issue.title} [${labels.join(", ")}]`
-            if (config.showState && !config.showMarks) output += ` ${issue.state}`
+            output += config.showState && config.showMarks && `${showMarks(config, issue.state)}` || `${issue.state} `
+            output += `#${issue.number}: ${issue.title}`
+            output += config.breakAfterTitle && (config.fileType === "md" && "<br>" || "\n") || " "
+            output += `[${labels.join(", ")}]`
             if (config.showAssignees) output += ` [${issue.assignees.map(assignee => assignee.name).join(", ")}]`
             output += "\n"
             if (config.fileType === "md" && i !== issuesByMilestone.length - 1 && config.report.includes("-list")) output += "\n"

@@ -11,11 +11,11 @@ export function listIssues(config, issues) {
         let labels = (config.fileType === "md" && config.showColor) ?
             issue.labels.map(label => `<span style="color: #${label.color};">${label.name}</span>`) : issue.labels.map(label => label.name)
         output += prefix(config, i + 1)
-        if (config.showState && config.showMarks) output += `${showMarks(config, issue.state)}`
+        output += config.showState && config.showMarks && `${showMarks(config, issue.state)}` || `${issue.state} `
         output += `#${issue.number}: `
-        output += config.showURL && `[${issue.title}](${issue.url})` || `${issue.title}`
-        output += ` [${labels.join(", ")}]`
-        if (config.showState && !config.showMarks) output += ` ${issue.state}`
+        output += issue.title
+        output += config.breakAfterTitle && (config.fileType === "md" && "<br>" || "\n") || " "
+        output += `[${labels.join(", ")}]`
         if (config.showAssignees) output += ` [${issue.assignees.map(assignee => assignee.name).join(", ")}]`
         if (issue.milestone?.title) output += ` ${issue.milestone.title}`
         if (issue.milestone?.dueOn) output += ` (${issue.milestone.dueOn.substring(0, 10)})`

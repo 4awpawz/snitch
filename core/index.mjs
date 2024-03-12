@@ -19,7 +19,7 @@ export async function ghif(args) {
         console.error(error)
         reportAndExit("something went wrong", "error")
     }
-    issues = sanitize(issues)
+    issues = sanitize(config, issues)
     let output = ""
     const heading = config.heading !== "" && config.report.endsWith(("-md")) ? `# ${config.heading} ` : config.heading;
     output = config.heading !== "" && heading + "\n" || output
