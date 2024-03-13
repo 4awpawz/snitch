@@ -21,7 +21,7 @@ export function listIssues(config, issues) {
         if (issue.milestone?.dueOn) output += ` (${issue.milestone.dueOn.substring(0, 10)})`
         output += "\n"
         if (config.fileType === "md" && i !== issues.length - 1 && config.report === "list-md") output += "\n"
-        if (config.blankLine) output += "\n"
+        if (config.fileType === "txt" && config.blankLine && i !== issues.length - 1) output += "\n"
     }
     return output
 }
