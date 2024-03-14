@@ -11,15 +11,16 @@ export function configure(args) {
     config.maxIssues = maxIssues && maxIssues.length && maxIssues.split("=")[1] || 300
     let report = args.find(arg => arg.startsWith("--issues-"))
     if (typeof report === "undefined" || !reportTypes.includes(report)) {
-        console.error("-------------------------")
-        console.error("Pick A Valid Report Type")
-        console.error("-------------------------")
+        console.error("------------------")
+        console.error("Pick A Report Type")
+        console.error("------------------")
         console.error(reportTypes.join("\n"))
         reportAndExit("invalid or missing report type, please provide one from the list above", "error")
     }
     config.report = report.slice(9)
-    const heading = args.find(arg => arg.startsWith("--heading="))
     config.fileType = config.report.endsWith("md") && "md" || "txt"
+    config.noWrap = args.includes("--no-wrap")
+    const heading = args.find(arg => arg.startsWith("--heading="))
     config.heading = heading && heading.length && heading.split("=")[1] || ""
     config.blankLine = args.includes("--blank-line") && config.fileType === "txt"
     config.breakAfterTitle = args.includes("--break-after-title")

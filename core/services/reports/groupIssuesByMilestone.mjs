@@ -26,11 +26,12 @@ export function groupIssuesByMilestone(config, issues) {
             labels = config.fileType === "md" && config.showColor ?
                 labels.map(label => `<span style="color: #${label.color};">${label.name}</span>`) :
                 labels.map(label => label.name)
+            labels = labels.join(", ")
             output += prefix(config, i + 1)
             output += config.showState && config.showMarks && `${showMarks(config, issue.state)}` || `${issue.state} `
             output += `#${issue.number}: ${issue.title}`
             output += config.breakAfterTitle && (config.fileType === "md" && "<br>" || "\n") || " "
-            output += `[${labels.join(", ")}]`
+            output += `[${labels}]`
             if (config.showAssignees) output += ` [${issue.assignees.map(assignee => assignee.name).join(", ")}]`
             output += "\n"
             if (config.fileType === "md" && i !== issuesByMilestone.length - 1 && config.report.includes("-list")) output += "\n"
