@@ -1,4 +1,3 @@
-import { chalkStderr } from "chalk"
 import { reportTypes } from "../lib/reportTypes.mjs"
 import { reportAndExit } from "../lib/reportAndExit.mjs"
 
@@ -10,13 +9,13 @@ export function configure(args) {
     config.state = state && state.length && state.split("=")[1] || "closed"
     const maxIssues = args.find(arg => arg.startsWith("--max-issues="))
     config.maxIssues = maxIssues && maxIssues.length && maxIssues.split("=")[1] || 300
-    let report = args.find(arg => arg.startsWith("--report-"))
-    if (typeof report === "undefined") {
-        report = "--report-list-txt"
-        console.error(chalkStderr.yellow("defaulting to --report-list-txt"))
-    }
-    if (report && !reportTypes.includes(report)) {
-        reportAndExit(`invalid report type, you entered ${report}`, "error")
+    let report = args.find(arg => arg.startsWith("--issues-"))
+    if (typeof report === "undefined" || !reportTypes.includes(report)) {
+        console.error("-------------------------")
+        console.error("Pick A Valid Report Type")
+        console.error("-------------------------")
+        console.error(reportTypes.join("\n"))
+        reportAndExit("invalid or missing report type, please provide one from the list above", "error")
     }
     config.report = report.slice(9)
     const heading = args.find(arg => arg.startsWith("--heading="))

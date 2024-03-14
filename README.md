@@ -7,7 +7,7 @@ An easy to use terminal utility based on GitHub's CLI that generates attractive 
 
 Maintaining a project's changelog can often end up being a project in its own right, involvong having to repetitively cut and paste from our GitHub repo's issues into our project's changelog, and then having to format everything in a consistent manner. That's where _ghif_ steps in to radically reduce the effort of changelog maintenance.
 
-ghif reduces the burden of changelog maintenance to a single command, e.g., `ghif --report-list-txt --colorized-labels --heading=CHANGELOG --state=closed --repo=4awpawz/fusion.ssg > CHANGELOG.md`,
+ghif reduces the burden of changelog maintenance to a single command, e.g., `ghif --issues-list-txt --colorized-labels --heading=CHANGELOG --state=closed --repo=4awpawz/fusion.ssg > CHANGELOG.md`,
 
 ## Installation
 
@@ -28,24 +28,24 @@ To install ghif, please run the following command in your terminal:
 ## Report Types And Variants
 | Report Type | Report Variant | Description |
 | :-- | :-- | :-- |
-| list of issues | --report-list-txt | list of issues as plain text |
-| | --report-list-md | list of issues as markdown |
-| | --report-list-bulleted-txt | list of bulleted issues as plain text |
-| | --report-list-bulleted-md | list of bulleted issues as markdown |
-| | --report-list-numbered-txt | list of numbered issues as plain text |
-| | --report-list-numbered-md | list of numbered issues as markdown |
-| list of issues grouped by milestone | --report-milestone-list-txt | list of issues grouped by milestone as plain text |
-| | --report-milestone-list-md | list of issues grouped by milestone as markdown |
-| | --report-milestone-bulleted-txt | list of bulleted issues grouped by milestone as plain text |
-| | --report-milestone-bulleted-md | list of bulleted issues grouped by milestone as markdown |
-| | --report-milestone-numbered-txt | list of numbered issues grouped by milestone as plain text |
-| | --report-milestone-numbered-md | list of numbered issues grouped by milestone as markdown |
-| list of issues grouped by milestone and label | --report-milestone-label-list-txt | list of issues grouped by milestone and label as plain text |
-| | --report-milestone-label-list-md | list of issues grouped by milestone and label as markdown |
-| | --report-milestone-label-bulleted-txt | list of bulleted issues grouped by milestone and label as plain text |
-| | --report-milestone-label-bulleted-md | list of bulleted issues grouped by milestone and label as markdown |
-| | --report-milestone-label-numbered-txt | list of numbered issues grouped by milestone and label as plain text |
-| | --report-milestone-label-numbered-md | list of numbered issues grouped by milestone and label as markdown |
+| list of issues | --issues-list-txt | list of issues as plain text |
+| | --issues-list-md | list of issues as markdown |
+| | --issues-list-bulleted-txt | list of bulleted issues as plain text |
+| | --issues-list-bulleted-md | list of bulleted issues as markdown |
+| | --issues-list-numbered-txt | list of numbered issues as plain text |
+| | --issues-list-numbered-md | list of numbered issues as markdown |
+| list of issues grouped by milestone | --issues-milestone-list-txt | list of issues grouped by milestone as plain text |
+| | --issues-milestone-list-md | list of issues grouped by milestone as markdown |
+| | --issues-milestone-bulleted-txt | list of bulleted issues grouped by milestone as plain text |
+| | --issues-milestone-bulleted-md | list of bulleted issues grouped by milestone as markdown |
+| | --issues-milestone-numbered-txt | list of numbered issues grouped by milestone as plain text |
+| | --issues-milestone-numbered-md | list of numbered issues grouped by milestone as markdown |
+| list of issues grouped by milestone and label | --issues-milestone-label-list-txt | list of issues grouped by milestone and label as plain text |
+| | --issues-milestone-label-list-md | list of issues grouped by milestone and label as markdown |
+| | --issues-milestone-label-bulleted-txt | list of bulleted issues grouped by milestone and label as plain text |
+| | --issues-milestone-label-bulleted-md | list of bulleted issues grouped by milestone and label as markdown |
+| | --issues-milestone-label-numbered-txt | list of numbered issues grouped by milestone and label as plain text |
+| | --issues-milestone-label-numbered-md | list of numbered issues grouped by milestone and label as markdown |
 ### Report Options
 | Option| Description |
 | :-- | :-- |
@@ -61,7 +61,7 @@ To install ghif, please run the following command in your terminal:
 ## Usage example
 _Output changelog directly to CHANGELOG.md_
 ```shell
-> ghif --report-milestone-label-list-md --colorized-labels --heading=CHANGELOG --state=closed --repo=fawpawz/fusion.ssg > CHANGELOG.md
+> ghif --issues-milestone-label-list-md --colorized-labels --heading=CHANGELOG --state=closed --repo=fawpawz/fusion.ssg > CHANGELOG.md
 ```
 ⚠️ Create a pacakge.json script for the changelog report you want to generate and run it as part of your project's release process!
 
