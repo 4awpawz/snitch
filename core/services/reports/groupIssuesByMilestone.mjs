@@ -34,7 +34,7 @@ export function groupIssuesByMilestone(config, issues) {
             if (config.showAssignees) output += ` [${issue.assignees.map(assignee => assignee.name).join(", ")}]`
             output += "\n"
             if (config.fileType === "md" && i !== issuesByMilestone.length - 1 && config.report.includes("-list")) output += "\n"
-            if (config.fileType === "txt" && config.blankLine) output += "\n"
+            if (config.fileType === "txt" && config.blankLine && i !== issuesByMilestone.length - 1) output += "\n"
         }
     }
     return output
