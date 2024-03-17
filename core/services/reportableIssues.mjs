@@ -1,5 +1,4 @@
-import { reportAndExit } from "../../lib/reportAndExit.mjs"
-import { showMarks } from "../../lib/showMarks.mjs"
+import { showMarks } from "../lib/showMarks.mjs"
 
 function assignees(assignees) {
     const unassignedAssignees = " No One Assigned"
@@ -42,9 +41,6 @@ function state(config, state) {
     return showMarks(config, state)
 }
 
-/*
- * Compose a reportable issue from issue properties.
- */
 function reportableIssue(config, issue) {
     const is = {}
     if (!config) throw new Error("unable to read config")
@@ -64,32 +60,6 @@ function reportableIssue(config, issue) {
     return is
 }
 
-/*
- * Compose report from reportable issue objects.
- */
-function reportableIssues(config, issues) {
+export function reportableIssues(config, issues) {
     return issues.map((issue) => reportableIssue(config, issue))
-}
-
-/*
- * Generate report from reportable issue objects.
- */
-export function listIssues(config, issues) {
-    if (issues.length === 0) reportAndExit("No issues to report")
-    const reportables = reportableIssues(config, issues)
-    let output = ""
-    output += "\n"
-    for (let i = 0; i < reportables.length; i++) {
-        const reportable = reportables[i]
-        let formattedOutput = ""
-        formattedOutput += reportable.state
-        formattedOutput += reportable.number
-        formattedOutput += reportable.title
-        formattedOutput += reportable.labels
-        formattedOutput += reportable.assignees
-        formattedOutput += reportable.milestone
-        if (i < reportables.length - 1) formattedOutput += "\n\n"
-        output += formattedOutput
-    }
-    return output
 }

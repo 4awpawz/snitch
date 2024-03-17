@@ -23,7 +23,7 @@ export function groupIssuesByMilestone(config, issues) {
                 if (a.name < b.name) return -1
                 return 0
             })
-            labels = config.fileType === "md" && config.showColor ?
+            labels = config.fileType === "md" ?
                 labels.map(label => `<span style="color: #${label.color};">${label.name}</span>`) :
                 labels.map(label => label.name)
             labels = labels.join(", ")
