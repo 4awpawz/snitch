@@ -1,36 +1,28 @@
-import { gh } from "./services/gh.mjs"
-// import { sanitize } from "./services/sanitize.mjs"
+import { ghGetIssueList } from "./services/gh.mjs"
 import { reportAndExit } from "./lib/reportAndExit.mjs"
 import { configure } from "./services/configure.mjs"
-import { listIssues } from "./services/reports/listIssues.mjs"
-import { groupIssuesByMilestoneAndLabel } from "./services/reports/groupIssuesByMilestoneAndLabel.mjs"
-import { groupIssuesByMilestone } from "./services/reports/groupIssuesByMilestone.mjs"
+import { issuesReport } from "./services/reports/issuesReport.mjs"
+import { issuesByMilestoneReport } from "./services/reports/issuesByMilestoneReport.mjs"
+import { issuesByMilestoneAndLabelReport } from "./services/reports/issuesByMilestoneAndLabelReport.mjs"
 
 export async function ghif(args) {
-    const config = configure(args)
+    const config = await configure(args)
     if (config.debug) console.error("debug config: ", config)
-    if (config.maxIssues && !Number.isInteger(parseInt(config.maxIssues))) reportAndExit("maxIssues must be an integer", "error")
-    let issues
-    try {
-        const result = await gh(config)
-        if (args.includes("--debug")) process.exit(0)
-        issues = JSON.parse(result)
-    } catch (error) {
-        console.error(error)
-        reportAndExit("something went wrong", "error")
-    }
+    const result = await ghGetIssueList(config)
+    if (args.includes("--debug")) process.exit(0)
+    const issues = JSON.parse(result)
     let output = ""
-    const heading = config.heading !== "" && config.fileType === "-md" ? `# ${config.heading} ` : config.heading
-    output = config.heading !== "" && heading + "\n" || output
+    if (config.heading.length) output += config.fileType === "md" ?
+        `# ${config.heading}\n\n` : `${config.heading}\n\n`
     switch (config.reportName) {
         case "list":
-            output += listIssues(config, issues)
+            output += issuesReport(config, issues)
             break
         case "milestone":
-            output += groupIssuesByMilestone(config, issues)
+            output += issuesByMilestoneReport(config, issues)
             break
         case "milestone-label":
-            output += groupIssuesByMilestoneAndLabel(config, issues)
+            output += issuesByMilestoneAndLabelReport(config, issues)
             break
         default:
             throw new TypeError(`invalid report type, you entered ${config.reportName}`)

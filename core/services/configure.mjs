@@ -1,17 +1,22 @@
+import url from "node:url"
+import { ghGetRepoInfo } from "./gh.mjs"
 import { reportTypes } from "../lib/reportTypes.mjs"
 import { reportAndExit } from "../lib/reportAndExit.mjs"
 
-export function configure(args) {
+export async function configure(args) {
     let config = {}
     config.debug = args.includes("--debug")
     const repo = args.find(arg => arg.startsWith("--repo="))
-    if (repo) config.repo = repo.split("=")[1]
+    config.repo = repo?.length > 0 && repo.split("=")[1] || JSON.parse(await ghGetRepoInfo()).url
     const state = args.find(arg => arg.startsWith("--state="))
-    config.state = state && state.length && state.split("=")[1] || "closed"
+    config.state = state && state.length && state.split("=")[1] || "all"
+    !["open", "closed", "all"].includes(config.state) &&
+        reportAndExit(`open, closed, all are the only valid states, you entered ${config.state}`, "error")
     const maxIssues = args.find(arg => arg.startsWith("--max-issues="))
-    config.maxIssues = maxIssues && maxIssues.length && maxIssues.split("=")[1] || 300
+    config.maxIssues = maxIssues && parseInt(maxIssues.split("=")[1]) || 1000
+    !Number.isInteger(config.maxIssues) && reportAndExit("max-issues must be an integer", "error")
     config.fileType = args.includes("--txt") && "txt" || "md"
-    const reportName = args.find(arg => arg.startsWith("t--name="))
+    const reportName = args.find(arg => arg.startsWith("--name="))
     config.reportName = reportName && reportName.length && reportName.split("=")[1] || "list"
     if (!config.debug && !reportTypes.includes(config.reportName)) {
         console.error("------------------")
@@ -21,6 +26,14 @@ export function configure(args) {
         reportAndExit("invalid or missing report type, please provide one from the list above", "error")
     }
     const heading = args.find(arg => arg.startsWith("--heading="))
-    config.heading = heading && heading.length && heading.split("=")[1] || ""
+    config.heading = heading && heading.length && heading.split("=")[1] || new url.parse(config.repo).pathname.slice(1)
+    const maxLength = args.find(arg => arg.startsWith("--max-length="))
+    config.maxLength = maxLength && parseInt(maxLength.split("=")[1]) || 100
+    !Number.isInteger(config.maxLength) && reportAndExit("max-length must be an integer", "error")
+    config.wrap = args.includes("--wrap")
+    config.crop = args.includes("--crop")
+    if (config.wrap && config.crop)
+        reportAndExit("--wrap and --crop are mutually excluse, please select only one", "error")
+    if (!config.wrap && !config.crop) config.wrap = true
     return config
 }

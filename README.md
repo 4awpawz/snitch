@@ -66,7 +66,7 @@ _Output changelog directly to CHANGELOG.md_
 ⚠️ Create a pacakge.json script for the changelog report you want to generate and run it as part of your project's release process!
 
 ## Show some love ❤️
-<a href="https://www.buymeacoffee.com/4awpawz"><img src="./readme-assets/buymeacoffee.png" alt="image"></a>
+![image](./readme-assets/buymeacoffee.png)
 
 If using _ghif_ provides you value then please click on the repository's _Star_ button.
 
