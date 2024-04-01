@@ -1,31 +1,40 @@
-import escapeHtml from "escape-html"
+import { escape } from "../../lib/escape.mjs"
 import { reportAndExit } from "../../lib/reportAndExit.mjs"
 import { showMarks } from "../../lib/showMarks.mjs"
 import { wrap } from "../../lib/wrap.mjs"
 import { txtIndent, mdIndent } from "../../lib/indent.mjs"
+import { labelUrl, milestoneUrl, assigneeUrl } from "../../lib/urls.mjs"
+import { noIssuesToReport, noMilestone, noLabels, noAssignees } from "../../lib/constants.mjs"
 
-function assignees(assignees) {
-    const unassignedAssignees = "No One Assigned"
-    let asgns = assignees.length && assignees.map(assignee => assignee.name).join(", ") || `${unassignedAssignees}`
-    return ` [ ${asgns} ]`
+function assignees(config, assignees) {
+    if (assignees.length === 0) return `[ ${noAssignees} ]`
+    let asgns = config.fileType === "md" ?
+        assignees.map(assignee => assigneeUrl(config, assignee)).join(", ") :
+        assignees.map(assignee => assignee.name).join(", ")
+    return `[ ${asgns} ]`
 }
 
 function labels(config, labels) {
-    const unassignedLabels = "No Labels"
-    if (!labels.length) return config.fileType === "md" ? `&nbsp; &nbsp;[ ${unassignedLabels} ] ` : `  [ ${unassignedLabels}] `
-    let lbls = config.fileType === "md" ? labels.map(label => `<span style="color: #${label.color};">${label.name}</span>`) :
+    if (!labels.length) return config.fileType === "md" ?
+        `${mdIndent}[ ${noLabels} ] ` :
+        `${txtIndent}[ ${noLabels} ] `
+    let lbls = config.fileType === "md" ?
+        labels.map(label => `<a href="${labelUrl(config, label)}" target="_blank"><span style="color: #${label.color};">${label.name}</span></a>`) :
         labels.map(label => label.name)
     lbls = `[ ${lbls.join(", ")} ]`
     lbls = config.fileType === "md" ? mdIndent + lbls : txtIndent + lbls
-    return `${lbls}`
+    return `${lbls} `
 }
 
-function milestone(milestone) {
-    const unassignedMilestone = " No Milestone"
-    if (!milestone) return unassignedMilestone
-    let ms = ` ${milestone.title}`
-    if (milestone.dueOn) ms += ` (${milestone.dueOn.substring(0, 10)})`
-    return ms
+function milestone(config, milestone) {
+    if (!milestone) return ` ${noMilestone}`
+    let msName = milestone.title
+    msName += milestone.dueOn ?
+        ` (${milestone.dueOn.substring(0, 10)})` :
+        ""
+    return config.fileType === "md" ?
+        ` <a href="${milestoneUrl(config, milestone)}" target="_blank">${msName}</a>` :
+        ` ${msName}`
 }
 
 function number(number) {
@@ -51,7 +60,7 @@ function title(config, title, url, number) {
     if (config.wrap && remainingLength < title.length) {
         ttl = wrap(config, title, remainingLength)
     }
-    if (remainingLength >= title.length) ttl = title
+    if (remainingLength >= title.length) ttl = escape(title)
     ttl = config.fileType === "md" &&
         `<a href="${url}" target="_blank" title="link to issue ${number}">${ttl}</a>` || ttl
     ttl += config.fileType === "md" ? "<br>" : "\n"
@@ -72,14 +81,13 @@ function mapReportableIssue(config, issue) {
     // issue number
     is.number = number(issue.number)
     // issue title
-    issue.title = config.fileType === "md" ? escapeHtml(issue.title) : issue.title
     is.title = title(config, issue.title, issue.url, issue.number)
     // labels
     is.labels = labels(config, issue.labels)
     // assignees
-    is.assignees = assignees(issue.assignees)
+    is.assignees = assignees(config, issue.assignees)
     // milestone
-    is.milestone = milestone(issue.milestone)
+    is.milestone = milestone(config, issue.milestone)
     return is
 }
 
@@ -94,8 +102,9 @@ function getReportableIssues(config, issues) {
  * Generate report from reportable issue objects.
  */
 export function issuesReport(config, issues, opts = { showState: true, showLabels: true, showAssignees: true, showMilestones: true }) {
-    if (issues.length === 0) reportAndExit("No issues to report")
+    if (issues.length === 0) reportAndExit(noIssuesToReport)
     const reportableIssues = getReportableIssues(config, issues)
+    if (reportableIssues.length === 0) reportAndExit(noIssuesToReport)
     let output = ""
     for (let i = 0; i < reportableIssues.length; i++) {
         const reportableIssue = reportableIssues[i]

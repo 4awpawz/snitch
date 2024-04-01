@@ -1,19 +1,25 @@
-import url from "node:url"
 import { ghGetRepoInfo } from "./gh.mjs"
 import { reportTypes } from "../lib/reportTypes.mjs"
 import { reportAndExit } from "../lib/reportAndExit.mjs"
+
+function repoURL(repo) {
+    const protocolHost = "https://github.com/"
+    if (repo.startsWith(protocolHost)) return repo
+    return protocolHost + repo
+}
 
 export async function configure(args) {
     let config = {}
     config.debug = args.includes("--debug")
     const repo = args.find(arg => arg.startsWith("--repo="))
     config.repo = repo?.length > 0 && repo.split("=")[1] || JSON.parse(await ghGetRepoInfo()).url
+    config.repo = repoURL(config.repo)
     const state = args.find(arg => arg.startsWith("--state="))
     config.state = state && state.length && state.split("=")[1] || "all"
     !["open", "closed", "all"].includes(config.state) &&
         reportAndExit(`open, closed, all are the only valid states, you entered ${config.state}`, "error")
     const maxIssues = args.find(arg => arg.startsWith("--max-issues="))
-    config.maxIssues = maxIssues && parseInt(maxIssues.split("=")[1]) || 1000
+    config.maxIssues = maxIssues && parseInt(maxIssues.split("=")[1]) || 10000
     !Number.isInteger(config.maxIssues) && reportAndExit("max-issues must be an integer", "error")
     config.fileType = args.includes("--txt") && "txt" || "md"
     const reportName = args.find(arg => arg.startsWith("--name="))
@@ -26,9 +32,9 @@ export async function configure(args) {
         reportAndExit("invalid or missing report type, please provide one from the list above", "error")
     }
     const heading = args.find(arg => arg.startsWith("--heading="))
-    config.heading = heading && heading.length && heading.split("=")[1] || new url.parse(config.repo).pathname.slice(1)
+    config.heading = heading && heading.length && heading.split("=")[1] || (new URL(config.repo)).pathname.slice(1)
     const maxLength = args.find(arg => arg.startsWith("--max-length="))
-    config.maxLength = maxLength && parseInt(maxLength.split("=")[1]) || 100
+    config.maxLength = maxLength && parseInt(maxLength.split("=")[1]) || 80
     !Number.isInteger(config.maxLength) && reportAndExit("max-length must be an integer", "error")
     config.wrap = args.includes("--wrap")
     config.crop = args.includes("--crop")

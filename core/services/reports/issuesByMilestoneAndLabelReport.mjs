@@ -1,24 +1,34 @@
 import { issuesReport } from "./issuesReport.mjs"
 import { reportAndExit } from "../../lib/reportAndExit.mjs"
-import { unassignedMilestone } from "../../lib/unassignedMilestone.mjs"
+import { noIssuesToReport, noMilestone } from "../../lib/constants.mjs"
+import { labelUrl } from "../../lib/urls.mjs"
+import { reportUnreportables } from "../../lib/reportUnreportables.mjs"
 
 function milestone(config, _milestone) {
-    let mst = config.fileType === "md" ? `## ${_milestone.title}` : _milestone.title
-    if (_milestone.dueOn !== null) mst += ` (${_milestone.dueOn.substring(0, 10)})`
-    mst += "\n\n"
-    return mst
+    let title = _milestone.title
+    title = _milestone.dueOn ? `${title} (${_milestone.dueOn.substring(0, 10)})` : title
+    if (config.fileType === "md" && _milestone.title !== noMilestone) {
+        return `<h2><a href="${config.repo}/milestone/${_milestone.number}" target="_blank">${title}</a></h2>` + "\n\n"
+    }
+    if (config.fileType === "md") {
+        return `<h2>${title}</h2>` + "\n\n"
+    }
+    return title + "\n\n"
 }
 
-function label(config, _label) {
-    let lbl = config.fileType === "md" ? `### <span style="color: #${_label.color};">${_label.name}</span>` : _label.name
-    return `${lbl}\n\n`
+function label(config, label) {
+    return config.fileType === "md" ?
+        `<h3 style="color: #${label.color};"><a style="color: inherit;" href="${labelUrl(config, label)}" target="_blank">${label.name}</a></h3>` + "\n\n" :
+        label.name + "\n\n"
 }
 
 /*
- * Compose a reportable milestone with issues.
+ * Compose a reportable milestone's labels with issues.
  */
-function getReportableIssues(config, milestoneLabelIssues) {
+function getReportableIssues(config, milestone, label, issues) {
     const selector = { showState: true, showLabels: false, showAssignees: true, showMilestones: false }
+    const milestoneLabelIssues = []
+    issues.forEach(issue => issue.milestone && issue.milestone.number === milestone.number && issue.labels.some(issueLabel => issueLabel.id === label.id && milestoneLabelIssues.push(issue)))
     const lss = issuesReport(config, milestoneLabelIssues, selector)
     return lss
 }
@@ -27,39 +37,19 @@ function getReportableIssues(config, milestoneLabelIssues) {
  * Compose a reportable milestone with labels and their matching issues.
  */
 function getReportableLabels(config, milestone, issues) {
-    const milestoneIssues = issues.filter(issue =>
-        issue.milestone !== null && issue.milestone.number === milestone.number ||
-        issue.milestone === null && milestone.number === 0)
-    let milestoneLabels = new Map()
-    for (const issue of milestoneIssues) {
-        if (issue.labels.lengh !== 0) {
-            for (const label of issue.labels) {
-                if (!milestoneLabels.has(label.id)) milestoneLabels.set(label.id, label)
-            }
-        }
-    }
-    milestoneLabels = [...milestoneLabels.values()].sort((a, b) => {
+    let labels = new Map()
+    issues.forEach(issue => issue.milestone.number === milestone.number &&
+        issue.labels.forEach(label => !labels.get(label.id) && labels.set(label.id, label)))
+    labels = [...labels.values()]
+    labels = labels.sort((a, b) => {
         const nameA = a.name.toUpperCase()
         const nameB = b.name.toUpperCase()
-        // Descending order
         if (nameA > nameB) return 1
         if (nameA < nameB) return -1
         return 0
     })
-    let milestoneLabelIssues
-    for (const milestoneLabel of milestoneLabels) {
-        milestoneLabelIssues = []
-        for (const milestoneIssue of milestoneIssues) {
-            for (const label of milestoneIssue.labels) {
-                if (label.id === milestoneLabel.id) milestoneLabelIssues.push(milestoneIssue)
-            }
-            milestoneLabel.issues = milestoneLabelIssues
-        }
-    }
-    for (const milestoneLabel of milestoneLabels) {
-        milestoneLabel.issues = getReportableIssues(config, milestoneLabel.issues)
-    }
-    return milestoneLabels
+    labels.forEach(label => label.issues = getReportableIssues(config, milestone, label, issues))
+    return labels
 }
 
 /*
@@ -78,15 +68,9 @@ function mapReportableMilestone(config, _milestone, issues) {
  * Compose report from reportable milestone objects.
  */
 function getReportableMilestones(config, issues) {
-    const ms = issues.reduce((accum, current) => {
-        if (!current.milestone && !accum.some(ms => ms.number === 0)) {
-            accum.push({ number: 0, title: unassignedMilestone, description: "no description", dueOn: null }) // <- fake milestone
-        }
-        if (current.milestone && !accum.some(ms => ms.number === current.milestone.number)) {
-            accum.push(current.milestone)
-        }
-        return accum
-    }, [])
+    let ms = new Map()
+    issues.forEach(issue => !ms.has(issue.milestone.number) && ms.set(issue.milestone.number, issue.milestone))
+    ms = [...ms.values()]
     return ms.map(milestone => mapReportableMilestone(config, milestone, issues))
 }
 
@@ -94,8 +78,11 @@ function getReportableMilestones(config, issues) {
  * Generate report from reportable milestone objects.
  */
 export function issuesByMilestoneAndLabelReport(config, issues) {
-    if (issues.length === 0) reportAndExit("No issues to report")
-    const reportableMilestones = getReportableMilestones(config, issues)
+    reportUnreportables(config, issues, issue => issue.milestone === null || issue.labels.length === 0)
+    const reportableIssues = issues.filter(issue => issue.milestone !== null && issue.labels.length > 0)
+    if (reportableIssues.length === 0) reportAndExit(noIssuesToReport)
+    const reportableMilestones = getReportableMilestones(config, reportableIssues)
+    if (reportableMilestones.length === 0) reportAndExit(noIssuesToReport)
     let output = ""
     for (let i = 0; i < reportableMilestones.length; i++) {
         const reportableMilestone = reportableMilestones[i]

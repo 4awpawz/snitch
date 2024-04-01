@@ -1,11 +1,12 @@
 import { ghGetIssueList } from "./services/gh.mjs"
-import { reportAndExit } from "./lib/reportAndExit.mjs"
 import { configure } from "./services/configure.mjs"
 import { issuesReport } from "./services/reports/issuesReport.mjs"
 import { issuesByMilestoneReport } from "./services/reports/issuesByMilestoneReport.mjs"
 import { issuesByMilestoneAndLabelReport } from "./services/reports/issuesByMilestoneAndLabelReport.mjs"
+import { issuesByLabelReport } from "./services/reports/issuesByLabelReport.mjs"
+import { issuesByAssigneeReport } from "./services/reports/issuesByAssigneeReport.mjs"
 
-export async function ghif(args) {
+export async function snitch(args) {
     const config = await configure(args)
     if (config.debug) console.error("debug config: ", config)
     const result = await ghGetIssueList(config)
@@ -13,7 +14,7 @@ export async function ghif(args) {
     const issues = JSON.parse(result)
     let output = ""
     if (config.heading.length) output += config.fileType === "md" ?
-        `# ${config.heading}\n\n` : `${config.heading}\n\n`
+        `<h1><a href="${config.repo}" target="_blank">${config.heading}</a></h1>\n\n` : `${config.heading}\n\n`
     switch (config.reportName) {
         case "list":
             output += issuesReport(config, issues)
@@ -23,6 +24,12 @@ export async function ghif(args) {
             break
         case "milestone-label":
             output += issuesByMilestoneAndLabelReport(config, issues)
+            break
+        case "label":
+            output += issuesByLabelReport(config, issues)
+            break
+        case "assignee":
+            output += issuesByAssigneeReport(config, issues)
             break
         default:
             throw new TypeError(`invalid report type, you entered ${config.reportName}`)

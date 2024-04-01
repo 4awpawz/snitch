@@ -1,4 +1,5 @@
 import { mdIndent, txtIndent } from "../lib/indent.mjs"
+import { escape } from "./../lib/escape.mjs"
 
 /*
  * Only break on a word boundary.
@@ -22,17 +23,17 @@ export function wrap(config, text, start) {
     while (ok) {
         let index = sliceText(text, start)
         if (index !== 0) {
-            slices.push(text.slice(0, index))
+            slices.push(escape(text.slice(0, index)))
             text = text.slice(index)
             start = config.maxLength - 2
         }
         if (index === 0) {
             ok = false
-            slices.push(text.trim())
+            slices.push(escape(text.trim()))
             slices = slices.map((slc, indx) => {
                 if (indx === 0) return slc.trim()
-                // if (indx !== 0) return config.fileType === "md" ? "<br>" + "&nbsp; &nbsp;" + slc.trim() : "\n  " + slc.trim()
-                if (indx !== 0) return config.fileType === "md" ? "<br>" + mdIndent + slc.trim() : "\n" + txtIndent + slc.trim()
+                if (indx !== 0) return config.fileType === "md" ? "<br>" + mdIndent + slc.trim() :
+                    "\n" + txtIndent + escape(slc.trim())
             })
             return slices.join("")
         }

@@ -1,14 +1,15 @@
 {
-  "name": "@4awpawz/ghif",
-  "version": "1.1.0",
-  "description": "An issues formatter for Github's gh CLI issues",
+  "name": "@4awpawz/snitch",
+  "version": "1.0.0",
+  "description": "A terminal-based utility for generating attractive, formatted, and interactive status reports from your GitHub project's issues.",
   "main": "core/index.mjs",
   "bin": {
-    "ghif": "core/bin/cli.mjs"
+    "snitch": "core/bin/cli.mjs"
   },
   "type": "module",
   "scripts": {},
   "keywords": [
+    "reports",
     "github",
     "cli",
     "gh",
@@ -17,16 +18,14 @@
     "format",
     "markdown"
   ],
-  "author": "Jeffrey Schwartz, aka 4awpawz",
+  "author": "4awpawz, aka Jeff Schwartz",
   "repository": {
     "type": "git",
-    "url": "https://github.com/4awpawz/ghif"
+    "url": "https://github.com/4awpawz/snitch"
   },
   "license": "MIT",
   "dependencies": {
-    "chalk": "^5.3.0",
-    "escape-html": "^1.0.3",
-    "fs-extra": "^11.2.0"
+    "chalk": "^5.3.0"
   },
   "devDependencies": {
     "eslint": "^8.57.0"
