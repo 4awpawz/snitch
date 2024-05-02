@@ -1,4 +1,4 @@
-import { ghGetIssueList } from "./services/gh.mjs"
+import { ghGetIssues } from "./services/gh.mjs"
 import { configure } from "./services/configure.mjs"
 import { issuesReport } from "./services/reports/issuesReport.mjs"
 import { issuesByMilestoneReport } from "./services/reports/issuesByMilestoneReport.mjs"
@@ -9,7 +9,7 @@ import { issuesByAssigneeReport } from "./services/reports/issuesByAssigneeRepor
 export async function snitch(args) {
     const config = await configure(args)
     if (config.debug) console.error("debug config: ", config)
-    const result = await ghGetIssueList(config)
+    const result = ghGetIssues(config)
     if (args.includes("--debug")) process.exit(0)
     const issues = JSON.parse(result)
     let output = ""

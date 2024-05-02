@@ -1,25 +1,26 @@
-import util from "node:util"
-import child_process from "node:child_process"
+import cp from "node:child_process"
 
-const exec = util.promisify(child_process.exec);
+const execSync = cp.execSync;
 
 /*
  * Get repo info for current project.
  * Only called when repo url isn't supplied by user.
  */
-export async function ghGetRepoInfo() {
+export function ghGetRepoInfo() {
     const command = "gh repo view --json 'url,name'"
-    const { stdout } = await exec(command)
+    const stdout = execSync(command)
+    console.error("stdout", stdout)
     return stdout
 }
 
-export async function ghGetIssueList(config) {
-    let command = `gh issue list -L ${config.maxIssues} --state ${config.state} --json 'number,title,labels,milestone,state,assignees,url'`
-    command = config.repo ? command + ` -R ${config.repo}` : command
+export function ghGetIssues(config) {
+    let command = "gh"
+    let args = `issue list -L ${config.maxIssues} --state ${config.state} --json 'number,title,labels,milestone,state,assignees,url'`
+    args = config.repo ? args + ` -R ${config.repo}` : args
     if (config.debug) {
-        console.log("debug gh command: ", command)
+        console.log("debug gh command: ", `${command} ${args}`)
         return
     }
-    const { stdout } = await exec(command)
-    return stdout
+    const gh = cp.spawnSync(command, [args], { shell: true })
+    return gh.stdout.toString()
 }

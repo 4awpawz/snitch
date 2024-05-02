@@ -12,7 +12,7 @@ export async function configure(args) {
     let config = {}
     config.debug = args.includes("--debug")
     const repo = args.find(arg => arg.startsWith("--repo="))
-    config.repo = repo?.length > 0 && repo.split("=")[1] || JSON.parse(await ghGetRepoInfo()).url
+    config.repo = repo?.length > 0 && repo.split("=")[1] || JSON.parse(ghGetRepoInfo()).url
     config.repo = repoURL(config.repo)
     const state = args.find(arg => arg.startsWith("--state="))
     config.state = state && state.length && state.split("=")[1] || "all"
