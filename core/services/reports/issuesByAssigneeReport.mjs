@@ -36,8 +36,12 @@ function mapReportableAssignee(config, assignee, issues) {
  */
 function getReportableAssignees(config, issues) {
     let assignees = new Map()
-    issues.forEach(issue => issue.assignees.forEach(assignee => !assignees.get(assignee.id) && assignees.set(assignee.id, assignee)))
-    assignees = [...assignees.values()]
+    issues.forEach(issue => issue.assignees.forEach(assignee => assignee.name !== "" && !assignees.get(assignee.id) && assignees.set(assignee.id, assignee)))
+    assignees = [...assignees.values()].sort((a, b) => {
+        if (a.name.toUpperCase() > b.name.toUpperCase()) return 1
+        if (a.name.toUpperCase() < b.name.toUpperCase()) return -1
+        return 0
+    })
     return assignees.map(assignee => mapReportableAssignee(config, assignee, issues))
 }
 
@@ -45,8 +49,11 @@ function getReportableAssignees(config, issues) {
  * Generate report from reportable label objects.
  */
 export function issuesByAssigneeReport(config, issues) {
-    reportUnreportables(config, issues, issue => issue.assignees.length === 0)
-    const reportableIssues = issues.filter(issue => issue.assignees.length !== 0)
+    // Ignore those issues which have no assignees or those issues whose assignees are all unnamed.
+    reportUnreportables(config, issues, issue => issue.assignees.length === 0 ||
+        issue.assignees.length === issue.assignees.filter(assignee => assignee.name === "").length)
+    // Report only issues that have at least one named assignee.
+    const reportableIssues = issues.filter(issue => issue.assignees.length !== 0 && issue.assignees.some(assignee => assignee.name !== ""))
     if (reportableIssues.length === 0) reportAndExit(noIssuesToReport)
     const reportableAssignees = getReportableAssignees(config, reportableIssues)
     if (reportableAssignees.length === 0) reportAndExit(noIssuesToReport)

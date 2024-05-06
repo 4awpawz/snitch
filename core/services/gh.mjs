@@ -9,7 +9,6 @@ const execSync = cp.execSync;
 export function ghGetRepoInfo() {
     const command = "gh repo view --json 'url,name'"
     const stdout = execSync(command)
-    console.error("stdout", stdout)
     return stdout
 }
 
