@@ -2,7 +2,7 @@
 
 ⚠️ this project was formerly named _ghif_ but beginning with v2 has diverged significantly enough from that codebase to warrant a new name and rebranding while maintaining all its previous git history.
 
-A terminal utility for generating attractive, formatted, and interactive status reports from your GitHub project's issues.
+A terminal utility for generating attractive, formatted, and interactive reports from your GitHub project's issues in markdown and html compatible.
 
 <img style="border-radius: 3px; border: 2px solid #ffffff; margin: 24px 0; box-shadow: 4px 4px 1px 1px #888" src="./readme-assets/demo.gif" alt="changelog image">
 <br>

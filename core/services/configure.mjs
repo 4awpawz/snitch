@@ -35,10 +35,5 @@ export async function configure(args) {
     const maxLength = args.find(arg => arg.startsWith("--max-length="))
     config.maxLength = maxLength && parseInt(maxLength.split("=")[1]) || 80
     !Number.isInteger(config.maxLength) && reportAndExit("max-length must be an integer", "error")
-    config.wrap = args.includes("--wrap")
-    config.crop = args.includes("--crop")
-    if (config.wrap && config.crop)
-        reportAndExit("--wrap and --crop are mutually excluse, please select only one", "error")
-    if (!config.wrap && !config.crop) config.wrap = true
     return config
 }

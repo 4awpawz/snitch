@@ -1,10 +1,10 @@
-import { escape } from "../../lib/escape.mjs"
 import { reportAndExit } from "../../lib/reportAndExit.mjs"
-import { showMarks } from "../../lib/showMarks.mjs"
-import { wrap } from "../../lib/wrap.mjs"
-import { txtIndent, mdIndent } from "../../lib/indent.mjs"
+import { showState } from "../../lib/showState.mjs"
 import { labelUrl, milestoneUrl, assigneeUrl } from "../../lib/urls.mjs"
 import { noIssuesToReport, noMilestone, noLabels, noAssignees } from "../../lib/constants.mjs"
+import { formatIssue } from "../../lib/formatIssue.mjs"
+import { marked } from "marked"
+import { escape } from "../../lib/escape.mjs"
 
 function assignees(config, assignees) {
     if (assignees.length === 0) return `[ ${noAssignees} ]`
@@ -13,51 +13,31 @@ function assignees(config, assignees) {
 }
 
 function labels(config, labels) {
-    if (!labels.length) return `${mdIndent}[ ${noLabels} ] `
+    if (!labels.length) return `[ ${noLabels} ]`
     let lbls = labels.map(label => `<a href="${labelUrl(config, label)}" target="_blank"><span style="color: #${label.color};">${label.name}</span></a>`)
-    lbls = `[ ${lbls.join(", ")} ]`
-    lbls = mdIndent + lbls
-    return `${lbls} `
+    return `[ ${lbls.join(", ")} ]`
 }
 
 function milestone(config, milestone) {
-    if (!milestone) return ` ${noMilestone}`
+    if (!milestone) return `${noMilestone}`
     let msName = milestone.title
     msName += milestone.dueOn ?
         ` (${milestone.dueOn.substring(0, 10)})` :
         ""
-    return ` <a href="${milestoneUrl(config, milestone)}" target="_blank">${msName}</a>`
+    return `<a href="${milestoneUrl(config, milestone)}" target="_blank">${msName}</a>`
 }
 
 function number(number) {
-    return `#${number.toString()}: `
+    return `#${number.toString()}:`
 }
 
 function title(config, title, url, number) {
-    let ttl = ""
-    const offset = 5 // includes check or x + space + #: + space
-    const numberLength = Math.abs(number).toString(10).length
-    const totalLength = numberLength + offset
-    const remainingLength = config.maxLength - totalLength
-    if (config.crop && remainingLength < title.length) {
-        // NOTE: that some markdown engines replace 3 dot characters (i.e., ...) with a single character,
-        // an ellipsis, which is why for markdown we reduce the length only by 1 and not by 3. If this
-        // becomes an issue for some users due to their rendering engines response to 3 dots then this
-        // should be backed by a configuration option.
-        const croppingLength = remainingLength - title.length - 1
-        ttl = title.slice(0, croppingLength)
-        ttl += "&hellip;"
-    }
-    if (config.wrap && remainingLength < title.length) {
-        ttl = wrap(config, title, remainingLength)
-    }
-    if (remainingLength >= title.length) ttl = escape(title)
-    ttl = `<a href="${url}" target="_blank" title="link to issue ${number}">${ttl}</a><br>`
-    return ttl
+    const ttl = marked.parseInline(escape(title))
+    return `<a href="${url}" target="_blank" title="link to issue ${number}">${ttl}</a>`
 }
 
 function state(config, state) {
-    return showMarks(config, state)
+    return showState(state)
 }
 
 /*
@@ -97,16 +77,15 @@ export function issuesReport(config, issues, opts = { showState: true, showLabel
     let output = ""
     for (let i = 0; i < reportableIssues.length; i++) {
         const reportableIssue = reportableIssues[i]
-        let formattedOutput = ""
-        formattedOutput += opts.showState ? reportableIssue.state : ""
-        formattedOutput += reportableIssue.number
-        formattedOutput += reportableIssue.title
-        formattedOutput += opts.showLabels ? reportableIssue.labels : mdIndent
-        reportableIssue.assignees = opts.showLabels ? reportableIssue.assignees : reportableIssue.assignees.trim()
-        formattedOutput += opts.showAssignees ? reportableIssue.assignees : ""
-        formattedOutput += opts.showMilestones ? reportableIssue.milestone : ""
-        if (i < reportableIssues.length - 1) formattedOutput += "\n\n"
-        output += formattedOutput
+        output += formatIssue({
+            state: opts.showState ? reportableIssue.state : "",
+            number: reportableIssue.number,
+            title: reportableIssue.title,
+            labels: opts.showLabels ? reportableIssue.labels : "",
+            assignees: opts.showAssignees ? reportableIssue.assignees : "",
+            milestone: opts.showMilestones ? reportableIssue.milestone : ""
+        })
+        if (i < reportableIssues.length - 1) output += "\n\n"
     }
     return output
 }
