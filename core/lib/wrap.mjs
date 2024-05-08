@@ -32,8 +32,7 @@ export function wrap(config, text, start) {
             slices.push(escape(text.trim()))
             slices = slices.map((slc, indx) => {
                 if (indx === 0) return slc.trim()
-                if (indx !== 0) return config.fileType === "md" ? "<br>" + mdIndent + slc.trim() :
-                    "\n" + txtIndent + escape(slc.trim())
+                if (indx !== 0) return "<br>" + mdIndent + slc.trim()
             })
             return slices.join("")
         }

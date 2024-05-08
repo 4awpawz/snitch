@@ -4,7 +4,7 @@ import { labelUrl } from "../../lib/urls.mjs"
 import { noIssuesToReport } from "../../lib/constants.mjs"
 
 function label(config, label) {
-    return config.fileType === "md" ? `<h2 style="color: #${label.color};"><a style="color: inherit;" href="${labelUrl(config, label)}" target="_blank">${label.name}</a></h2>` : label.name
+    return `<h2 style="color: #${label.color};"><a style="color: inherit;" href="${labelUrl(config, label)}" target="_blank">${label.name}</a></h2>`
 }
 
 /*

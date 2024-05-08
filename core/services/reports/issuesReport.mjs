@@ -8,21 +8,15 @@ import { noIssuesToReport, noMilestone, noLabels, noAssignees } from "../../lib/
 
 function assignees(config, assignees) {
     if (assignees.length === 0) return `[ ${noAssignees} ]`
-    let asgns = config.fileType === "md" ?
-        assignees.map(assignee => assigneeUrl(config, assignee)).join(", ") :
-        assignees.map(assignee => assignee.name).join(", ")
+    let asgns = assignees.map(assignee => assigneeUrl(config, assignee)).join(", ")
     return `[ ${asgns} ]`
 }
 
 function labels(config, labels) {
-    if (!labels.length) return config.fileType === "md" ?
-        `${mdIndent}[ ${noLabels} ] ` :
-        `${txtIndent}[ ${noLabels} ] `
-    let lbls = config.fileType === "md" ?
-        labels.map(label => `<a href="${labelUrl(config, label)}" target="_blank"><span style="color: #${label.color};">${label.name}</span></a>`) :
-        labels.map(label => label.name)
+    if (!labels.length) return `${mdIndent}[ ${noLabels} ] `
+    let lbls = labels.map(label => `<a href="${labelUrl(config, label)}" target="_blank"><span style="color: #${label.color};">${label.name}</span></a>`)
     lbls = `[ ${lbls.join(", ")} ]`
-    lbls = config.fileType === "md" ? mdIndent + lbls : txtIndent + lbls
+    lbls = mdIndent + lbls
     return `${lbls} `
 }
 
@@ -32,9 +26,7 @@ function milestone(config, milestone) {
     msName += milestone.dueOn ?
         ` (${milestone.dueOn.substring(0, 10)})` :
         ""
-    return config.fileType === "md" ?
-        ` <a href="${milestoneUrl(config, milestone)}" target="_blank">${msName}</a>` :
-        ` ${msName}`
+    return ` <a href="${milestoneUrl(config, milestone)}" target="_blank">${msName}</a>`
 }
 
 function number(number) {
@@ -48,22 +40,19 @@ function title(config, title, url, number) {
     const totalLength = numberLength + offset
     const remainingLength = config.maxLength - totalLength
     if (config.crop && remainingLength < title.length) {
-        const croppingLength = config.fileType === "md" ?
-            // NOTE: that some markdown engines replace 3 dot characters (i.e., ...) with a single character,
-            // an ellipsis, which is why for markdown we reduce the length only by 1 and not by 3. If this
-            // becomes an issue for some users due to their rendering engines response to 3 dots then this
-            // should be backed by a configuration option.
-            remainingLength - title.length - 1 : remainingLength - 3 - title.length
+        // NOTE: that some markdown engines replace 3 dot characters (i.e., ...) with a single character,
+        // an ellipsis, which is why for markdown we reduce the length only by 1 and not by 3. If this
+        // becomes an issue for some users due to their rendering engines response to 3 dots then this
+        // should be backed by a configuration option.
+        const croppingLength = remainingLength - title.length - 1
         ttl = title.slice(0, croppingLength)
-        ttl += config.fileType === "md" ? "&hellip;" : "..."
+        ttl += "&hellip;"
     }
     if (config.wrap && remainingLength < title.length) {
         ttl = wrap(config, title, remainingLength)
     }
     if (remainingLength >= title.length) ttl = escape(title)
-    ttl = config.fileType === "md" &&
-        `<a href="${url}" target="_blank" title="link to issue ${number}">${ttl}</a>` || ttl
-    ttl += config.fileType === "md" ? "<br>" : "\n"
+    ttl = `<a href="${url}" target="_blank" title="link to issue ${number}">${ttl}</a><br>`
     return ttl
 }
 
@@ -112,7 +101,7 @@ export function issuesReport(config, issues, opts = { showState: true, showLabel
         formattedOutput += opts.showState ? reportableIssue.state : ""
         formattedOutput += reportableIssue.number
         formattedOutput += reportableIssue.title
-        formattedOutput += opts.showLabels ? reportableIssue.labels : config.fileType === "md" ? mdIndent : txtIndent
+        formattedOutput += opts.showLabels ? reportableIssue.labels : mdIndent
         reportableIssue.assignees = opts.showLabels ? reportableIssue.assignees : reportableIssue.assignees.trim()
         formattedOutput += opts.showAssignees ? reportableIssue.assignees : ""
         formattedOutput += opts.showMilestones ? reportableIssue.milestone : ""

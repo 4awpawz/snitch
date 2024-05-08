@@ -6,13 +6,8 @@ import { reportUnreportables } from "../../lib/reportUnreportables.mjs"
 function milestone(config, _milestone) {
     let title = _milestone.title
     title = _milestone.dueOn ? `${title} (${_milestone.dueOn.substring(0, 10)})` : title
-    if (config.fileType === "md" && _milestone.title !== noMilestone) {
-        return `<h2><a href="${config.repo}/milestone/${_milestone.number}" target="_blank">${title}</a></h2>` + "\n\n"
-    }
-    if (config.fileType === "md") {
-        return `<h2>${title}</h2>` + "\n\n"
-    }
-    return title + "\n\n"
+    if (_milestone.title !== noMilestone) return `<h2><a href="${config.repo}/milestone/${_milestone.number}" target="_blank">${title}</a></h2>\n\n`
+    return `<h2>${title}</h2>\n\n`
 }
 
 /*

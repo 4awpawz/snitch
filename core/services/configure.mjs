@@ -21,7 +21,6 @@ export async function configure(args) {
     const maxIssues = args.find(arg => arg.startsWith("--max-issues="))
     config.maxIssues = maxIssues && parseInt(maxIssues.split("=")[1]) || 10000
     !Number.isInteger(config.maxIssues) && reportAndExit("max-issues must be an integer", "error")
-    config.fileType = args.includes("--txt") && "txt" || "md"
     const reportName = args.find(arg => arg.startsWith("--name="))
     config.reportName = reportName && reportName.length && reportName.split("=")[1] || "list"
     if (!config.debug && !reportTypes.includes(config.reportName)) {

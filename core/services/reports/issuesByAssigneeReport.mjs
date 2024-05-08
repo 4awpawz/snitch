@@ -4,9 +4,7 @@ import { noIssuesToReport } from "../../lib/constants.mjs"
 import { reportUnreportables } from "../../lib/reportUnreportables.mjs"
 
 function assignee(config, _assignee) {
-    return config.fileType === "md" ?
-        `<h2><a href="${config.repo}/issues/assigned/${_assignee.login}" target="_blank">${_assignee.name}</a></h2>` :
-        _assignee.name
+    return `<h2><a href="${config.repo}/issues/assigned/${_assignee.login}" target="_blank">${_assignee.name}</a></h2>`
 }
 
 /*
