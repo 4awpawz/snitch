@@ -30,6 +30,7 @@ export async function configure(args) {
         console.error(reportTypes.join("\n"))
         reportAndExit("invalid or missing report type, please provide one from the list above", "error")
     }
+    config.noHeading = args.includes("--no-heading")
     const heading = args.find(arg => arg.startsWith("--heading="))
     config.heading = heading && heading.length && heading.split("=")[1] || (new URL(config.repo)).pathname.slice(1)
     const maxLength = args.find(arg => arg.startsWith("--max-length="))

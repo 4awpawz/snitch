@@ -13,7 +13,7 @@ export async function snitch(args) {
     if (args.includes("--debug")) process.exit(0)
     const issues = JSON.parse(result)
     let output = ""
-    if (config.heading.length) output += `<h1><a href="${config.repo}" target="_blank">${config.heading}</a></h1>\n\n`
+    if (!config.noHeading && config.heading.length) output += `<h1><a href="${config.repo}" target="_blank">${config.heading}</a></h1>\n\n`
     switch (config.reportName) {
         case "list":
             output += issuesReport(config, issues)
