@@ -5,16 +5,23 @@ import { noIssuesToReport, noMilestone, noLabels, noAssignees } from "../../lib/
 import { formatIssue } from "../../lib/formatIssue.mjs"
 import { marked } from "marked"
 import { escape } from "../../lib/escape.mjs"
+import { renderInteractive } from "../../lib/renderInteractive.mjs"
 
 function assignees(config, assignees) {
     if (assignees.length === 0) return `[ ${noAssignees} ]`
-    let asgns = assignees.map(assignee => assigneeUrl(config, assignee)).join(", ")
+    let asgns = assignees.map(assignee =>
+        renderInteractive(config,
+            assigneeUrl(config, assignee),
+            assignee.name)).join(", ")
     return `[ ${asgns} ]`
 }
 
 function labels(config, labels) {
     if (!labels.length) return `[ ${noLabels} ]`
-    let lbls = labels.map(label => `<a href="${labelUrl(config, label)}" target="_blank"><span style="color: #${label.color};">${label.name}</span></a>`)
+    let lbls = labels.map(label =>
+        renderInteractive(config,
+            `<a href="${labelUrl(config, label)}" target="_blank"><span style="color: #${label.color};">${label.name}</span></a>`,
+            `<span style="color: #${label.color};">${label.name}</span>`))
     return `[ ${lbls.join(", ")} ]`
 }
 
@@ -24,7 +31,7 @@ function milestone(config, milestone) {
     msName += milestone.dueOn ?
         ` (${milestone.dueOn.substring(0, 10)})` :
         ""
-    return `<a href="${milestoneUrl(config, milestone)}" target="_blank">${msName}</a>`
+    return renderInteractive(config, `<a href="${milestoneUrl(config, milestone)}" target="_blank">${msName}</a>`, msName)
 }
 
 function number(number) {
@@ -33,10 +40,10 @@ function number(number) {
 
 function title(config, title, url, number) {
     const ttl = marked.parseInline(escape(title))
-    return `<a href="${url}" target="_blank" title="link to issue ${number}">${ttl}</a>`
+    return renderInteractive(config, `<a href="${url}" target="_blank" title="link to issue ${number}">${ttl}</a>`, title)
 }
 
-function state(config, state) {
+function state(state) {
     return showState(state)
 }
 
@@ -46,7 +53,7 @@ function state(config, state) {
 function mapReportableIssue(config, issue) {
     const is = {}
     // issue state
-    is.state = state(config, issue.state)
+    is.state = state(issue.state)
     // issue number
     is.number = number(issue.number)
     // issue title
@@ -85,7 +92,7 @@ export function issuesReport(config, issues, opts = { showState: true, showLabel
             assignees: opts.showAssignees ? reportableIssue.assignees : "",
             milestone: opts.showMilestones ? reportableIssue.milestone : ""
         })
-        if (i < reportableIssues.length - 1) output += "\n\n"
+        if (i < reportableIssues.length - 1) output += "\n"
     }
     return output
 }

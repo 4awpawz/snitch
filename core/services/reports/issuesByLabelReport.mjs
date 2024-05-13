@@ -2,9 +2,13 @@ import { issuesReport } from "./issuesReport.mjs"
 import { reportAndExit } from "../../lib/reportAndExit.mjs"
 import { labelUrl } from "../../lib/urls.mjs"
 import { noIssuesToReport } from "../../lib/constants.mjs"
+import { renderInteractive } from "../../lib/renderInteractive.mjs"
 
 function label(config, label) {
-    return `<h2 style="color: #${label.color};"><a style="color: inherit;" href="${labelUrl(config, label)}" target="_blank">${label.name}</a></h2>`
+    return renderInteractive(config,
+        `<h2 style="color: #${label.color};"><a style="color: inherit;" href="${labelUrl(config, label)}" target="_blank">${label.name}</a></h2>`,
+        `<h2 style="color: #${label.color};">${label.name}</h2>`
+    )
 }
 
 /*
@@ -24,7 +28,7 @@ function mapReportableLabel(config, label, issues) {
     const lbl = {}
     lbl.name = label.name
     lbl.color = label.color
-    lbl.issues = getReportableIssues(config, label, issues) + "\n"
+    lbl.issues = getReportableIssues(config, label, issues)
     return lbl
 }
 

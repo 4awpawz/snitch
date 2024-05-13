@@ -5,6 +5,7 @@ import { issuesByMilestoneReport } from "./services/reports/issuesByMilestoneRep
 import { issuesByMilestoneAndLabelReport } from "./services/reports/issuesByMilestoneAndLabelReport.mjs"
 import { issuesByLabelReport } from "./services/reports/issuesByLabelReport.mjs"
 import { issuesByAssigneeReport } from "./services/reports/issuesByAssigneeReport.mjs"
+import { renderInteractive } from "./lib/renderInteractive.mjs"
 
 export async function snitch(args) {
     const config = await configure(args)
@@ -13,7 +14,8 @@ export async function snitch(args) {
     if (args.includes("--debug")) process.exit(0)
     const issues = JSON.parse(result)
     let output = ""
-    if (!config.noHeading && config.heading.length) output += `<h1><a href="${config.repo}" target="_blank">${config.heading}</a></h1>\n\n`
+    if (!config.noHeading && config.heading.length) output +=
+        renderInteractive(config, `<h1><a href="${config.repo}" target="_blank">${config.heading}</a></h1>\n\n`, `<h1>${config.heading}</h1>\n\n`)
     switch (config.reportName) {
         case "list":
             output += issuesReport(config, issues)

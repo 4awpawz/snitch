@@ -1,11 +1,16 @@
 <h1><span style="vertical-align: text-top;">👉&nbsp;</span>snitch</h1>
 
-⚠️ this project was formerly named _ghif_ but beginning with v2 has diverged significantly enough from that codebase to warrant a new name and rebranding while maintaining all its previous git history.
+## A terminal utility for generating attractive interactive GitHub repository issue reports.
 
-A terminal utility for generating attractive, formatted, and interactive reports from your GitHub project's issues in markdown and html compatible.
+⚠️ This project was formerly named _ghif_ but as of v2 has diverged significantly enough from that codebase to warrant a new name and rebranding while maintaining all its previous git history.
 
-<img style="border-radius: 3px; border: 2px solid #ffffff; margin: 24px 0; box-shadow: 4px 4px 1px 1px #888" src="./readme-assets/demo.gif" alt="changelog image">
-<br>
+<!-- <img style="border-radius: 3px; border: 2px solid #ffffff; margin: 24px 0; box-shadow: 4px 4px 1px 1px #888" src="./readme-assets/demo.gif" alt="changelog image"> -->
+<!-- <br> -->
+
+<img src="./readme-assets/report-img-1.png" alt="image #1" width="39%" style="max-width: 100%;">
+<img src="./readme-assets/report-img-1.png" alt="image #1" width="39%" style="max-width: 100%;">
+<img src="./readme-assets/report-img-1.png" alt="image #1" width="39%" style="max-width: 100%;">
+<img src="./readme-assets/report-img-1.png" alt="image #1" width="39%" style="max-width: 100%;">
 
 ### 5 Report Types To Chose From
 
@@ -17,7 +22,7 @@ A terminal utility for generating attractive, formatted, and interactive reports
 | label | a list of issues by label | `snitch --name=label > snitch-report.md` | 
 | assignee | a list of issues by assignee | `snitch --name=assignee > snitch-report.md` | 
 
-⚠️ Reports in both _markdown_ and _text_ are supported. However, please note that interactive reports (reports whose elements provide links back to their respective GitHub repositories) are only supported in markdown.
+<!-- ⚠️ Reports in both _markdown_ and _text_ are supported. However, please note that interactive reports (reports whose elements provide links back to their respective GitHub repositories) are only supported in markdown. -->
 
 ### Options
 
@@ -26,17 +31,14 @@ A terminal utility for generating attractive, formatted, and interactive reports
 | --repo=[path to repository] | path to Github repository | the GitHub repository associated with the current project determined by git remote origin | `--repo=4awpawz/snitch` |
 | --state=[all \| open \| closed] | limit reporting to issues with this state | all | `--state=closed` |
 | --max-issues=integer | maximum number of issues to report on | 10000 | `--max-issues=100000` |
-| --md | generate the report in markdown | --md if neither --md nor --txt are provided | md | `--txt` |
-| --txt | generate the report in plain text | --md if neither --md nor --txt are provided | md | `--txt` |
 | --name=[list \| milestone \| milestone-label \| label \| assignee] | type of report to generate | list | `--name=milestone-label` |
 | --heading=[report heading] | the heading for the report | repository name | `--heading=CHANGELOG` |
-| --max-length=integer | the max length in characters of the report line | 80 | `--max-length=100` |
-| --wrap | report lines should wrap when their length exceeds --maxLength | --wrap if neither --wrap nor --crop are provided | `--wrap` |
-| --crop | report lines should be cropped when their length exceeds --maxLength and appended with an elipsis | --wrap if neither --wrap nor --crop are provided | `--crop` |
+| --non-interactive | generate non interactive issues | generate interactive issues | `--non-interactive` |
+| --debug | run in debug mode, see below for details| run in normal mode | `--debug` |
 
 #### Debug mode
 
-If something goes wrong, you can run snitch in _debug mode_ to expose the dynamically generated configuration data that would be used during the processing of the payload returned from GitHub's _gh_ utility as well as the command line that would be used to invoke _gh_ itself. This information could be extremely useful when submitting an issue to us or for your own problem resolution.
+You can run snitch in _debug mode_ to expose the dynamically generated configuration data that would be used during the processing of the payload returned from GitHub's _gh_ utility as well as the command line that would be used to invoke _gh_ itself. This information could be extremely useful when submitting an issue to us or for your own problem resolution.
 
 To invoke debug mode, append `--debug` to the command line that you would use to generate your desired report, such as the list report in the command below:
 
@@ -49,17 +51,15 @@ The output from running snitch in debug mode would look similar to the following
 ```shell
 debug config:  {
   debug: true,
-  repo: 'https://github.com/4awpawz/snitch',
-  state: 'open',
+  repo: 'https://github.com/4awpawz/fusion.ssg',
+  state: 'all',
   maxIssues: 10000,
-  fileType: 'md',
-  reportName: 'list',
-  heading: '4awpawz/snitch',
-  maxLength: 80,
-  wrap: true,
-  crop: false
+  nonInteractive: false,
+  noHeading: false,
+  heading: '4awpawz/fusion.ssg',
+  reportName: 'list'
 }
-debug gh command:  gh issue list -L 10000 --state open --json 'number,title,labels,milestone,state,assignees,url' -R https://github.com/4awpawz/snitch
+debug gh command:  gh issue list -L 10000 --state all --json 'number,title,labels,milestone,state,assignees,url' -R https://github.com/4awpawz/fusion.ssg
 ```
 
 You can also run the _debug gh command_ to examine the JSON payload returned by GitHub's _gh_ utility:
@@ -70,7 +70,7 @@ You can also run the _debug gh command_ to examine the JSON payload returned by 
 
 ### Installation
 
-⚠️ snitch requires both [Node.js](https://nodejs.org/en) and Github's [gh](https://cli.github.com) utility
+⚠️ snitch requires both Github's [gh](https://cli.github.com) utility and [Node.js](https://nodejs.org/en).
 
 To install snitch with NPM, please run the following command in your terminal:
 
@@ -80,15 +80,15 @@ To install snitch with NPM, please run the following command in your terminal:
 
 ### Examples
 
-#### A changelog
+#### Generate a changelog for your project
 
 ```shell
 > snitch --name=list --state=closed > CHANGELOG.md
 ```
-#### A status report by assignee
+#### Generate a status report by assignee
 
 ```shell
-> snitch --txt --name=assignee > status.md
+> snitch --name=assignee > status.md
 ```
 
 ### Request a new report format

@@ -1,13 +1,15 @@
 import { issuesReport } from "./issuesReport.mjs"
 import { reportAndExit } from "../../lib/reportAndExit.mjs"
-import { noIssuesToReport, noMilestone } from "../../lib/constants.mjs"
+import { noIssuesToReport } from "../../lib/constants.mjs"
 import { reportUnreportables } from "../../lib/reportUnreportables.mjs"
+import { renderInteractive } from "../../lib/renderInteractive.mjs"
 
 function milestone(config, _milestone) {
     let title = _milestone.title
     title = _milestone.dueOn ? `${title} (${_milestone.dueOn.substring(0, 10)})` : title
-    if (_milestone.title !== noMilestone) return `<h2><a href="${config.repo}/milestone/${_milestone.number}" target="_blank">${title}</a></h2>\n\n`
-    return `<h2>${title}</h2>\n\n`
+    return renderInteractive(config,
+        `<h2><a href="${config.repo}/milestone/${_milestone.number}" target="_blank">${title}</a></h2>\n\n`,
+        `<h2>${title}</h2>\n\n`)
 }
 
 /*

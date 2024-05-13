@@ -2,16 +2,20 @@ import { issuesReport } from "./issuesReport.mjs"
 import { reportAndExit } from "../../lib/reportAndExit.mjs"
 import { noIssuesToReport } from "../../lib/constants.mjs"
 import { reportUnreportables } from "../../lib/reportUnreportables.mjs"
+import { renderInteractive } from "../../lib/renderInteractive.mjs"
 
 function assignee(config, _assignee) {
-    return `<h2><a href="${config.repo}/issues/assigned/${_assignee.login}" target="_blank">${_assignee.name}</a></h2>`
+    return renderInteractive(config,
+        `<h2><a href="${config.repo}/issues/assigned/${_assignee.login}" target="_blank">${_assignee.name}</a></h2>`,
+        `<h2>${_assignee.name}</h2>`
+    )
 }
 
 /*
  * Compose a reportable milestone with issues.
  */
 function getReportableIssues(config, _assignee, issues) {
-    const selector = { showState: true, showLabels: true, showAssignees: true, showMilestones: true }
+    const selector = { showState: true, showLabels: true, showAssignees: false, showMilestones: true }
     const matches = issues.filter(issue => issue.assignees.some(assignee => assignee.id === _assignee.id))
     const lss = issuesReport(config, matches, selector)
     return lss

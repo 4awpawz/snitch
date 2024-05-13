@@ -10,7 +10,8 @@ function repoURL(repo) {
 
 export async function configure(args) {
     let config = {}
-    config.debug = args.includes("--debug")
+    const reportName = args.find(arg => arg.startsWith("--name="))
+    config.reportName = reportName && reportName.length && reportName.split("=")[1] || "list"
     const repo = args.find(arg => arg.startsWith("--repo="))
     config.repo = repo?.length > 0 && repo.split("=")[1] || JSON.parse(ghGetRepoInfo()).url
     config.repo = repoURL(config.repo)
@@ -21,8 +22,11 @@ export async function configure(args) {
     const maxIssues = args.find(arg => arg.startsWith("--max-issues="))
     config.maxIssues = maxIssues && parseInt(maxIssues.split("=")[1]) || 10000
     !Number.isInteger(config.maxIssues) && reportAndExit("max-issues must be an integer", "error")
-    const reportName = args.find(arg => arg.startsWith("--name="))
-    config.reportName = reportName && reportName.length && reportName.split("=")[1] || "list"
+    config.nonInteractive = args.includes("--non-interactive")
+    config.noHeading = args.includes("--no-heading")
+    const heading = args.find(arg => arg.startsWith("--heading="))
+    config.heading = heading && heading.length && heading.split("=")[1] || (new URL(config.repo)).pathname.slice(1)
+    config.debug = args.includes("--debug")
     if (!config.debug && !reportTypes.includes(config.reportName)) {
         console.error("------------------")
         console.error("Pick A Report Type")
@@ -30,11 +34,5 @@ export async function configure(args) {
         console.error(reportTypes.join("\n"))
         reportAndExit("invalid or missing report type, please provide one from the list above", "error")
     }
-    config.noHeading = args.includes("--no-heading")
-    const heading = args.find(arg => arg.startsWith("--heading="))
-    config.heading = heading && heading.length && heading.split("=")[1] || (new URL(config.repo)).pathname.slice(1)
-    const maxLength = args.find(arg => arg.startsWith("--max-length="))
-    config.maxLength = maxLength && parseInt(maxLength.split("=")[1]) || 80
-    !Number.isInteger(config.maxLength) && reportAndExit("max-length must be an integer", "error")
     return config
 }

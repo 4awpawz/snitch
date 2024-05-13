@@ -1,18 +1,23 @@
 import { issuesReport } from "./issuesReport.mjs"
 import { reportAndExit } from "../../lib/reportAndExit.mjs"
-import { noIssuesToReport, noMilestone } from "../../lib/constants.mjs"
+import { noIssuesToReport } from "../../lib/constants.mjs"
 import { labelUrl } from "../../lib/urls.mjs"
 import { reportUnreportables } from "../../lib/reportUnreportables.mjs"
+import { renderInteractive } from "../../lib/renderInteractive.mjs"
 
 function milestone(config, _milestone) {
     let title = _milestone.title
     title = _milestone.dueOn ? `${title} (${_milestone.dueOn.substring(0, 10)})` : title
-    if (_milestone.title !== noMilestone) return `<h2><a href="${config.repo}/milestone/${_milestone.number}" target="_blank">${title}</a></h2>\n\n`
-    return `<h2>${title}</h2>\n\n`
+    return renderInteractive(config,
+        `<h2><a href="${config.repo}/milestone/${_milestone.number}" target="_blank">${title}</a></h2>\n\n`,
+        `<h2>${title}</h2>\n\n`)
 }
 
 function label(config, label) {
-    return `<h3 style="color: #${label.color};"><a style="color: inherit;" href="${labelUrl(config, label)}" target="_blank">${label.name}</a></h3>\n\n`
+    return renderInteractive(config,
+        `<h3 style="color: #${label.color};"><a style="color: inherit;" href="${labelUrl(config, label)}" target="_blank">${label.name}</a></h3>\n\n`,
+        `<h3 style="color: #${label.color};">${label.name}</h3>\n\n`
+    )
 }
 
 /*
@@ -75,7 +80,7 @@ export function issuesByMilestoneAndLabelReport(config, issues) {
     const reportableIssues = issues.filter(issue => issue.milestone !== null && issue.labels.length > 0)
     if (reportableIssues.length === 0) reportAndExit(noIssuesToReport)
     const reportableMilestones = getReportableMilestones(config, reportableIssues)
-    if (reportableMilestones.length === 0) reportAndExit(noIssuesToReport)
+    // if (reportableMilestones.length === 0) reportAndExit(noIssuesToReport)
     let output = ""
     for (let i = 0; i < reportableMilestones.length; i++) {
         const reportableMilestone = reportableMilestones[i]
@@ -85,9 +90,9 @@ export function issuesByMilestoneAndLabelReport(config, issues) {
             const reportableMilestoneLabel = reportableMilestone.labels[ii]
             formattedOutput += label(config, reportableMilestoneLabel)
             formattedOutput += reportableMilestoneLabel.issues
-            if (ii < reportableMilestone.labels.length - 1) formattedOutput += "\n\n"
+            if (ii < reportableMilestone.labels.length - 1) formattedOutput += "\n"
         }
-        if (i < reportableMilestones.length - 1) formattedOutput += "\n\n"
+        if (i < reportableMilestones.length - 1) formattedOutput += "\n"
         output += formattedOutput
     }
     return output
