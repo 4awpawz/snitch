@@ -1,18 +1,16 @@
-<h1><span style="vertical-align: text-top;">👉&nbsp;</span>snitch</h1>
+# snitch 👉
 
-## A terminal utility for generating attractive interactive GitHub repository issue reports.
+![Static Badge](https://img.shields.io/badge/Markdown-green)
+![GitHub Release](https://img.shields.io/github/v/release/4awpawz/snitch)
+![NPM Version](https://img.shields.io/npm/v/%404awpawz%2Fsnitch)
+[![License](https://img.shields.io/badge/license-MIT-%230172ad)](https://github.com/picocss/pico/blob/master/LICENSE.md)
+[![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/4awpawz.svg?style=social&label=Follow%20%404awpawz)](https://twitter.com/4awpawz)
 
-⚠️ This project was formerly named _ghif_ but as of v2 has diverged significantly enough from that codebase to warrant a new name and rebranding while maintaining all its previous git history.
+## A terminal utility for easily creating attractive interactive GitHub issue reports.
 
-<!-- <img style="border-radius: 3px; border: 2px solid #ffffff; margin: 24px 0; box-shadow: 4px 4px 1px 1px #888" src="./readme-assets/demo.gif" alt="changelog image"> -->
-<!-- <br> -->
+⚠️ This project was formerly named _ghif_ but as of v2 has diverged significantly enough from that codebase to warrant rebranding while maintaining all its previous git history.
 
-<img src="./readme-assets/report-img-1.png" alt="image #1" width="39%" style="max-width: 100%;">
-<img src="./readme-assets/report-img-1.png" alt="image #1" width="39%" style="max-width: 100%;">
-<img src="./readme-assets/report-img-1.png" alt="image #1" width="39%" style="max-width: 100%;">
-<img src="./readme-assets/report-img-1.png" alt="image #1" width="39%" style="max-width: 100%;">
-
-### 5 Report Types To Chose From
+## 5 Reports To Chose From
 
 | Report Name | Description | Example |
 | :-- | :-- | :-- |
@@ -22,23 +20,21 @@
 | label | a list of issues by label | `snitch --name=label > snitch-report.md` | 
 | assignee | a list of issues by assignee | `snitch --name=assignee > snitch-report.md` | 
 
-<!-- ⚠️ Reports in both _markdown_ and _text_ are supported. However, please note that interactive reports (reports whose elements provide links back to their respective GitHub repositories) are only supported in markdown. -->
-
-### Options
+## Options
 
 | Option | Description | Default (if omitted)| Example |
 | :-- | :-- | :-- | :-- |
 | --repo=[path to repository] | path to Github repository | the GitHub repository associated with the current project determined by git remote origin | `--repo=4awpawz/snitch` |
 | --state=[all \| open \| closed] | limit reporting to issues with this state | all | `--state=closed` |
 | --max-issues=integer | maximum number of issues to report on | 10000 | `--max-issues=100000` |
-| --name=[list \| milestone \| milestone-label \| label \| assignee] | type of report to generate | list | `--name=milestone-label` |
+| --name=[list \| milestone \| milestone-label \| label \| assignee] | name of report to generate | list | `--name=milestone-label` |
 | --heading=[report heading] | the heading for the report | repository name | `--heading=CHANGELOG` |
 | --non-interactive | generate non interactive issues | generate interactive issues | `--non-interactive` |
 | --debug | run in debug mode, see below for details| run in normal mode | `--debug` |
 
-#### Debug mode
+## Debug mode
 
-You can run snitch in _debug mode_ to expose the dynamically generated configuration data that would be used during the processing of the payload returned from GitHub's _gh_ utility as well as the command line that would be used to invoke _gh_ itself. This information could be extremely useful when submitting an issue to us or for your own problem resolution.
+You can run snitch in __debug mode__ to expose the dynamically generated configuration data that would be used during the processing of the payload returned from GitHub's _gh_ utility as well as the command line that would be used to invoke _gh_ itself. This information could be extremely useful when submitting an issue to us or for your own problem resolution.
 
 To invoke debug mode, append `--debug` to the command line that you would use to generate your desired report, such as the list report in the command below:
 
@@ -68,7 +64,7 @@ You can also run the _debug gh command_ to examine the JSON payload returned by 
 > gh issue list -L 10000 --state open --json 'number,title,labels,milestone,state,assignees,url' -R https://github.com/4awpawz/snitch
 ```
 
-### Installation
+## Installation
 
 ⚠️ snitch requires both Github's [gh](https://cli.github.com) utility and [Node.js](https://nodejs.org/en).
 
@@ -78,20 +74,55 @@ To install snitch with NPM, please run the following command in your terminal:
 > npm i -g 4awpawz/snitch
 ```
 
-### Examples
+## Report Examples
 
-#### Generate a changelog for your project
-
-```shell
-> snitch --name=list --state=closed > CHANGELOG.md
-```
-#### Generate a status report by assignee
+⚠️ To save the report output to a file, use redirection:
 
 ```shell
-> snitch --name=assignee > status.md
+> snitch --name=list > list.md
 ```
 
-### Request a new report format
+### List Report
+
+`> snitch --name=list`
+
+<img src="./readme-assets/list-report.png" alt="list report image" title="list report image" width="100%" style="max-width: 100%;">
+<br>
+<br>
+
+### Milestone Report
+
+`> snitch --name=milestone`
+
+<img src="./readme-assets/milestone-report.png" alt="milestone report image" title="milestone report image" width="100%" style="max-width: 100%;">
+<br>
+<br>
+
+### Milestone-Label Report
+
+`> snitch --name=milestone-label`
+
+<img src="./readme-assets/milestone-label-report.png" alt="milestone-label report image" title="milestone-label report image" width="100%" style="max-width: 100%;">
+<br>
+<br>
+
+### Label Report
+
+`> snitch --name=label`
+
+<img src="./readme-assets/label-report.png" alt="label report image" title="label report image"  width="100%" style="max-width: 100%;">
+<br>
+<br>
+
+### Assignee Report
+
+`> snitch --name=assignee`
+
+<img src="./readme-assets/assignee-report.png" alt="assignee report image" title="assignee report image" width="100%" style="max-width: 100%;">
+<br>
+<br>
+
+## Request a new report format
 
 Have an idea for a report format that is not yet supported? Then by all means please submit a request along with a detailed description of the report you are seeking.
 
@@ -99,9 +130,8 @@ Have an idea for a report format that is not yet supported? Then by all means pl
 
 MIT
 
-### Show some love ❤️
-![image](./readme-assets/buymeacoffee.png)
+## If Using Snitch Provides You Value Then Please Show some love ❤️
 
-If using _snitch_ provides you value then please click on the repository's _Star_ button.
+<a href="https://www.buymeacoffee.com/4awpawz"><img src="./readme-assets/buymeacoffee.png" alt="image"></a>
 
-If you would like to be notified when there are changes then please click on the repository's _Watch_ button.
+Please 👀 watch and leave us a 🌟 star :)

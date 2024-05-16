@@ -40,10 +40,8 @@ function getReportableLabels(config, issues) {
     issues.forEach(issue => issue.labels.forEach(label => !labels.get(label.id) && labels.set(label.id, label)))
     labels = [...labels.values()]
     labels = labels.sort((a, b) => {
-        const nameA = a.name.toUpperCase()
-        const nameB = b.name.toUpperCase()
-        if (nameA > nameB) return 1
-        if (nameA < nameB) return -1
+        if (a.name.toUpperCase() > b.name.toUpperCase()) return 1
+        if (a.name.toUpperCase() < b.name.toUpperCase()) return -1
         return 0
     })
     return labels.map(label => mapReportableLabel(config, label, issues))
