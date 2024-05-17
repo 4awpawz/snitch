@@ -11,7 +11,7 @@ function assignees(config, assignees) {
     if (assignees.length === 0) return `[ ${noAssignees} ]`
     let asgns = assignees.map(assignee =>
         renderInteractive(config,
-            assigneeUrl(config, assignee),
+            `<a href="${assigneeUrl(config, assignee)}" target="_blank" title="link to assignee ${assignee.name}">${assignee.name}</a>`,
             assignee.name)).join(", ")
     return `[ ${asgns} ]`
 }
@@ -20,7 +20,7 @@ function labels(config, labels) {
     if (!labels.length) return `[ ${noLabels} ]`
     let lbls = labels.map(label =>
         renderInteractive(config,
-            `<a href="${labelUrl(config, label)}" target="_blank"><span style="color: #${label.color};">${label.name}</span></a>`,
+            `<a href="${labelUrl(config, label)}" target="_blank" title="link to label ${label.name}"><span style="color: #${label.color};">${label.name}</span></a>`,
             `<span style="color: #${label.color};">${label.name}</span>`))
     return `[ ${lbls.join(", ")} ]`
 }
@@ -31,7 +31,7 @@ function milestone(config, milestone) {
     msName += milestone.dueOn ?
         ` (${milestone.dueOn.substring(0, 10)})` :
         ""
-    return renderInteractive(config, `<a href="${milestoneUrl(config, milestone)}" target="_blank">${msName}</a>`, msName)
+    return renderInteractive(config, `<a href="${milestoneUrl(config, milestone)}" target="_blank" title="link to milestone ${milestone.title}">${msName}</a>`, msName)
 }
 
 function number(number) {

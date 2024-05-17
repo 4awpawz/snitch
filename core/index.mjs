@@ -15,7 +15,7 @@ export async function snitch(args) {
     const issues = JSON.parse(result)
     let output = ""
     if (!config.noHeading && config.heading.length) output +=
-        renderInteractive(config, `<h1><a href="${config.repo}" target="_blank">${config.heading}</a></h1>\n\n`, `<h1>${config.heading}</h1>\n\n`)
+        renderInteractive(config, `<h1><a href="${config.repo}" target="_blank" title="link to repository ${config.repo}">${config.heading}</a></h1>\n\n`, `<h1>${config.heading}</h1>\n\n`)
     switch (config.reportName) {
         case "list":
             output += issuesReport(config, issues)

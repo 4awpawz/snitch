@@ -1,4 +1,6 @@
-# snitch 👉
+# Snitch 👉
+
+"A project isn't complete unless it has a CHANGELOG!" -- Jeff Schwartz, aka 4awpawz
 
 ![Static Badge](https://img.shields.io/badge/Markdown-green)
 ![GitHub Release](https://img.shields.io/github/v/release/4awpawz/snitch)
@@ -6,7 +8,9 @@
 [![License](https://img.shields.io/badge/license-MIT-%230172ad)](https://github.com/picocss/pico/blob/master/LICENSE.md)
 [![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/4awpawz.svg?style=social&label=Follow%20%404awpawz)](https://twitter.com/4awpawz)
 
-## A terminal utility for easily creating attractive interactive GitHub issue reports.
+## A Multi Purpose GitHub Issue Reporting Tool
+
+Snitch is a terminal utility that lets you easily create attractive, interactive, and informative reports from GitHub issues that can be used for tracking both open and closed issues by label, assignee and milestone and can provide a timely, accurate, and consolidated view of a project's status.
 
 ⚠️ This project was formerly named _ghif_ but as of v2 has diverged significantly enough from that codebase to warrant rebranding while maintaining all its previous git history.
 
@@ -34,15 +38,15 @@
 
 ## Debug mode
 
-You can run snitch in __debug mode__ to expose the dynamically generated configuration data that would be used during the processing of the payload returned from GitHub's _gh_ utility as well as the command line that would be used to invoke _gh_ itself. This information could be extremely useful when submitting an issue to us or for your own problem resolution.
+You can run Snitch in __debug mode__ to expose the dynamically generated configuration data that would be used during the processing of the payload returned from GitHub's _gh_ utility as well as the command line that would be used to invoke _gh_ itself. This information could be extremely useful when submitting an issue to us or for your own problem resolution.
 
-To invoke debug mode, append `--debug` to the command line that you would use to generate your desired report, such as the list report in the command below:
+To invoke debug mode, append `--debug` to the command line that you would use to generate your desired report, such as the __list report__ in the command below:
 
 ```shell
 > snitch --name=list --state=open --repo=4awpawz/snitch --debug 
 ```
 
-The output from running snitch in debug mode would look similar to the following:
+The output from running Snitch in debug mode would look similar to the following:
 
 ```shell
 debug config:  {
@@ -66,9 +70,9 @@ You can also run the _debug gh command_ to examine the JSON payload returned by 
 
 ## Installation
 
-⚠️ snitch requires both Github's [gh](https://cli.github.com) utility and [Node.js](https://nodejs.org/en).
+⚠️ Snitch requires both Github's [gh](https://cli.github.com) utility and [Node.js](https://nodejs.org/en).
 
-To install snitch with NPM, please run the following command in your terminal:
+To install Snitch with NPM, please run the following command in your terminal:
 
 ```shell
 > npm i -g 4awpawz/snitch
@@ -130,7 +134,7 @@ Have an idea for a report format that is not yet supported? Then by all means pl
 
 MIT
 
-## If Using Snitch Provides You Value Then Please Show some love ❤️
+## If Using Snitch Provides You Value Then Please Show Some love ❤️
 
 <a href="https://www.buymeacoffee.com/4awpawz"><img src="./readme-assets/buymeacoffee.png" alt="image"></a>
 

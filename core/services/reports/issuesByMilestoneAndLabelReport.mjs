@@ -1,7 +1,7 @@
 import { issuesReport } from "./issuesReport.mjs"
 import { reportAndExit } from "../../lib/reportAndExit.mjs"
 import { noIssuesToReport } from "../../lib/constants.mjs"
-import { labelUrl } from "../../lib/urls.mjs"
+import { labelUrl, milestoneUrl } from "../../lib/urls.mjs"
 import { reportUnreportables } from "../../lib/reportUnreportables.mjs"
 import { renderInteractive } from "../../lib/renderInteractive.mjs"
 
@@ -9,13 +9,13 @@ function milestone(config, _milestone) {
     let title = _milestone.title
     title = _milestone.dueOn ? `${title} (${_milestone.dueOn.substring(0, 10)})` : title
     return renderInteractive(config,
-        `<h2><a href="${config.repo}/milestone/${_milestone.number}" target="_blank">${title}</a></h2>\n\n`,
+        `<h2><a href="${milestoneUrl(config, _milestone)}" target="_blank" title="link to milestone ${_milestone.title}">${title}</a></h2>\n\n`,
         `<h2>${title}</h2>\n\n`)
 }
 
 function label(config, label) {
     return renderInteractive(config,
-        `<h3 style="color: #${label.color};"><a style="color: inherit;" href="${labelUrl(config, label)}" target="_blank">${label.name}</a></h3>\n\n`,
+        `<h3 style="color: #${label.color};"><a style="color: inherit;" href="${labelUrl(config, label)}" target="_blank" title="link to label ${label.name}">${label.name}</a></h3>\n\n`,
         `<h3 style="color: #${label.color};">${label.name}</h3>\n\n`
     )
 }

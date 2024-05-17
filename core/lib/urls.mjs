@@ -7,5 +7,5 @@ export function milestoneUrl(config, milestone) {
 }
 
 export function assigneeUrl(config, assignee) {
-    return `<a href="${config.repo}/issues/assigned/${assignee.login}" target="_blank">${assignee.name}</a>`
+    return `${config.repo}/issues/${assignee.login}`
 }

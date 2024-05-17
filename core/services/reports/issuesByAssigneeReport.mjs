@@ -3,10 +3,11 @@ import { reportAndExit } from "../../lib/reportAndExit.mjs"
 import { noIssuesToReport } from "../../lib/constants.mjs"
 import { reportUnreportables } from "../../lib/reportUnreportables.mjs"
 import { renderInteractive } from "../../lib/renderInteractive.mjs"
+import { assigneeUrl } from "../../lib/urls.mjs"
 
 function assignee(config, _assignee) {
     return renderInteractive(config,
-        `<h2><a href="${config.repo}/issues/assigned/${_assignee.login}" target="_blank">${_assignee.name}</a></h2>`,
+        `<h2><a href="${assigneeUrl(config, _assignee)}" target="_blank" title="link to assignee ${_assignee.name}">${_assignee.name}</a></h2>`,
         `<h2>${_assignee.name}</h2>`
     )
 }

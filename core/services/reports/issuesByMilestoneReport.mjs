@@ -3,12 +3,13 @@ import { reportAndExit } from "../../lib/reportAndExit.mjs"
 import { noIssuesToReport } from "../../lib/constants.mjs"
 import { reportUnreportables } from "../../lib/reportUnreportables.mjs"
 import { renderInteractive } from "../../lib/renderInteractive.mjs"
+import { milestoneUrl } from "../../lib/urls.mjs"
 
 function milestone(config, _milestone) {
     let title = _milestone.title
     title = _milestone.dueOn ? `${title} (${_milestone.dueOn.substring(0, 10)})` : title
     return renderInteractive(config,
-        `<h2><a href="${config.repo}/milestone/${_milestone.number}" target="_blank">${title}</a></h2>\n\n`,
+        `<h2><a href="${milestoneUrl(config, _milestone)}" target="_blank" title="link to milestone ${_milestone.title}">${title}</a></h2>\n\n`,
         `<h2>${title}</h2>\n\n`)
 }
 
