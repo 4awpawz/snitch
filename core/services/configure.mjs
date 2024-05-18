@@ -27,6 +27,7 @@ export async function configure(args) {
     const heading = args.find(arg => arg.startsWith("--heading="))
     config.heading = heading && heading.length && heading.split("=")[1] || (new URL(config.repo)).pathname.slice(1)
     config.debug = args.includes("--debug")
+    config.noAttribution = args.includes("--no-attribution");
     if (!config.debug && !reportTypes.includes(config.reportName)) {
         console.error("------------------")
         console.error("Pick A Report Type")

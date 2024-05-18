@@ -35,6 +35,7 @@ export async function snitch(args) {
         default:
             throw new TypeError(`invalid report type, you entered ${config.reportName}`)
     }
+    if (!config.noAttribution) output += "\n> [This report was created using Snitch](https://github.com/4awpawz/snitch)"
     process.stdout.write(output)
     process.exit(0)
 } 

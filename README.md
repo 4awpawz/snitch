@@ -14,15 +14,25 @@ Snitch is a terminal utility that lets you easily create attractive, interactive
 
 ⚠️ This project was formerly named _ghif_ but as of v2 has diverged significantly enough from that codebase to warrant rebranding while maintaining all its previous git history.
 
+## Installation
+
+⚠️ Snitch requires [GitHub CLI ](https://cli.github.com) and [Node.js](https://nodejs.org/en).
+
+To install Snitch with NPM, please run the following command in your terminal:
+
+```shell
+> npm i -g 4awpawz/snitch
+```
+
 ## 5 Reports To Chose From
 
 | Report Name | Description | Example |
 | :-- | :-- | :-- |
-| list | a list of issues | `snitch --name=list > snitch-report.md` |
-| milestone | a list of issues by milestone | `snitch --name=milestone > snitch-report.md` |
-| milestone-label | a list of issues by milestone and label | `snitch --name=milestone-label > snitch-report.md` |
-| label | a list of issues by label | `snitch --name=label > snitch-report.md` | 
-| assignee | a list of issues by assignee | `snitch --name=assignee > snitch-report.md` | 
+| list | a list of issues | `> snitch --name=list > snitch-report.md` |
+| milestone | a list of issues by milestone | `> snitch --name=milestone > snitch-report.md` |
+| milestone-label | a list of issues by milestone and label | `> snitch --name=milestone-label > snitch-report.md` |
+| label | a list of issues by label | `> snitch --name=label > snitch-report.md` | 
+| assignee | a list of issues by assignee | `> snitch --name=assignee > snitch-report.md` | 
 
 ## Options
 
@@ -34,11 +44,20 @@ Snitch is a terminal utility that lets you easily create attractive, interactive
 | --name=[list \| milestone \| milestone-label \| label \| assignee] | name of report to generate | list | `--name=milestone-label` |
 | --heading=[report heading] | the heading for the report | repository name | `--heading=CHANGELOG` |
 | --non-interactive | generate non interactive issues | generate interactive issues | `--non-interactive` |
-| --debug | run in debug mode, see below for details| run in normal mode | `--debug` |
+| --no-attribution | attribution is not added at bottom of report | attribution is added at bottom of report | `--no-attribution` |
+| --debug | run in debug mode, see [below](#debug-mode) for details| run in normal mode | `--debug` |
+
+## Saving output to a file
+
+Use redirection to save report output to a file:
+
+```shell
+> snitch --name=list > list.md
+```
 
 ## Debug mode
 
-You can run Snitch in __debug mode__ to expose the dynamically generated configuration data that would be used during the processing of the payload returned from GitHub's _gh_ utility as well as the command line that would be used to invoke _gh_ itself. This information could be extremely useful when submitting an issue to us or for your own problem resolution.
+You can run Snitch in __debug mode__ to expose the dynamically generated configuration data that would be used during the processing of the payload returned from __GitHub's CLI__ utility as well as the command line that would be used to invoke __GitHub CLI__ itself. This information would be useful when submitting an issue or for your own problem resolution.
 
 To invoke debug mode, append `--debug` to the command line that you would use to generate your desired report, such as the __list report__ in the command below:
 
@@ -68,23 +87,15 @@ You can also run the _debug gh command_ to examine the JSON payload returned by 
 > gh issue list -L 10000 --state open --json 'number,title,labels,milestone,state,assignees,url' -R https://github.com/4awpawz/snitch
 ```
 
-## Installation
-
-⚠️ Snitch requires both Github's [gh](https://cli.github.com) utility and [Node.js](https://nodejs.org/en).
-
-To install Snitch with NPM, please run the following command in your terminal:
-
-```shell
-> npm i -g 4awpawz/snitch
-```
-
 ## Report Examples
 
-⚠️ To save the report output to a file, use redirection:
+### CHANGELOG Report
 
-```shell
-> snitch --name=list > list.md
-```
+`> snitch --name=list --state=closed --heading=CHANGELOG`
+
+<img src="./readme-assets/changelog-report.png" alt="changelog report image" title="changelog report image" width="100%" style="max-width: 100%;">
+<br>
+<br>
 
 ### List Report
 
@@ -128,7 +139,7 @@ To install Snitch with NPM, please run the following command in your terminal:
 
 ## Request a new report format
 
-Have an idea for a report format that is not yet supported? Then by all means please submit a request along with a detailed description of the report you are seeking.
+Have an idea for a report format that is not yet supported? Then by all means [please submit a request](https://github.com/4awpawz/snitch/issues) and provide a detailed description of the report you are seeking.
 
 ## License
 
