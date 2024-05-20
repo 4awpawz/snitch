@@ -64,21 +64,22 @@ You can run Snitch in __debug mode__ to expose the dynamically generated configu
 To invoke debug mode, append `--debug` to the command line that you would use to generate your desired report, such as the __list report__ in the command below:
 
 ```shell
-> snitch --name=list --state=open --repo=4awpawz/snitch --debug 
+> snitch --name=list --repo=4awpawz/fusion.ssg --debug 
 ```
 
 The output from running Snitch in debug mode would look similar to the following:
 
 ```shell
 debug config:  {
-  debug: true,
+  reportName: 'list',
   repo: 'https://github.com/4awpawz/fusion.ssg',
   state: 'all',
   maxIssues: 10000,
   nonInteractive: false,
   noHeading: false,
   heading: '4awpawz/fusion.ssg',
-  reportName: 'list'
+  debug: true,
+  noAttribution: false
 }
 debug gh command:  gh issue list -L 10000 --state all --json 'number,title,labels,milestone,state,assignees,url' -R https://github.com/4awpawz/fusion.ssg
 ```
@@ -86,7 +87,7 @@ debug gh command:  gh issue list -L 10000 --state all --json 'number,title,label
 You can also run the _debug gh command_ to examine the JSON payload returned by GitHub's _gh_ utility:
 
 ```shell
-> gh issue list -L 10000 --state open --json 'number,title,labels,milestone,state,assignees,url' -R https://github.com/4awpawz/snitch
+> gh issue list -L 10000 --state all --json 'number,title,labels,milestone,state,assignees,url' -R https://github.com/4awpawz/snitch
 ```
 
 ## Report Examples
