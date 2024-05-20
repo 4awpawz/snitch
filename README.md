@@ -12,6 +12,8 @@
 
 Snitch is a terminal utility that lets you easily create attractive, interactive, and informative reports from GitHub issues that can be used for tracking both open and closed issues by label, assignee and milestone and can provide a timely, accurate, and consolidated view of a project's status.
 
+[![Snitch milestone report video](https://img.youtube.com/vi/u-7oJJUUdGs/0.jpg)](https://www.youtube.com/watch?v=u-7oJJUUdGs)
+
 ⚠️ This project was formerly named _ghif_ but as of v2 has diverged significantly enough from that codebase to warrant rebranding while maintaining all its previous git history.
 
 ## Installation
