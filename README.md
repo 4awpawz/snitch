@@ -3,7 +3,7 @@
 "A project isn't complete unless it has a CHANGELOG!" -- Jeff Schwartz, aka 4awpawz
 
 ![Static Badge](https://img.shields.io/badge/Markdown-green)
-![GitHub Release](https://img.shields.io/github/v/release/4awpawz/snitch)
+![GitHub Release](https://img.shields.io/github/release/4awpawz/snitch/all.svg)
 ![NPM Version](https://img.shields.io/npm/v/%404awpawz%2Fsnitch)
 [![License](https://img.shields.io/badge/license-MIT-%230172ad)](https://github.com/picocss/pico/blob/master/LICENSE.md)
 [![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/4awpawz.svg?style=social&label=Follow%20%404awpawz)](https://twitter.com/4awpawz)
