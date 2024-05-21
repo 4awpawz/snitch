@@ -148,7 +148,7 @@ Have an idea for a report format that is not yet supported? Then by all means [p
 
 MIT
 
-## If Using Snitch Provides You Value Then Please Show Some love ❤️
+## If Using Snitch Provides You Value Then Please Show Some Love ❤️
 
 <a href="https://www.buymeacoffee.com/4awpawz"><img src="./readme-assets/buymeacoffee.png" alt="image"></a>
 
