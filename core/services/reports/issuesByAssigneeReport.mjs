@@ -6,7 +6,7 @@ import { renderInteractive } from "../../lib/renderInteractive.mjs"
 import { assigneeUrl } from "../../lib/urls.mjs"
 
 function assignee(config, _assignee) {
-    return renderInteractive(config,
+    return config.asText ? _assignee.name : renderInteractive(config,
         `<h2><a href="${assigneeUrl(config, _assignee)}" target="_blank" title="link to assignee ${_assignee.name}">${_assignee.name}</a></h2>`,
         `<h2>${_assignee.name}</h2>`
     )

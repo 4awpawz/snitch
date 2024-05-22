@@ -8,9 +8,8 @@ import { milestoneUrl } from "../../lib/urls.mjs"
 function milestone(config, _milestone) {
     let title = _milestone.title
     title = _milestone.dueOn ? `${title} (${_milestone.dueOn.substring(0, 10)})` : title
-    return renderInteractive(config,
-        `<h2><a href="${milestoneUrl(config, _milestone)}" target="_blank" title="link to milestone ${_milestone.title}">${title}</a></h2>\n\n`,
-        `<h2>${title}</h2>\n\n`)
+    return config.asText ? `${title}\n\n` :
+        renderInteractive(config, `<h2><a href="${milestoneUrl(config, _milestone)}" target="_blank" title="link to milestone ${_milestone.title}">${title}</a></h2>\n\n`, `<h2>${title}</h2>\n\n`)
 }
 
 /*

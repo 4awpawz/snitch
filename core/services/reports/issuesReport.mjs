@@ -10,18 +10,20 @@ import { renderInteractive } from "../../lib/renderInteractive.mjs"
 function assignees(config, assignees) {
     if (assignees.length === 0) return `[ ${noAssignees} ]`
     let asgns = assignees.map(assignee =>
-        renderInteractive(config,
-            `<a href="${assigneeUrl(config, assignee)}" target="_blank" title="link to assignee ${assignee.name}">${assignee.name}</a>`,
-            assignee.name)).join(", ")
+        config.asText ? assignee.name :
+            renderInteractive(config,
+                `<a href="${assigneeUrl(config, assignee)}" target="_blank" title="link to assignee ${assignee.name}">${assignee.name}</a>`,
+                assignee.name)).join(", ")
     return `[ ${asgns} ]`
 }
 
 function labels(config, labels) {
     if (!labels.length) return `[ ${noLabels} ]`
     let lbls = labels.map(label =>
-        renderInteractive(config,
-            `<a href="${labelUrl(config, label)}" target="_blank" title="link to label ${label.name}"><span style="color: #${label.color};">${label.name}</span></a>`,
-            `<span style="color: #${label.color};">${label.name}</span>`))
+        config.asText ? label.name :
+            renderInteractive(config,
+                `<a href="${labelUrl(config, label)}" target="_blank" title="link to label ${label.name}"><span style="color: #${label.color};">${label.name}</span></a>`,
+                `<span style="color: #${label.color};">${label.name}</span>`))
     return `[ ${lbls.join(", ")} ]`
 }
 
@@ -31,7 +33,7 @@ function milestone(config, milestone) {
     msName += milestone.dueOn ?
         ` (${milestone.dueOn.substring(0, 10)})` :
         ""
-    return renderInteractive(config, `<a href="${milestoneUrl(config, milestone)}" target="_blank" title="link to milestone ${milestone.title}">${msName}</a>`, msName)
+    return config.asText ? msName : renderInteractive(config, `<a href="${milestoneUrl(config, milestone)}" target="_blank" title="link to milestone ${milestone.title}">${msName}</a>`, msName)
 }
 
 function number(number) {
@@ -39,12 +41,12 @@ function number(number) {
 }
 
 function title(config, title, url, number) {
-    const ttl = marked.parseInline(escape(title))
-    return renderInteractive(config, `<a href="${url}" target="_blank" title="link to issue ${number}">${ttl}</a>`, title)
+    const ttl = config.asText ? title : marked.parseInline(escape(title))
+    return config.asText ? ttl : renderInteractive(config, `<a href="${url}" target="_blank" title="link to issue ${number}">${ttl}</a>`, title)
 }
 
-function state(state) {
-    return showState(state)
+function state(config, state) {
+    return showState(config, state)
 }
 
 /*
@@ -53,7 +55,7 @@ function state(state) {
 function mapReportableIssue(config, issue) {
     const is = {}
     // issue state
-    is.state = state(issue.state)
+    is.state = state(config, issue.state)
     // issue number
     is.number = number(issue.number)
     // issue title

@@ -6,6 +6,7 @@ import { issuesByMilestoneAndLabelReport } from "./services/reports/issuesByMile
 import { issuesByLabelReport } from "./services/reports/issuesByLabelReport.mjs"
 import { issuesByAssigneeReport } from "./services/reports/issuesByAssigneeReport.mjs"
 import { renderInteractive } from "./lib/renderInteractive.mjs"
+import { attributionText, snitchUrl } from "./lib/constants.mjs"
 
 export async function snitch(args) {
     const config = await configure(args)
@@ -15,7 +16,8 @@ export async function snitch(args) {
     const issues = JSON.parse(result)
     let output = ""
     if (!config.noHeading && config.heading.length) output +=
-        renderInteractive(config, `<h1><a href="${config.repo}" target="_blank" title="link to repository ${config.repo}">${config.heading}</a></h1>\n\n`, `<h1>${config.heading}</h1>\n\n`)
+        config.asText ? `${config.heading}\n\n` :
+            renderInteractive(config, `<h1><a href="${config.repo}" target="_blank" title="link to repository ${config.repo}">${config.heading}</a></h1>\n\n`, `<h1>${config.heading}</h1>\n\n`)
     switch (config.reportName) {
         case "list":
             output += issuesReport(config, issues)
@@ -35,7 +37,9 @@ export async function snitch(args) {
         default:
             throw new TypeError(`invalid report type, you entered ${config.reportName}`)
     }
-    if (!config.noAttribution) output += "\n> [This report was created using Snitch](https://github.com/4awpawz/snitch)"
+    if (!config.noAttribution) output +=
+        config.asText ? `\n| ${attributionText} @ ${snitchUrl}` :
+            `\n> [${attributionText}](${snitchUrl})`
     process.stdout.write(output)
     process.exit(0)
 } 

@@ -40,13 +40,14 @@ To install Snitch with NPM, please run the following command in your terminal:
 
 | Option | Description | Default (if omitted)| Example |
 | :-- | :-- | :-- | :-- |
+| --as-text | output report as plain text | output report as markdown | `--as-text` |
 | --repo=[path to repository] | path to Github repository | the GitHub repository associated with the current project determined by git remote origin | `--repo=4awpawz/snitch` |
 | --state=[all \| open \| closed] | limit reporting to issues with this state | all | `--state=closed` |
 | --max-issues=integer | maximum number of issues to report on | 10000 | `--max-issues=100000` |
 | --name=[list \| milestone \| milestone-label \| label \| assignee] | name of report to generate | list | `--name=milestone-label` |
 | --heading=[report heading] | the heading for the report | repository name | `--heading=CHANGELOG` |
-| --non-interactive | generate non interactive issues | generate interactive issues | `--non-interactive` |
-| --no-attribution | attribution is not added at bottom of report | attribution is added at bottom of report | `--no-attribution` |
+| --non-interactive | for markdown reports only, generate non interactive issues | generate interactive issues | `--non-interactive` |
+| --no-attribution | attribution is not appended to the report | attribution is appended to the report | `--no-attribution` |
 | --debug | run in debug mode, see [below](#debug-mode) for details| run in normal mode | `--debug` |
 
 ## Saving output to a file

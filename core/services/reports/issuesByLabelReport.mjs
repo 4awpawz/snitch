@@ -5,10 +5,8 @@ import { noIssuesToReport } from "../../lib/constants.mjs"
 import { renderInteractive } from "../../lib/renderInteractive.mjs"
 
 function label(config, label) {
-    return renderInteractive(config,
-        `<h2 style="color: #${label.color};"><a style="color: inherit;" href="${labelUrl(config, label)}" target="_blank" title="link to label ${label.name}">${label.name}</a></h2>`,
-        `<h2 style="color: #${label.color};">${label.name}</h2>`
-    )
+    return config.asText ? `${label.name}` :
+        renderInteractive(config, `<h2 style="color: #${label.color};"><a style="color: inherit;" href="${labelUrl(config, label)}" target="_blank" title="link to label ${label.name}">${label.name}</a></h2>`, `<h2 style="color: #${label.color};">${label.name}</h2>`)
 }
 
 /*
