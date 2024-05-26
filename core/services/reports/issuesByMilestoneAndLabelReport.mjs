@@ -70,11 +70,11 @@ function getReportableMilestones(config, issues) {
  * Generate report from reportable milestone objects.
  */
 export function issuesByMilestoneAndLabelReport(config, issues) {
+    if (issues.length === 0) reportAndExit(noIssuesToReport)
     reportUnreportables(config, issues, issue => issue.milestone === null || issue.labels.length === 0)
     const reportableIssues = issues.filter(issue => issue.milestone !== null && issue.labels.length > 0)
     if (reportableIssues.length === 0) reportAndExit(noIssuesToReport)
     const reportableMilestones = getReportableMilestones(config, reportableIssues)
-    // if (reportableMilestones.length === 0) reportAndExit(noIssuesToReport)
     let output = ""
     for (let i = 0; i < reportableMilestones.length; i++) {
         const reportableMilestone = reportableMilestones[i]

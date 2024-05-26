@@ -52,10 +52,9 @@ function getReportableAssignees(config, issues) {
  * Generate report from reportable label objects.
  */
 export function issuesByAssigneeReport(config, issues) {
-    // Ignore those issues which have no assignees or those issues whose assignees are all unnamed.
+    if (issues.length === 0) reportAndExit(noIssuesToReport)
     reportUnreportables(config, issues, issue => issue.assignees.length === 0 ||
         issue.assignees.length === issue.assignees.filter(assignee => assignee.name === "").length)
-    // Report only issues that have at least one named assignee.
     const reportableIssues = issues.filter(issue => issue.assignees.length !== 0 && issue.assignees.some(assignee => assignee.name !== ""))
     if (reportableIssues.length === 0) reportAndExit(noIssuesToReport)
     const reportableAssignees = getReportableAssignees(config, reportableIssues)

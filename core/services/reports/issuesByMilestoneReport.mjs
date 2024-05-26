@@ -52,6 +52,7 @@ function getReportableMilestones(config, issues) {
  * Generate report from reportable milestone objects.
  */
 export function issuesByMilestoneReport(config, issues) {
+    if (issues.length === 0) reportAndExit(noIssuesToReport)
     reportUnreportables(config, issues, issue => issue.milestone === null)
     const reportableIssues = issues.filter(issue => issue.milestone !== null)
     if (reportableIssues.length === 0) reportAndExit(noIssuesToReport)

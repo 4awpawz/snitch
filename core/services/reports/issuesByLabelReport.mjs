@@ -3,6 +3,7 @@ import { reportAndExit } from "../../lib/reportAndExit.mjs"
 import { labelUrl } from "../../lib/urls.mjs"
 import { noIssuesToReport } from "../../lib/constants.mjs"
 import { renderInteractive } from "../../lib/renderInteractive.mjs"
+import { reportUnreportables } from "../../lib/reportUnreportables.mjs"
 
 function label(config, label) {
     return config.asText ? `${label.name}` :
@@ -50,6 +51,7 @@ function getReportableLabels(config, issues) {
  */
 export function issuesByLabelReport(config, issues) {
     if (issues.length === 0) reportAndExit(noIssuesToReport)
+    reportUnreportables(config, issues, issue => issue.labels.length === 0)
     const reportableLabels = getReportableLabels(config, issues)
     if (reportableLabels.length === 0) reportAndExit(noIssuesToReport)
     let output = ""
