@@ -33,7 +33,9 @@ function milestone(config, milestone) {
     msName += milestone.dueOn ?
         ` (${milestone.dueOn.substring(0, 10)})` :
         ""
-    return config.asText ? msName : renderInteractive(config, `<a href="${milestoneUrl(config, milestone)}" target="_blank" title="link to milestone ${milestone.title}">${msName}</a>`, msName)
+    return config.asText ? msName : renderInteractive(config,
+        `<a href="${milestoneUrl(config, milestone)}" target="_blank" title="link to milestone ${milestone.title}">${msName}</a>`,
+        msName)
 }
 
 function number(number) {
@@ -83,7 +85,7 @@ export function issuesReport(config, issues, opts = { showState: true, showLabel
     if (issues.length === 0) reportAndExit(noIssuesToReport)
     const reportableIssues = getReportableIssues(config, issues)
     if (reportableIssues.length === 0) reportAndExit(noIssuesToReport)
-    let output = ""
+    let output = "\n\n"
     for (let i = 0; i < reportableIssues.length; i++) {
         const reportableIssue = reportableIssues[i]
         output += formatIssue({
@@ -94,7 +96,10 @@ export function issuesReport(config, issues, opts = { showState: true, showLabel
             assignees: opts.showAssignees ? reportableIssue.assignees : "",
             milestone: opts.showMilestones ? reportableIssue.milestone : ""
         })
-        if (i < reportableIssues.length - 1) output += "\n"
+        if (i < reportableIssues.length - 1 && config.blankLines && config.asText) output += "\n\n"
+        if (i < reportableIssues.length - 1 && config.blankLines && !config.asText) output += "<br>\n<br>"
+        if (i < reportableIssues.length - 1 && !config.blankLines && config.asText) output += "\n"
+        if (i < reportableIssues.length - 1 && !config.blankLines && !config.asText) output += "<br>"
     }
     return output
 }

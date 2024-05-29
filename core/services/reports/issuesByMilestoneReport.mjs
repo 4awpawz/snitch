@@ -8,8 +8,10 @@ import { milestoneUrl } from "../../lib/urls.mjs"
 function milestone(config, _milestone) {
     let title = _milestone.title
     title = _milestone.dueOn ? `${title} (${_milestone.dueOn.substring(0, 10)})` : title
-    return config.asText ? `${title}\n\n` :
-        renderInteractive(config, `<h2><a href="${milestoneUrl(config, _milestone)}" target="_blank" title="link to milestone ${_milestone.title}">${title}</a></h2>\n\n`, `<h2>${title}</h2>\n\n`)
+    return config.asText ? `\n\n${title}` :
+        renderInteractive(config,
+            `<h2><a href="${milestoneUrl(config, _milestone)}" target="_blank" title="link to milestone ${_milestone.title}">${title}</a></h2>`,
+            `<h2>${title}</h2>`)
 }
 
 /*
@@ -30,7 +32,7 @@ function mapReportableMilestone(config, _milestone, issues) {
     ms.title = milestone(config, _milestone)
     ms.number = _milestone.number
     ms.dueOn = Object.hasOwn(_milestone, "dueOn") && _milestone.dueOn || null
-    ms.issues = getReportableIssues(config, ms, issues) + "\n"
+    ms.issues = getReportableIssues(config, ms, issues)
     return ms
 }
 
@@ -64,7 +66,7 @@ export function issuesByMilestoneReport(config, issues) {
         let formattedOutput = ""
         formattedOutput += reportableMilestone.title
         formattedOutput += reportableMilestone.issues
-        if (i < reportableMilestones.length - 1) formattedOutput += "\n"
+        // formattedOutput += !config.blankLines && config.asText && "\n" || ""
         output += formattedOutput
     }
     return output

@@ -29,6 +29,7 @@ export async function configure(args) {
     config.debug = args.includes("--debug")
     config.noAttribution = args.includes("--no-attribution")
     config.asText = args.includes("--as-text")
+    config.blankLines = args.includes("--blank-lines")
     if (!config.debug && !reportTypes.includes(config.reportName)) {
         console.error("------------------")
         console.error("Pick A Report Type")

@@ -8,13 +8,17 @@ import { renderInteractive } from "../../lib/renderInteractive.mjs"
 function milestone(config, _milestone) {
     let title = _milestone.title
     title = _milestone.dueOn ? `${title} (${_milestone.dueOn.substring(0, 10)})` : title
-    return config.asText ? `${title}\n\n` :
-        renderInteractive(config, `<h2><a href="${milestoneUrl(config, _milestone)}" target="_blank" title="link to milestone ${_milestone.title}">${title}</a></h2>\n\n`, `<h2>${title}</h2>\n\n`)
+    return config.asText ? `\n\n${title}` :
+        renderInteractive(config,
+            `<h2><a href="${milestoneUrl(config, _milestone)}" target="_blank" title="link to milestone ${_milestone.title}">${title}</a></h2>`,
+            `<h2>${title}</h2>`)
 }
 
 function label(config, label) {
-    return config.asText ? `  ${label.name}\n\n` :
-        renderInteractive(config, `<h3 style="color: #${label.color};"><a style="color: inherit;" href="${labelUrl(config, label)}" target="_blank" title="link to label ${label.name}">${label.name}</a></h3>\n\n`, `<h3 style="color: #${label.color};">${label.name}</h3>\n\n`)
+    return config.asText ? `\n\n  ${label.name}` :
+        renderInteractive(config,
+            `<h3 style="color: #${label.color}; margin-left: 2ch;"><a style="color: inherit;" href="${labelUrl(config, label)}" target="_blank" title="link to label ${label.name}">${label.name}</a></h3>`,
+            `<h3 style="color: #${label.color}; margin-left: 2ch;">${label.name}</h3>`)
 }
 
 /*
@@ -23,7 +27,8 @@ function label(config, label) {
 function getReportableIssues(config, milestone, label, issues) {
     const selector = { showState: true, showLabels: false, showAssignees: true, showMilestones: false }
     const milestoneLabelIssues = []
-    issues.forEach(issue => issue.milestone && issue.milestone.number === milestone.number && issue.labels.some(issueLabel => issueLabel.id === label.id && milestoneLabelIssues.push(issue)))
+    issues.forEach(issue =>
+        issue.milestone && issue.milestone.number === milestone.number && issue.labels.some(issueLabel => issueLabel.id === label.id && milestoneLabelIssues.push(issue)))
     const lss = issuesReport(config, milestoneLabelIssues, selector)
     return lss
 }
@@ -84,9 +89,7 @@ export function issuesByMilestoneAndLabelReport(config, issues) {
             const reportableMilestoneLabel = reportableMilestone.labels[ii]
             formattedOutput += label(config, reportableMilestoneLabel)
             formattedOutput += reportableMilestoneLabel.issues
-            if (ii < reportableMilestone.labels.length - 1) formattedOutput += "\n"
         }
-        if (i < reportableMilestones.length - 1) formattedOutput += "\n"
         output += formattedOutput
     }
     return output

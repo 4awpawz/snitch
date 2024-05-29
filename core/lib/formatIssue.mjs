@@ -1,4 +1,4 @@
 export function formatIssue({ state, number, title, labels, assignees, milestone }) {
-    const template = `${state} ${number} ${title} ${labels} ${assignees} ${milestone}\n`
+    let template = `${state} ${number} ${title} ${labels} ${assignees} ${milestone}`
     return template
 }

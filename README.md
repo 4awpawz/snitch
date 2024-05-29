@@ -1,16 +1,14 @@
 # Snitch 👉
 
-"A project isn't complete unless it has a CHANGELOG!" -- Jeff Schwartz, aka 4awpawz
-
 ![Static Badge](https://img.shields.io/badge/Markdown-green)
 ![GitHub Release](https://img.shields.io/github/release/4awpawz/snitch/all.svg)
 [![npm version](https://badge.fury.io/js/@4awpawz%2Fsnitch.svg)](https://badge.fury.io/js/@4awpawz%2Fsnitch)
 [![License](https://img.shields.io/badge/license-MIT-%230172ad)](https://github.com/picocss/pico/blob/master/LICENSE.md)
 [![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/4awpawz.svg?style=social&label=Follow%20%404awpawz)](https://twitter.com/4awpawz)
 
-## A Multi Purpose GitHub Issue Reporting Tool
+## Automated GitHub Issues Reporting
 
-Snitch is a terminal utility that lets you easily create attractive, interactive, and informative reports from GitHub issues that can be used for tracking both open and closed issues by label, assignee and milestone and can provide a timely, accurate, and consolidated view of a project's status.
+Snitch is a terminal utility that automates the creation of interactive and informative reports from a GitHub repository's issues.
 
 [![Snitch milestone report video](https://img.youtube.com/vi/u-7oJJUUdGs/0.jpg)](https://www.youtube.com/watch?v=u-7oJJUUdGs)
 

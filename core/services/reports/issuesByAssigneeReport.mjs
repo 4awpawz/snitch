@@ -6,7 +6,7 @@ import { renderInteractive } from "../../lib/renderInteractive.mjs"
 import { assigneeUrl } from "../../lib/urls.mjs"
 
 function assignee(config, _assignee) {
-    return config.asText ? _assignee.name : renderInteractive(config,
+    return config.asText ? `\n\n${_assignee.name}` : renderInteractive(config,
         `<h2><a href="${assigneeUrl(config, _assignee)}" target="_blank" title="link to assignee ${_assignee.name}">${_assignee.name}</a></h2>`,
         `<h2>${_assignee.name}</h2>`
     )
@@ -30,7 +30,7 @@ function mapReportableAssignee(config, assignee, issues) {
     asgn.id = assignee.id
     asgn.login = assignee.login
     asgn.name = assignee.name
-    asgn.issues = getReportableIssues(config, asgn, issues) + "\n"
+    asgn.issues = getReportableIssues(config, asgn, issues)
     return asgn
 }
 
@@ -63,9 +63,8 @@ export function issuesByAssigneeReport(config, issues) {
     for (let i = 0; i < reportableAssignees.length; i++) {
         const reportableAssignee = reportableAssignees[i]
         let formattedOutput = ""
-        formattedOutput += assignee(config, reportableAssignee) + "\n\n"
+        formattedOutput += assignee(config, reportableAssignee)
         formattedOutput += reportableAssignee.issues
-        if (i < reportableAssignees.length - 1) formattedOutput += "\n"
         output += formattedOutput
     }
     return output

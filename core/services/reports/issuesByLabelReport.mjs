@@ -6,8 +6,10 @@ import { renderInteractive } from "../../lib/renderInteractive.mjs"
 import { reportUnreportables } from "../../lib/reportUnreportables.mjs"
 
 function label(config, label) {
-    return config.asText ? `${label.name}` :
-        renderInteractive(config, `<h2 style="color: #${label.color};"><a style="color: inherit;" href="${labelUrl(config, label)}" target="_blank" title="link to label ${label.name}">${label.name}</a></h2>`, `<h2 style="color: #${label.color};">${label.name}</h2>`)
+    return config.asText ? `\n\n${label.name}` :
+        renderInteractive(config,
+            `<h2 style="color: #${label.color};"><a style="color: inherit;" href="${labelUrl(config, label)}" target="_blank" title="link to label ${label.name}">${label.name}</a></h2>`,
+            `<h2 style="color: #${label.color};">${label.name}</h2>`)
 }
 
 /*
@@ -58,9 +60,8 @@ export function issuesByLabelReport(config, issues) {
     for (let i = 0; i < reportableLabels.length; i++) {
         const reportableLabel = reportableLabels[i]
         let formattedOutput = ""
-        formattedOutput += label(config, reportableLabel) + "\n\n"
+        formattedOutput += label(config, reportableLabel)
         formattedOutput += reportableLabel.issues
-        if (i < reportableLabels.length - 1) formattedOutput += "\n"
         output += formattedOutput
     }
     return output

@@ -16,8 +16,10 @@ export async function snitch(args) {
     const issues = JSON.parse(result)
     let output = ""
     if (!config.noHeading && config.heading.length) output +=
-        config.asText ? `${config.heading}\n\n` :
-            renderInteractive(config, `<h1><a href="${config.repo}" target="_blank" title="link to repository ${config.repo}">${config.heading}</a></h1>\n\n`, `<h1>${config.heading}</h1>\n\n`)
+        config.asText ? `${config.heading}` :
+            renderInteractive(config,
+                `<h1><a href="${config.repo}" target="_blank" title="link to repository ${config.repo}">${config.heading}</a></h1>`,
+                `<h1>${config.heading}</h1>`)
     switch (config.reportName) {
         case "list":
             output += issuesReport(config, issues)
@@ -37,9 +39,12 @@ export async function snitch(args) {
         default:
             throw new TypeError(`invalid report type, you entered ${config.reportName}`)
     }
+    const reportEndsWithThreeNewLines = output.endsWith("\n\n\n")
+    console.error("report ends with three spaces: ", reportEndsWithThreeNewLines)
+    if (!config.noAttribution && config.asText) output += "\n\n"
     if (!config.noAttribution) output +=
-        config.asText ? `\n| ${attributionText} @ ${snitchUrl}` :
-            `\n> [${attributionText}](${snitchUrl})`
+        config.asText ? `| ${attributionText} @ ${snitchUrl}` :
+            `<blockquote><a href="${snitchUrl}" target="_blank">${attributionText}</a></blockquote>`
     process.stdout.write(output)
     process.exit(0)
 } 
