@@ -1,7 +1,7 @@
 {
   "name": "@4awpawz/snitch",
-  "version": "2.0.0",
-  "description": "A terminal utility for easily creating attractive interactive GitHub issue reports.",
+  "version": "3.0.0",
+  "description": "Snitch is a terminal utility that automates the reporting of GitHub repository issues via interactive and informative reports in both markdown and plain text.",
   "main": "core/index.mjs",
   "bin": {
     "snitch": "core/bin/cli.mjs"

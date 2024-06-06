@@ -8,7 +8,7 @@
 
 ## Automated GitHub Issues Reporting
 
-Snitch is a terminal utility that automates the creation of interactive and informative reports from a GitHub repository's issues.
+Snitch is a terminal utility that automates the reporting of GitHub repository issues via interactive and informative reports in both markdown and plain text.
 
 [![Snitch milestone report video](https://img.youtube.com/vi/u-7oJJUUdGs/0.jpg)](https://www.youtube.com/watch?v=u-7oJJUUdGs)
 
