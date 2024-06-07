@@ -39,8 +39,6 @@ export async function snitch(args) {
         default:
             throw new TypeError(`invalid report type, you entered ${config.reportName}`)
     }
-    const reportEndsWithThreeNewLines = output.endsWith("\n\n\n")
-    console.error("report ends with three spaces: ", reportEndsWithThreeNewLines)
     if (!config.noAttribution && config.asText) output += "\n\n"
     if (!config.noAttribution) output +=
         config.asText ? `| ${attributionText} @ ${snitchUrl}` :

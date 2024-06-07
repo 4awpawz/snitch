@@ -8,9 +8,9 @@
 
 ## Automated GitHub Issues Reporting
 
-Snitch is a terminal utility that automates the reporting of GitHub repository issues via interactive and informative reports in both markdown and plain text.
+Snitch is a terminal-based utility that automates the creation of interactive and informative reports in both markdown and text for the reporting of GitHub repository issues.
 
-[![Snitch milestone report video](https://img.youtube.com/vi/u-7oJJUUdGs/0.jpg)](https://www.youtube.com/watch?v=u-7oJJUUdGs)
+![Snitch markdown and text reports](./readme-assets/snitch-text-markdown-side-by-side.png)
 
 ⚠️ This project was formerly named _ghif_ but as of v2 has diverged significantly enough from that codebase to warrant rebranding while maintaining all its previous git history.
 
@@ -28,29 +28,31 @@ To install Snitch with NPM, please run the following command in your terminal:
 
 | Report Name | Description | Example |
 | :-- | :-- | :-- |
+| assignee | a list of issues by assignee | `> snitch --name=assignee > snitch-report.md` | 
+| label | a list of issues by label | `> snitch --name=label > snitch-report.md` | 
 | list | a list of issues | `> snitch --name=list > snitch-report.md` |
 | milestone | a list of issues by milestone | `> snitch --name=milestone > snitch-report.md` |
 | milestone-label | a list of issues by milestone and label | `> snitch --name=milestone-label > snitch-report.md` |
-| label | a list of issues by label | `> snitch --name=label > snitch-report.md` | 
-| assignee | a list of issues by assignee | `> snitch --name=assignee > snitch-report.md` | 
 
 ## Options
 
 | Option | Description | Default (if omitted)| Example |
 | :-- | :-- | :-- | :-- |
-| --as-text | output report as plain text | output report as markdown | `--as-text` |
-| --repo=[path to repository] | path to Github repository | the GitHub repository associated with the current project determined by git remote origin | `--repo=4awpawz/snitch` |
-| --state=[all \| open \| closed] | limit reporting to issues with this state | all | `--state=closed` |
+| --as-text (v3.0.0)| output report as plain text | output report as markdown | `--as-text` |
+| --blank-lines (v3.0.0) | seperate issues with a blank line | no seperating blank line | `--blank-lines` |
+| --debug | run in debug mode, see [below](#debug-mode) for details| run in normal mode | `--debug` |
+| --heading=[report heading] | the heading for the report | repository name | `--heading=CHANGELOG` |
 | --max-issues=integer | maximum number of issues to report on | 10000 | `--max-issues=100000` |
 | --name=[list \| milestone \| milestone-label \| label \| assignee] | name of report to generate | list | `--name=milestone-label` |
-| --heading=[report heading] | the heading for the report | repository name | `--heading=CHANGELOG` |
+| --no-heading (v3.0.0) | omit heading | include heading | `--no-heading` |
 | --non-interactive | for markdown reports only, generate non interactive issues | generate interactive issues | `--non-interactive` |
-| --no-attribution | attribution is not appended to the report | attribution is appended to the report | `--no-attribution` |
-| --debug | run in debug mode, see [below](#debug-mode) for details| run in normal mode | `--debug` |
+| --no-attribution | attribution is jnot appended to the report | attribution is appended to the report | `--no-attribution` |
+| --repo=[path to repository] | path to Github repository | the GitHub repository associated with the current project determined by git remote origin | `--repo=4awpawz/snitch` |
+| --state=[all \| open \| closed] | limit reporting to issues with this state | all | `--state=closed` |
 
 ## Saving output to a file
 
-Use redirection to save report output to a file:
+Use redirection (i.e., `>`) to save output to a file:
 
 ```shell
 > snitch --name=list > list.md
@@ -63,7 +65,7 @@ You can run Snitch in __debug mode__ to expose the dynamically generated configu
 To invoke debug mode, append `--debug` to the command line that you would use to generate your desired report, such as the __list report__ in the command below:
 
 ```shell
-> snitch --name=list --repo=4awpawz/fusion.ssg --debug 
+> snitch --name=list --debug 
 ```
 
 The output from running Snitch in debug mode would look similar to the following:
@@ -71,16 +73,18 @@ The output from running Snitch in debug mode would look similar to the following
 ```shell
 debug config:  {
   reportName: 'list',
-  repo: 'https://github.com/4awpawz/fusion.ssg',
+  repo: 'https://github.com/4awpawz/snitch',
   state: 'all',
   maxIssues: 10000,
   nonInteractive: false,
   noHeading: false,
-  heading: '4awpawz/fusion.ssg',
+  heading: '4awpawz/snitch',
   debug: true,
-  noAttribution: false
+  noAttribution: false,
+  asText: false,
+  blankLines: false
 }
-debug gh command:  gh issue list -L 10000 --state all --json 'number,title,labels,milestone,state,assignees,url' -R https://github.com/4awpawz/fusion.ssg
+debug gh command:  gh issue list -L 10000 --state all --json 'number,title,labels,milestone,state,assignees,url' -R https://github.com/4awpawz/snitch
 ```
 
 You can also run the _debug gh command_ to examine the JSON payload returned by GitHub's _gh_ utility:
@@ -88,10 +92,18 @@ You can also run the _debug gh command_ to examine the JSON payload returned by 
 ```shell
 > gh issue list -L 10000 --state all --json 'number,title,labels,milestone,state,assignees,url' -R https://github.com/4awpawz/snitch
 ```
+## Report Sensitivity
 
-## Report Examples
+When generating a report other than the list report you might see a warning message like the one below. It is informing you that some issues were excluded from the report because they didn't meet the report's requirements. For example, if you generate a milestone report and there are issues that haven't been assigned a milestone then those issues will be excluded from the report.
 
-### CHANGELOG Report
+<img src="./readme-assets/issues-missing-criteria-warning.png" alt="missing criteria warning message" title="missing criteria warning message" width="100%" style="max-width: 100%;">
+
+## Screencasts & Tutorials
+
+[![Introducing Snitch v3.0.0](https://img.youtube.com/vi/_vUUfBxtSFE/0.jpg)](https://www.youtube.com/watch?v=_vUUfBxtSFE)
+[![Snitch milestone report video](https://img.youtube.com/vi/u-7oJJUUdGs/0.jpg)](https://www.youtube.com/watch?v=u-7oJJUUdGs)
+
+### Example - Easily Create Your Project's Changelog
 
 `> snitch --name=list --state=closed --heading=CHANGELOG`
 
@@ -99,45 +111,46 @@ You can also run the _debug gh command_ to examine the JSON payload returned by 
 <br>
 <br>
 
-### List Report
-
-`> snitch --name=list`
-
-<img src="./readme-assets/list-report.png" alt="list report image" title="list report image" width="100%" style="max-width: 100%;">
-<br>
-<br>
-
-### Milestone Report
-
-`> snitch --name=milestone`
-
-<img src="./readme-assets/milestone-report.png" alt="milestone report image" title="milestone report image" width="100%" style="max-width: 100%;">
-<br>
-<br>
-
-### Milestone-Label Report
-
-`> snitch --name=milestone-label`
-
-<img src="./readme-assets/milestone-label-report.png" alt="milestone-label report image" title="milestone-label report image" width="100%" style="max-width: 100%;">
-<br>
-<br>
-
-### Label Report
-
-`> snitch --name=label`
-
-<img src="./readme-assets/label-report.png" alt="label report image" title="label report image"  width="100%" style="max-width: 100%;">
-<br>
-<br>
-
-### Assignee Report
-
-`> snitch --name=assignee`
-
-<img src="./readme-assets/assignee-report.png" alt="assignee report image" title="assignee report image" width="100%" style="max-width: 100%;">
-<br>
-<br>
+<!---->
+<!-- ### List Report -->
+<!---->
+<!-- `> snitch --name=list` -->
+<!---->
+<!-- <img src="./readme-assets/list-report.png" alt="list report image" title="list report image" width="100%" style="max-width: 100%;"> -->
+<!-- <br> -->
+<!-- <br> -->
+<!---->
+<!-- ### Milestone Report -->
+<!---->
+<!-- `> snitch --name=milestone` -->
+<!---->
+<!-- <img src="./readme-assets/milestone-report.png" alt="milestone report image" title="milestone report image" width="100%" style="max-width: 100%;"> -->
+<!-- <br> -->
+<!-- <br> -->
+<!---->
+<!-- ### Milestone-Label Report -->
+<!---->
+<!-- `> snitch --name=milestone-label` -->
+<!---->
+<!-- <img src="./readme-assets/milestone-label-report.png" alt="milestone-label report image" title="milestone-label report image" width="100%" style="max-width: 100%;"> -->
+<!-- <br> -->
+<!-- <br> -->
+<!---->
+<!-- ### Label Report -->
+<!---->
+<!-- `> snitch --name=label` -->
+<!---->
+<!-- <img src="./readme-assets/label-report.png" alt="label report image" title="label report image"  width="100%" style="max-width: 100%;"> -->
+<!-- <br> -->
+<!-- <br> -->
+<!---->
+<!-- ### Assignee Report -->
+<!---->
+<!-- `> snitch --name=assignee` -->
+<!---->
+<!-- <img src="./readme-assets/assignee-report.png" alt="assignee report image" title="assignee report image" width="100%" style="max-width: 100%;"> -->
+<!-- <br> -->
+<!-- <br> -->
 
 ## Request a new report format
 
