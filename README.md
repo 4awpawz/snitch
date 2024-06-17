@@ -156,6 +156,10 @@ When generating a report other than the list report you might see a warning mess
 
 Have an idea for a report format that is not yet supported? Then by all means [please submit a request](https://github.com/4awpawz/snitch/issues) and provide a detailed description of the report you are seeking.
 
+## Known Issues
+
+If you are a Vim or a Neovim user and you are using the _markdown-preview_ plugin to preview markdown then please be aware that it can render markdown incorrectly. Unfortunately, the plugin doesn't currently seem to be actively maintained. For more information, [please see this issue](https://github.com/iamcco/markdown-preview.nvim/issues/681).
+
 ## License
 
 MIT
