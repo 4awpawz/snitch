@@ -1,5 +1,6 @@
 node_modules
 test.*
+*.txt
 *.md
 !README.md
-*.txt
+!CHANGELOG.txt
