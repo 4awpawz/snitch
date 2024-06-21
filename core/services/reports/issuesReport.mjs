@@ -83,6 +83,7 @@ function getReportableIssues(config, issues) {
  */
 export function issuesReport(config, issues, opts = { showState: true, showLabels: true, showAssignees: true, showMilestones: true }) {
     if (issues.length === 0) reportAndExit(noIssuesToReport)
+    // const reportableIssues = getReportableIssues(config, issues)
     const reportableIssues = getReportableIssues(config, issues)
     if (reportableIssues.length === 0) reportAndExit(noIssuesToReport)
     let output = "\n\n"

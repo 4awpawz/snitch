@@ -11,12 +11,12 @@ function repoURL(repo) {
 export async function configure(args) {
     let config = {}
     const reportName = args.find(arg => arg.startsWith("--name="))
-    config.reportName = reportName && reportName.length && reportName.split("=")[1] || "list"
+    config.reportName = reportName?.split("=")[1] || "list"
     const repo = args.find(arg => arg.startsWith("--repo="))
-    config.repo = repo?.length > 0 && repo.split("=")[1] || JSON.parse(ghGetRepoInfo()).url
+    config.repo = repo?.split("=")[1] || JSON.parse(ghGetRepoInfo()).url
     config.repo = repoURL(config.repo)
     const state = args.find(arg => arg.startsWith("--state="))
-    config.state = state && state.length && state.split("=")[1] || "all"
+    config.state = state?.split("=")[1] || "all"
     !["open", "closed", "all"].includes(config.state) &&
         reportAndExit(`open, closed, all are the only valid states, you entered ${config.state}`, "error")
     const maxIssues = args.find(arg => arg.startsWith("--max-issues="))
@@ -25,11 +25,17 @@ export async function configure(args) {
     config.nonInteractive = args.includes("--non-interactive")
     config.noHeading = args.includes("--no-heading")
     const heading = args.find(arg => arg.startsWith("--heading="))
-    config.heading = heading && heading.length && heading.split("=")[1] || (new URL(config.repo)).pathname.slice(1)
+    config.heading = heading?.split("=")[1] || (new URL(config.repo)).pathname.slice(1)
     config.debug = args.includes("--debug")
     config.noAttribution = args.includes("--no-attribution")
     config.asText = args.includes("--as-text")
     config.blankLines = args.includes("--blank-lines")
+    const label = args.find(arg => arg.startsWith("--label="))
+    config.label = label?.split("=")[1] || ""
+    const assignee = args.find(arg => arg.startsWith("--assignee="))
+    config.assignee = assignee?.split("=")[1] || ""
+    const milestone = args.find(arg => arg.startsWith("--milestone="))
+    config.milestone = milestone?.split("=")[1] || ""
     if (!config.debug && !reportTypes.includes(config.reportName)) {
         console.error("------------------")
         console.error("Pick A Report Type")
