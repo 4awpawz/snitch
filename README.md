@@ -14,6 +14,10 @@ Snitch is a terminal-based utility that automates the creation of interactive an
 
 ⚠️ This project was formerly named _ghif_ but as of v2 has diverged significantly enough from that codebase to warrant rebranding while maintaining all its previous git history.
 
+## What's New
+
+Snitch v3.1.0 supports filtering issues by label, by assignee and by milestone, giving you even greater control over how you tailor your reports. See [Options](#options) below for details.
+
 ## Installation
 
 ⚠️ Snitch requires [GitHub CLI ](https://cli.github.com) and [Node.js](https://nodejs.org/en).
@@ -38,7 +42,7 @@ To install Snitch with NPM, please run the following command in your terminal:
 
 | Option | Description | Default (if omitted)| Example |
 | :-- | :-- | :-- | :-- |
-| --as-text (v3.0.0)| output report as plain text | output report as markdown | `--as-text` |
+| --as-text (v3.0.0) | output report as plain text | output report as markdown | `--as-text` |
 | --blank-lines (v3.0.0) | seperate issues with a blank line | no seperating blank line | `--blank-lines` |
 | --debug | run in debug mode, see [below](#debug-mode) for details| run in normal mode | `--debug` |
 | --heading=[report heading] | the heading for the report | repository name | `--heading=CHANGELOG` |
@@ -49,6 +53,9 @@ To install Snitch with NPM, please run the following command in your terminal:
 | --no-attribution | attribution is jnot appended to the report | attribution is appended to the report | `--no-attribution` |
 | --repo=[path to repository] | path to Github repository | the GitHub repository associated with the current project determined by git remote origin | `--repo=4awpawz/snitch` |
 | --state=[all \| open \| closed] | limit reporting to issues with this state | all | `--state=closed` |
+| --label=\<strings\> (v3.1.0) | filter issues by one or more labels | no filtering by label | `--label=bug` |
+| --assignee=\<string\> (v3.1.0) | filter issues by assignee | no filtering by assignee | `--assignee=supercoder` |
+| --milestone=\<string\> (v3.1.0) | filter issues by milestone | no filtering by milestone | `--milestone=v10.6.20` |
 
 ## Saving output to a file
 
@@ -82,15 +89,18 @@ debug config:  {
   debug: true,
   noAttribution: false,
   asText: false,
-  blankLines: false
+  blankLines: false,
+  label: 'bug',
+  assingee: '',
+  milestone: ''
 }
-debug gh command:  gh issue list -L 10000 --state all --json 'number,title,labels,milestone,state,assignees,url' -R https://github.com/4awpawz/snitch
+debug gh command:  gh issue list -L 10000 --state all --json 'number,title,labels,milestone,state,assignees,url' -R https://github.com/4awpawz/snitch --label 'bug'
 ```
 
 You can also run the _debug gh command_ to examine the JSON payload returned by GitHub's _gh_ utility:
 
 ```shell
-> gh issue list -L 10000 --state all --json 'number,title,labels,milestone,state,assignees,url' -R https://github.com/4awpawz/snitch
+> gh issue list -L 10000 --state all --json 'number,title,labels,milestone,state,assignees,url' -R https://github.com/4awpawz/snitch --label 'bug'
 ```
 ## Report Sensitivity
 
