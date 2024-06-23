@@ -8,7 +8,7 @@
 
 ## Automated GitHub Issues Reporting
 
-Snitch is a terminal-based utility that automates the creation of interactive and informative reports in both markdown and text for the reporting of GitHub repository issues.
+Five different report styles to chose from in either markdown or plain text.
 
 ![Snitch markdown and text reports](./readme-assets/snitch-text-markdown-side-by-side.png)
 
@@ -42,20 +42,20 @@ To install Snitch with NPM, please run the following command in your terminal:
 
 | Option | Description | Default (if omitted)| Example |
 | :-- | :-- | :-- | :-- |
-| --as-text (v3.0.0) | output report as plain text | output report as markdown | `--as-text` |
-| --blank-lines (v3.0.0) | seperate issues with a blank line | no seperating blank line | `--blank-lines` |
-| --debug | run in debug mode, see [below](#debug-mode) for details| run in normal mode | `--debug` |
-| --heading=[report heading] | the heading for the report | repository name | `--heading=CHANGELOG` |
-| --max-issues=integer | maximum number of issues to report on | 10000 | `--max-issues=100000` |
 | --name=[list \| milestone \| milestone-label \| label \| assignee] | name of report to generate | list | `--name=milestone-label` |
+| --repo=[path to repository] | path to Github repository | the GitHub repository associated with the current project determined by git remote origin | `--repo=4awpawz/snitch` |
+| --as-text (v3.0.0) | output report as plain text | output report as markdown | `--as-text` |
+| --heading=[report heading] | the heading for the report | repository name | `--heading=CHANGELOG` |
 | --no-heading (v3.0.0) | omit heading | include heading | `--no-heading` |
+| --blank-lines (v3.0.0) | seperate issues with a blank line | no seperating blank line | `--blank-lines` |
 | --non-interactive | for markdown reports only, generate non interactive issues | generate interactive issues | `--non-interactive` |
 | --no-attribution | attribution is jnot appended to the report | attribution is appended to the report | `--no-attribution` |
-| --repo=[path to repository] | path to Github repository | the GitHub repository associated with the current project determined by git remote origin | `--repo=4awpawz/snitch` |
-| --state=[all \| open \| closed] | limit reporting to issues with this state | all | `--state=closed` |
+| --max-issues=integer | maximum number of issues to report | 10000 | `--max-issues=100000` |
+| --state=[all \| open \| closed] | filter  issues by state | all | `--state=closed` |
 | --label=\<strings\> (v3.1.0) | filter issues by one or more labels | no filtering by label | `--label=bug` |
 | --assignee=\<string\> (v3.1.0) | filter issues by assignee | no filtering by assignee | `--assignee=supercoder` |
 | --milestone=\<string\> (v3.1.0) | filter issues by milestone | no filtering by milestone | `--milestone=v10.6.20` |
+| --debug | run in debug mode, see [below](#debug-mode) for details| run in normal mode | `--debug` |
 
 ## Saving output to a file
 
