@@ -1,6 +1,8 @@
 CHANGELOG
 
-✓ #66: Issues are not rendered properly by tne Vim/NeoVim "markdown preview" plugin. [ wontfix ] [ Jeff Schwartz ] v3.0.1
+✓ #69: Update docs for v3.1.0. [ documentation, enhancement ] [ Jeff Schwartz ] v3.1.0
+✓ #67: Support previewing reports in the browser. [ enhancement, wontfix, requires further analysis ] [ Jeff Schwartz ] Next Release
+✓ #66: Issues are not rendered properly by tne Vim/NeoVim "markdown preview" plugin. [ wontfix ] [ Jeff Schwartz ] v3.1.0
 ✓ #65: Update docs to reflect v3.0.0. [ documentation ] [ Jeff Schwartz ] v3.0.0 (2024-06-28)
 ✓ #64: Make blank lines between issues optional. [ enhancement, breaking change ] [ Jeff Schwartz ] v3.0.0 (2024-06-28)
 ✓ #62: Open link to snitch repo from cli help using default browser. [ enhancement ] [ Jeff Schwartz ] v3.0.0 (2024-06-28)
@@ -39,6 +41,7 @@ CHANGELOG
 ✓ #24: In md reports, optionally make the issue title a link to the Github issue. [ enhancement, v2.0.0 ] [ Jeff Schwartz ] v2.0.0 (2024-03-31)
 ✓ #22: Named reports. [ enhancement, v2.0.0 ] [ Jeff Schwartz ] v2.0.0 (2024-03-31)
 ✓ #20: Optionally show marks for issue state. [ enhancement, v2.0.0 ] [ Jeff Schwartz ] v2.0.0 (2024-03-31)
+✓ #18: Filter issues by label, assignee and milestone. [ enhancement ] [ Jeff Schwartz ] v3.1.0
 ✓ #17: Sanitize issues that are missing critical information. [ enhancement, v2.0.0 ] [ Jeff Schwartz ] v2.0.0 (2024-03-31)
 ✓ #16: Optionally report issue state and assignees. [ enhancement, v2.0.0 ] [ Jeff Schwartz ] v2.0.0 (2024-03-31)
 ✓ #15: Rewrite README.md to reflect the state of v2.0.0. [ documentation, v2.0.0 ] [ Jeff Schwartz ] v2.0.0 (2024-03-31)
