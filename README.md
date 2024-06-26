@@ -117,7 +117,7 @@ When generating a report other than the list report you might see a warning mess
 
 `> snitch --name=list --state=closed --heading=CHANGELOG`
 
-<img src="./readme-assets/changelog-report.png" alt="changelog report image" title="changelog report image" width="100%" style="max-width: 100%;">
+<img src="./readme-assets/changelog-md.png" alt="changelog report image" title="changelog report image" width="100%" style="max-width: 100%;">
 <br>
 <br>
 
