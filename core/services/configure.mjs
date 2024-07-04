@@ -30,12 +30,19 @@ export async function configure(args) {
     config.noAttribution = args.includes("--no-attribution")
     config.asText = args.includes("--as-text")
     config.blankLines = args.includes("--blank-lines")
+    // filtering
     const label = args.find(arg => arg.startsWith("--label="))
     config.label = label?.split("=")[1] || ""
     const assignee = args.find(arg => arg.startsWith("--assignee="))
     config.assignee = assignee?.split("=")[1] || ""
     const milestone = args.find(arg => arg.startsWith("--milestone="))
     config.milestone = milestone?.split("=")[1] || ""
+    // sorting
+    config.sortIssuesAscending = args.includes("--sort-issues-ascending")
+    config.sortMilestonesDescending = (config.reportName === "milestone" || config.reportName === "milestone-label") && args.includes("--sort-milestones-descending")
+    config.sortAssigneesDescending = config.reportName === "assignee" && args.includes("--sort-assignees-descending")
+    config.sortLabelsDescending = (config.reportName === "milestone-label" || config.reportName === "label") && args.includes("--sort-labels-descending")
+    // prompt user when they enter an invalid report type
     if (!config.debug && !reportTypes.includes(config.reportName)) {
         console.error("------------------")
         console.error("Pick A Report Type")

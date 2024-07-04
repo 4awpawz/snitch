@@ -45,6 +45,7 @@ function getReportableAssignees(config, issues) {
         if (a.name.toUpperCase() < b.name.toUpperCase()) return -1
         return 0
     })
+    if (config.sortAssigneesDescending) assignees = assignees.reverse();
     return assignees.map(assignee => mapReportableAssignee(config, assignee, issues))
 }
 

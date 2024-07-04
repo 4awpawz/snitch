@@ -1,6 +1,5 @@
 # Snitch 👉
 
-![Static Badge](https://img.shields.io/badge/Markdown-green)
 ![GitHub Release](https://img.shields.io/github/release/4awpawz/snitch/all.svg)
 [![npm version](https://badge.fury.io/js/@4awpawz%2Fsnitch.svg)](https://badge.fury.io/js/@4awpawz%2Fsnitch)
 [![License](https://img.shields.io/badge/license-MIT-%230172ad)](https://github.com/picocss/pico/blob/master/LICENSE.md)
@@ -16,7 +15,8 @@ Five different report styles to chose from in either markdown or plain text.
 
 ## What's New
 
-Snitch v3.1.0 supports filtering issues by label, by assignee and by milestone, giving you even greater control over how you tailor your reports. See [Options](#options) below for details.
+- Snitch v3.2.0 adds support for overriding how issues, labels, assignees, and milestones are sorted, giving you even greater control over how you tailor your reports. See [Options](#options) below for details.
+- Snitch v3.1.0 added support for filtering issues by label, by assignee and by milestone. See [Options](#options) below for details.
 
 ## Installation
 
@@ -55,7 +55,11 @@ To install Snitch with NPM, please run the following command in your terminal:
 | --label=\<strings\> (v3.1.0) | filter issues by one or more labels | no filtering by label | `--label=bug` |
 | --assignee=\<string\> (v3.1.0) | filter issues by assignee | no filtering by assignee | `--assignee=supercoder` |
 | --milestone=\<string\> (v3.1.0) | filter issues by milestone | no filtering by milestone | `--milestone=v10.6.20` |
-| --debug | run in debug mode, see [below](#debug-mode) for details| run in normal mode | `--debug` |
+| --sort-issues-ascending (v3.2.0) | sort issues in reverse order, see [below](#sorting) for details | the default sort order is descending | `--sort-issues-ascending` |
+| --sort-labels-descending (v3.2.0) | sort labels in reverse order, see [below](#sorting) for details  | the default sort order is ascending | `--sort-labels-descending` |
+| --sort-assignees-descending (v3.2.0) | sort assigness in reverse order, see [below](#sorting) for details  | the default sort order is ascending | `--sort-assignees-descending` |
+| --sort-milestones-descending (v3.2.0) | sort milestones in reverse order, see [below](#sorting) for details  | the default sort order is ascending | `--sort-milestones-descending` |
+| --debug | run in debug mode, see [below](#debug-mode) for details | run in normal mode | `--debug` |
 
 ## Saving output to a file
 
@@ -64,6 +68,17 @@ Use redirection (i.e., `>`) to save output to a file:
 ```shell
 > snitch --name=list > list.md
 ```
+## Sorting
+
+The table below lists the sort ordering options available for each report:
+
+| Report | Applicable |
+| :-- | :-- |
+| list | --sort-issues-ascending |
+| milestone | --sort-issues-ascending, --sort-milestones-descending |
+| milestone-label | --sort-issues-ascending, --sort-milestones-descending, --sort-labels-descending |
+| assignee | --sort-issues-ascending, --sort-assignees-descending |
+| label | --sort-issues-ascending, --sort-labels-descending |
 
 ## Debug mode
 
@@ -90,18 +105,23 @@ debug config:  {
   noAttribution: false,
   asText: false,
   blankLines: false,
-  label: 'bug',
-  assingee: '',
-  milestone: ''
+  label: '',
+  assignee: '',
+  milestone: '',
+  sortIssuesAscending: false,
+  sortMilestonesDescending: false,
+  sortAssigneesDescending: false,
+  sortLabelsDescending: false
 }
-debug gh command:  gh issue list -L 10000 --state all --json 'number,title,labels,milestone,state,assignees,url' -R https://github.com/4awpawz/snitch --label 'bug'
+debug gh command:  gh issue list -L 10000 --state all --json 'number,title,labels,milestone,state,assignees,url' -R https://github.com/4awpawz/snitch
 ```
 
 You can also run the _debug gh command_ to examine the JSON payload returned by GitHub's _gh_ utility:
 
 ```shell
-> gh issue list -L 10000 --state all --json 'number,title,labels,milestone,state,assignees,url' -R https://github.com/4awpawz/snitch --label 'bug'
+> gh issue list -L 10000 --state all --json 'number,title,labels,milestone,state,assignees,url' -R https://github.com/4awpawz/snitch
 ```
+
 ## Report Sensitivity
 
 When generating a report other than the list report you might see a warning message like the one below. It is informing you that some issues were excluded from the report because they didn't meet the report's requirements. For example, if you generate a milestone report and there are issues that haven't been assigned a milestone then those issues will be excluded from the report.

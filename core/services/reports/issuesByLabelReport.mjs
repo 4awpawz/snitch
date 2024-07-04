@@ -45,6 +45,7 @@ function getReportableLabels(config, issues) {
         if (a.name.toUpperCase() < b.name.toUpperCase()) return -1
         return 0
     })
+    if (config.sortLabelsDescending) labels = labels.reverse();
     return labels.map(label => mapReportableLabel(config, label, issues))
 }
 

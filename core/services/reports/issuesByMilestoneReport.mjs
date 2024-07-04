@@ -47,6 +47,7 @@ function getReportableMilestones(config, issues) {
         if (a.title.toUpperCase() < b.title.toUpperCase()) return -1
         return 0
     })
+    if (config.sortMilestonesDescending) ms = ms.reverse()
     return ms.map(milestone => mapReportableMilestone(config, milestone, issues))
 }
 

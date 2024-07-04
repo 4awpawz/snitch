@@ -45,6 +45,7 @@ function getReportableLabels(config, milestone, issues) {
         if (a.name.toUpperCase() < b.name.toUpperCase()) return -1
         return 0
     })
+    if (config.sortLabelsDescending) labels = labels.reverse();
     labels.forEach(label => label.issues = getReportableIssues(config, milestone, label, issues))
     return labels
 }
@@ -67,7 +68,12 @@ function mapReportableMilestone(config, _milestone, issues) {
 function getReportableMilestones(config, issues) {
     let ms = new Map()
     issues.forEach(issue => !ms.has(issue.milestone.number) && ms.set(issue.milestone.number, issue.milestone))
-    ms = [...ms.values()]
+    ms = [...ms.values()].sort((a, b) => {
+        if (a.title.toUpperCase() > b.title.toUpperCase()) return 1
+        if (a.title.toUpperCase() < b.title.toUpperCase()) return -1
+        return 0
+    })
+    if (config.sortMilestonesDescending) ms = ms.reverse()
     return ms.map(milestone => mapReportableMilestone(config, milestone, issues))
 }
 

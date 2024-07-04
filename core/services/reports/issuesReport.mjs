@@ -83,9 +83,9 @@ function getReportableIssues(config, issues) {
  */
 export function issuesReport(config, issues, opts = { showState: true, showLabels: true, showAssignees: true, showMilestones: true }) {
     if (issues.length === 0) reportAndExit(noIssuesToReport)
-    // const reportableIssues = getReportableIssues(config, issues)
-    const reportableIssues = getReportableIssues(config, issues)
+    let reportableIssues = getReportableIssues(config, issues)
     if (reportableIssues.length === 0) reportAndExit(noIssuesToReport)
+    if (config.sortIssuesAscending) reportableIssues = reportableIssues.reverse()
     let output = "\n\n"
     for (let i = 0; i < reportableIssues.length; i++) {
         const reportableIssue = reportableIssues[i]
