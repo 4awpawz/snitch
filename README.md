@@ -130,6 +130,7 @@ When generating a report other than the list report you might see a warning mess
 
 ## Screencasts & Tutorials
 
+[![New features introduced in Snitch v3.1 and v3.2](https://img.youtube.com/vi/CgvFShjjClY/0.jpg)](https://www.youtube.com/watch?v=CgvFShjjClY)
 [![Introducing Snitch v3.0.0](https://img.youtube.com/vi/_vUUfBxtSFE/0.jpg)](https://www.youtube.com/watch?v=_vUUfBxtSFE)
 [![Snitch milestone report video](https://img.youtube.com/vi/u-7oJJUUdGs/0.jpg)](https://www.youtube.com/watch?v=u-7oJJUUdGs)
 
